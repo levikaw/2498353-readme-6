@@ -1,0 +1,24 @@
+{
+  "name": "artefact",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/artefact/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "artefact:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "artefact:build:development"
+        },
+        "production": {
+          "buildTarget": "artefact:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
