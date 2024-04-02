@@ -1,6 +1,6 @@
-import { Entity } from '@project/core';
+import { BaseEntity } from '@project/core';
 
-export interface Repository<T extends Entity> {
+export interface Repository<T extends BaseEntity> {
   /**
    * Поиск entity по id
    * @param {T['id']} id

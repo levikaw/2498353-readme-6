@@ -1,11 +1,9 @@
 import { UserRole } from './user-role.enum';
 import 'multer';
+import { BaseInterface } from '../base/base.interface';
 
 /** Набор полей пользователя */
-export interface User {
-  /** Идентификатор */
-  id?: string;
-
+export interface User extends BaseInterface {
   /** Адрес электронной почты */
   email: string;
 

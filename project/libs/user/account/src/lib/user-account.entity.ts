@@ -1,10 +1,10 @@
 import { compare, genSalt, hash } from 'bcrypt';
-import { Entity } from '@project/core';
+import { BaseEntity } from '@project/core';
 import { StorableEntity, AuthUser, UserRole } from '@project/core';
 import 'multer';
 import { SALT_ROUNDS } from '@project/constants';
 
-export class UserAccountEntity extends Entity implements StorableEntity<AuthUser> {
+export class UserAccountEntity extends BaseEntity implements StorableEntity<AuthUser> {
   constructor(user?: AuthUser) {
     super();
     this.populate(user);

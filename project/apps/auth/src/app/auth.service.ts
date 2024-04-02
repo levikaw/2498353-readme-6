@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UserAccountRepository, private jwtService: JwtService) {}
+  constructor(private readonly userRepository: UserAccountRepository, private readonly jwtService: JwtService) {}
 
   /**
    * Регистрация пользователя
