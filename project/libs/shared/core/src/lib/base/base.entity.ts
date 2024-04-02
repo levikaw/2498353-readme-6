@@ -9,7 +9,7 @@ export abstract class BaseEntity implements BaseInterface {
   private _updatedAt: Date;
 
   /** Дата создания */
-  private _createdAt: Date = new Date();
+  private _createdAt: Date;
 
   /** Дата удаления */
   private _deletedAt: Date;
@@ -24,6 +24,10 @@ export abstract class BaseEntity implements BaseInterface {
 
   public get createdAt(): Date {
     return this._createdAt;
+  }
+
+  public set createdAt(value: Date) {
+    this._updatedAt = value;
   }
 
   public get updatedAt(): Date {

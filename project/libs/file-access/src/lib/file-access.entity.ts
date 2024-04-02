@@ -13,6 +13,9 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
   /** Содержание */
   public content: string;
 
+  /** Пользователь, который загрузил файл */
+  public userId: string;
+
   public populate(file?: UserFile): void {
     if (!file) {
       return;
@@ -21,6 +24,7 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
     this.id = this.id ?? '';
     this.name = file.name;
     this.content = file.content;
+    this.userId = file.userId;
   }
 
   /**

@@ -1,6 +1,13 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import 'multer';
+import {
+  FAIL_PASSWORD_VALIDATION,
+  MAX_LENGTH_LOGIN,
+  MAX_LENGTH_PASSWORD,
+  MIN_LENGTH_LOGIN,
+  MIN_LENGTH_PASSWORD,
+} from '@project/constants';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -11,8 +18,8 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
-  @MaxLength(50)
+  @MinLength(MIN_LENGTH_LOGIN)
+  @MaxLength(MAX_LENGTH_LOGIN)
   public login!: string;
 
   @ApiProperty()
@@ -22,14 +29,14 @@ export class CreateUserDto {
   @ApiHideProperty()
   @IsNotEmpty()
   @IsString()
-  @MinLength(6)
-  @MaxLength(12)
+  @MinLength(MIN_LENGTH_PASSWORD)
+  @MaxLength(MAX_LENGTH_PASSWORD)
   @IsStrongPassword(
     {
-      minLength: 6,
+      minLength: MIN_LENGTH_PASSWORD,
     },
     {
-      message: `Password is not strong enough. Must contain 6-12 characters`,
+      message: FAIL_PASSWORD_VALIDATION,
     },
   )
   public password!: string;

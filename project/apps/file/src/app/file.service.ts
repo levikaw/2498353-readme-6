@@ -6,18 +6,19 @@ export class FileService {
   constructor(private readonly fileAccessRepository: FileAccessRepository) {}
 
   /**
-   * Загрузка файла
-   * @param {any} file
+   * Загрузка файлов
+   * @param {Express.Multer.File[]} files
    * @returns {Promise<FileAccessEntity>}
    */
-  public async upload(file: any, userId: string): Promise<FileAccessEntity> {
-    const fileEntity = new FileAccessEntity(file);
+  public async upload(files: Express.Multer.File[], userId: string): Promise<string[]> {
+    const uploadedFiles: string[] = [];
+    for (const file of files) {
+      const fileEntity = new FileAccessEntity({ name: file.originalname, content: file.buffer.toString(), userId });
+      const processedFile = await this.fileAccessRepository.save(fileEntity);
+      uploadedFiles.push(processedFile.id);
+    }
 
-    this.fileAccessRepository.create(fileEntity);
-
-    // TODO: link file user
-
-    return fileEntity;
+    return uploadedFiles;
   }
 
   /**

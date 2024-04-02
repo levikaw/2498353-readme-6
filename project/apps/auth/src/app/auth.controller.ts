@@ -11,6 +11,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  //TODO: @useGuards()
   @ApiOkResponse({ type: UserAccountEntity })
   @ApiBody({
     description: 'Создание пользователя',

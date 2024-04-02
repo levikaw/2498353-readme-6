@@ -13,7 +13,7 @@ export interface Repository<T extends BaseEntity> {
    * @param {T} entity
    * @returns {Promise<T>}
    */
-  create(entity: T): Promise<T>;
+  save(entity: T): Promise<T>;
 
   /**
    * Обновление entity
