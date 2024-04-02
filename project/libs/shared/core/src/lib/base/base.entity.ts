@@ -1,5 +1,7 @@
+import { BaseInterface } from './base.interface';
+
 /** Сущность */
-export abstract class Entity {
+export abstract class BaseEntity implements BaseInterface {
   /** Идентификатор */
   private _id = '';
 

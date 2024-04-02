@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "file": "npx nx run file:serve"
+    "file": "npx nx run file:serve",
+    "auth": "npx nx run auth:serve"
   },
   "private": true,
   "dependencies": {
