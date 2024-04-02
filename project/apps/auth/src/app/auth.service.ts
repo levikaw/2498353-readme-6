@@ -1,25 +1,28 @@
-import dayjs from 'dayjs';
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UserAccountRepository, UserAccountEntity } from '@project/account';
 import { UserRole } from '@project/core';
 import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from '@project/constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class AuthenticationService {
-  constructor(private readonly userRepository: UserAccountRepository) {}
+export class AuthService {
+  constructor(private readonly userRepository: UserAccountRepository, private jwtService: JwtService) {}
 
-  public async register(dto: CreateUserDto): Promise<UserAccountEntity> {
-    const { email, firstname, lastname, password, dateBirth } = dto;
+  /**
+   * Регистрация пользователя
+   * @param {CreateUserDto} user
+   * @returns {Promise<UserAccountEntity>}
+   */
+  public async register(user: CreateUserDto): Promise<UserAccountEntity> {
+    const { email, password, avatar, login } = user;
 
-    const blogUser = {
+    const newUser = {
       email,
-      firstname,
-      lastname,
+      avatar,
+      login,
       role: UserRole.User,
-      avatar: '',
-      dateOfBirth: dayjs(dateBirth).toDate(),
       passwordHash: '',
     };
 
@@ -29,15 +32,20 @@ export class AuthenticationService {
       throw new ConflictException(AUTH_USER_EXISTS);
     }
 
-    const userEntity = await new UserAccountEntity(blogUser).createPassword(password);
+    const userEntity = await new UserAccountEntity(newUser).createPassword(password);
 
     this.userRepository.create(userEntity);
 
     return userEntity;
   }
 
-  public async verifyUser(dto: LoginUserDto) {
-    const { email, password } = dto;
+  /**
+   * Аутентификация пользователя
+   * @param {LoginUserDto} user
+   * @returns {Promise<UserAccountEntity>}
+   */
+  public async authUser(user: LoginUserDto): Promise<{ token: string }> {
+    const { email, password } = user;
     const existUser = await this.userRepository.findByEmail(email);
 
     if (!existUser) {
@@ -48,10 +56,8 @@ export class AuthenticationService {
       throw new UnauthorizedException(AUTH_USER_PASSWORD_WRONG);
     }
 
-    return existUser;
-  }
-
-  public async getUser(id: string) {
-    return this.userRepository.findById(id);
+    return {
+      token: await this.jwtService.signAsync(existUser.toObject()),
+    };
   }
 }

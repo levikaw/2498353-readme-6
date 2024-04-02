@@ -1,8 +1,7 @@
 import { compare, genSalt, hash } from 'bcrypt';
-
 import { Entity } from '@project/core';
 import { StorableEntity, AuthUser, UserRole } from '@project/core';
-
+import 'multer';
 import { SALT_ROUNDS } from '@project/constants';
 
 export class UserAccountEntity extends Entity implements StorableEntity<AuthUser> {
@@ -14,14 +13,11 @@ export class UserAccountEntity extends Entity implements StorableEntity<AuthUser
   /** Адрес электронной почты */
   public email: string;
 
-  /** Имя */
-  public firstname: string;
+  /** Имя пользователя */
+  public login: string;
 
-  /** Фамилия */
-  public lastname: string;
-
-  /** Дата рождения */
-  public dateOfBirth: Date;
+  /** Аватар */
+  public avatar?: Express.Multer.File | null;
 
   /** Роль (разрешения в системе) */
   public role: UserRole;
@@ -36,11 +32,10 @@ export class UserAccountEntity extends Entity implements StorableEntity<AuthUser
 
     this.id = this.id ?? '';
     this.email = user.email;
-    this.dateOfBirth = user.dateOfBirth;
-    this.firstname = user.firstname;
-    this.lastname = user.lastname;
+    this.avatar = user.avatar;
     this.passwordHash = user.passwordHash;
     this.role = user.role;
+    this.login = user.login;
   }
 
   /**

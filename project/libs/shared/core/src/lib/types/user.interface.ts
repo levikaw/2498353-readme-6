@@ -1,4 +1,5 @@
 import { UserRole } from './user-role.enum';
+import 'multer';
 
 /** Набор полей пользователя */
 export interface User {
@@ -8,14 +9,11 @@ export interface User {
   /** Адрес электронной почты */
   email: string;
 
-  /** Имя */
-  firstname: string;
+  /** Имя пользователя */
+  login: string;
 
-  /** Фамилия */
-  lastname: string;
-
-  /** Дата рождения */
-  dateOfBirth: Date;
+  /** Аватар */
+  avatar?: Express.Multer.File | null;
 
   /** Роль (разрешения в системе) */
   role: UserRole;
