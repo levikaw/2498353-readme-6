@@ -1,29 +1,36 @@
-import { IsNotEmpty, IsDate, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import 'multer';
 
 export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  public email: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsDate()
-  public dateBirth: Date;
+  @IsEmail()
+  public email!: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  public firstname: string;
+  @MinLength(3)
+  @MaxLength(50)
+  public login!: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  public lastname: string;
+  @IsOptional()
+  public avatar?: Express.Multer.File;
 
-  @ApiProperty()
+  @ApiHideProperty()
   @IsNotEmpty()
   @IsString()
-  public password: string;
+  @MinLength(6)
+  @MaxLength(12)
+  @IsStrongPassword(
+    {
+      minLength: 6,
+    },
+    {
+      message: `Password is not strong enough. Must contain 6-12 characters`,
+    },
+  )
+  public password!: string;
 }

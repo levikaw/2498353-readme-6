@@ -5,12 +5,12 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AuthenticationModule } from './app/authentication.module';
+import { AuthModule } from './app/auth.module';
 
 // import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AuthenticationModule);
+  const app = await NestFactory.create(AuthModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3000;

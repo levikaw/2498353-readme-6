@@ -1,2 +1,2 @@
-export * from './messages/authentication.constants';
+export * from './messages/auth.constants';
 export * from './password-parametrs.constants';
