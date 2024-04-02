@@ -34,7 +34,7 @@ export class AuthService {
 
     const userEntity = await new UserAccountEntity(newUser).createPassword(password);
 
-    this.userRepository.create(userEntity);
+    this.userRepository.save(userEntity);
 
     return userEntity;
   }

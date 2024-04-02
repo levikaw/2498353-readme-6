@@ -29,10 +29,12 @@ export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity
    * @param {T} entity
    * @returns {Promise<T>}
    */
-  public async create(entity: T): Promise<T> {
+  public async save(entity: T): Promise<T> {
     if (!entity.id) {
       entity.id = randomUUID();
     }
+
+    entity.createdAt = new Date();
 
     this.entities.set(entity.id, entity.toObject());
     return entity;
@@ -47,6 +49,8 @@ export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity
       throw new Error('Entity not found');
     }
 
+    entity.updatedAt = new Date();
+
     this.entities.set(entity.id, entity.toObject());
   }
 
@@ -59,6 +63,13 @@ export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity
       throw new Error('Entity not found');
     }
 
-    this.entities.delete(id);
+    const entity = await this.findById(id);
+
+    entity.updatedAt = new Date();
+    entity.deletedAt = entity.updatedAt;
+
+    this.entities.set(entity.id, entity.toObject());
+
+    // this.entities.delete(id);
   }
 }
