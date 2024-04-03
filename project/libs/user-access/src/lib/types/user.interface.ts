@@ -1,6 +1,6 @@
 import { UserRole } from './user-role.enum';
 import 'multer';
-import { BaseInterface } from '../base/base.interface';
+import { BaseInterface } from '@project/core';
 
 /** Набор полей пользователя */
 export interface User extends BaseInterface {

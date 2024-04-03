@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { UserAccessRepository, UserAccessEntity } from '@project/account';
-import { UserRole } from '@project/core';
+import { UserAccessRepository, UserAccessEntity } from '@project/user-access';
+import { UserRole } from '@project/user-access';
 import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from '@project/constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';

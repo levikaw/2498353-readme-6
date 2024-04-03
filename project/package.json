@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "file": "npx nx run file:serve",
-    "auth": "npx nx run auth:serve"
+    "auth": "npx nx run auth:serve",
+    "artefact": "npx nx run artefact:serve"
   },
   "private": true,
   "dependencies": {

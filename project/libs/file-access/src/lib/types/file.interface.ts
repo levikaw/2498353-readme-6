@@ -1,4 +1,4 @@
-import { BaseInterface } from '../base/base.interface';
+import { BaseInterface } from '@project/core';
 
 export interface UserFile extends BaseInterface {
   name: string;

@@ -1,4 +1,4 @@
-// Auth parametrs
+// Auth
 export const jwtConstants = {
   secret: 'DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.',
 };
@@ -18,3 +18,8 @@ export const FAIL_PASSWORD_VALIDATION: string = `Password is not strong enough. 
 const ONE_KILOBYTE: number = 1024;
 export const MAX_FILE_SIZE: number = ONE_KILOBYTE * 1000;
 export const MAX_AVATAR_SIZE: number = ONE_KILOBYTE * 500;
+
+// Comments
+export const COMMENTS_PAGE_SIZE: number = 50;
+export const MIN_COMMENT_LENGTH: number = 10;
+export const MAX_COMMENT_LENGTH: number = 300;

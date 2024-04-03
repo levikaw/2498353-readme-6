@@ -16,12 +16,13 @@ export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity
    * @returns {Promise<T>}
    */
   public async findById(id: T['id']): Promise<T> {
-    const foundEntity = this.entities.get(id) || null;
-    if (!foundEntity) {
+    const founded = this.entities.get(id) || null;
+    if (!founded) {
       return null;
     }
 
-    return this.entityFactory.create(foundEntity);
+    const foundEntity = this.entityFactory.create(founded);
+    return !foundEntity.deletedAt ? foundEntity : null;
   }
 
   /**
