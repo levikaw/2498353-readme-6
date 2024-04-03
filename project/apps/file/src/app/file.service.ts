@@ -1,5 +1,5 @@
 import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { UserFile } from '@project/core';
+import { UserFile } from '@project/file-access';
 import { FileAccessEntity, FileAccessRepository } from '@project/file-access';
 
 @Injectable()

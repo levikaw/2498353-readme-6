@@ -16,7 +16,7 @@ export class UserAccessRepository extends BaseMemoryRepository<UserAccessEntity>
    */
   public async findByEmail(email: string): Promise<UserAccessEntity> {
     const entities = Array.from(this.entities.values());
-    const user = entities.find((entity) => entity.email === email);
+    const user = entities.find((entity) => entity.email === email && !entity.deletedAt);
     return !!user ? this.entityFactory.create(user) : null;
   }
 }

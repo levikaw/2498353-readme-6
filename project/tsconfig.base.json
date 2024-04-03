@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@project/account": ["libs/user-access/src/index.ts"],
+      "@project/user-access": ["libs/user-access/src/index.ts"],
+      "@project/comment-access": ["libs/comment-access/src/index.ts"],
       "@project/constants": ["libs/constants/src/index.ts"],
       "@project/core": ["libs/core/src/index.ts"],
       "@project/data-access": ["libs/data-access/src/index.ts"],

@@ -14,7 +14,8 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FileAccessEntity } from '@project/file-access';
 import { FileService } from './file.service';
 import { MAX_FILE_SIZE, MAX_AVATAR_SIZE } from '@project/constants';
-import { UserFile } from '@project/core';
+import { UserFile } from '@project/file-access';
+import 'multer';
 
 @ApiTags('file')
 @Controller('file')
