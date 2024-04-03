@@ -23,3 +23,16 @@ export const MAX_AVATAR_SIZE: number = ONE_KILOBYTE * 500;
 export const COMMENTS_PAGE_SIZE: number = 50;
 export const MIN_COMMENT_LENGTH: number = 10;
 export const MAX_COMMENT_LENGTH: number = 300;
+
+// Posts
+export const MIN_LENGTH_NAME_POST: number = 20;
+export const MAX_LENGTH_NAME_POST: number = 50;
+export const MIN_LENGTH_TEXT_TEXT_POST: number = 100;
+export const MAX_LENGTH_TEXT_TEXT_POST: number = 1024;
+export const MIN_LENGTH_TEXT_QUOTE_POST: number = 20;
+export const MAX_LENGTH_TEXT_QUOTE_POST: number = 300;
+export const MIN_LENGTH_AUTHOR_QUOTE_POST: number = 3;
+export const MAX_LENGTH_AUTHOR_QUOTE_POST: number = 50;
+export const MAX_LENGTH_TEXT_LINK_POST: number = 300;
+export const MIN_LENGTH_ANNONCE_TEXT_POST: number = 50;
+export const MAX_LENGTH_ANNONCE_TEXT_POST: number = 255;

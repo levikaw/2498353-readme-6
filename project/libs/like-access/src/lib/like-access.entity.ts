@@ -2,9 +2,9 @@ import { BaseEntity, StorableEntity } from '@project/core';
 import { UserLike } from './types/like.interface';
 
 export class LikeAccessEntity extends BaseEntity implements StorableEntity<UserLike> {
-  constructor(comment?: UserLike) {
+  constructor(like?: UserLike) {
     super();
-    this.populate(comment);
+    this.populate(like);
   }
 
   /** Идентификатор публиции, под которой оставили лайк */
@@ -13,18 +13,18 @@ export class LikeAccessEntity extends BaseEntity implements StorableEntity<UserL
   /** Идентификатор автора лайка */
   public userId: string;
 
-  public populate(comment?: UserLike): void {
-    if (!comment) {
+  public populate(like?: UserLike): void {
+    if (!like) {
       return;
     }
 
-    this.id = comment.id;
-    this.createdAt = comment.createdAt;
-    this.updatedAt = comment.updatedAt;
-    this.deletedAt = comment.deletedAt;
+    this.id = like.id;
+    this.createdAt = like.createdAt;
+    this.updatedAt = like.updatedAt;
+    this.deletedAt = like.deletedAt;
 
-    this.postId = comment.postId;
-    this.userId = comment.userId;
+    this.postId = like.postId;
+    this.userId = like.userId;
   }
 
   /**

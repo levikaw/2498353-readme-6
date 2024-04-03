@@ -5,6 +5,7 @@
   "scripts": {
     "file": "npx nx run file:serve",
     "auth": "npx nx run auth:serve",
+    "post": "npx nx run auth:post",
     "artefact": "npx nx run artefact:serve"
   },
   "private": true,

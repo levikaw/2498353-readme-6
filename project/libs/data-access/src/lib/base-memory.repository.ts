@@ -11,6 +11,14 @@ export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity
   constructor(protected entityFactory: EntityFactory<T>) {}
 
   /**
+   * Получение всех сущностей как список объектов
+   * @returns {Promise<ReturnType<T['toObject']>[]>}
+   */
+  public async findAll(): Promise<ReturnType<T['toObject']>[]> {
+    return Array.from(this.entities.values());
+  }
+
+  /**
    * Поиск entity по id
    * @param {T['id']} id
    * @returns {Promise<T>}

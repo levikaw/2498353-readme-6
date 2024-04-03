@@ -21,6 +21,7 @@ export class LikeService {
    * @returns {Promise<UserLike>}
    */
   public async create(dto: CreateLikeDto): Promise<UserLike> {
+    // TODO: Проверка при создании лайка (может быть только один лайк пользователя для публикации)
     return (await this.likeAccessRepository.save(new LikeAccessEntity(dto))).toObject();
   }
 
