@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { UserAccountEntity } from '@project/account';
+import { UserAccessEntity } from '@project/account';
 import { AuthUser } from '@project/core';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -12,7 +12,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   //TODO: @useGuards()
-  @ApiOkResponse({ type: UserAccountEntity })
+  @ApiOkResponse({ type: UserAccessEntity })
   @ApiBody({
     description: 'Создание пользователя',
     required: true,

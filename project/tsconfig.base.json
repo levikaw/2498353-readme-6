@@ -15,10 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@project/account": ["libs/user/account/src/index.ts"],
-      "@project/constants": ["libs/shared/constants/src/index.ts"],
-      "@project/core": ["libs/shared/core/src/index.ts"],
-      "@project/data-access": ["libs/shared/data-access/src/index.ts"],
+      "@project/account": ["libs/user-access/src/index.ts"],
+      "@project/constants": ["libs/constants/src/index.ts"],
+      "@project/core": ["libs/core/src/index.ts"],
+      "@project/data-access": ["libs/data-access/src/index.ts"],
       "@project/file-access": ["libs/file-access/src/index.ts"]
     }
   },
