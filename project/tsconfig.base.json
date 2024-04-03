@@ -21,6 +21,7 @@
       "@project/data-access": ["libs/data-access/src/index.ts"],
       "@project/file-access": ["libs/file-access/src/index.ts"],
       "@project/like-access": ["libs/like-access/src/index.ts"],
+      "@project/post-access": ["libs/post-access/src/index.ts"],
       "@project/user-access": ["libs/user-access/src/index.ts"]
     }
   },
