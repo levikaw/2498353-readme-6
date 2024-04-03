@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { UserFile } from '@project/core';
 import { FileAccessEntity, FileAccessRepository } from '@project/file-access';
 
 @Injectable()
@@ -26,14 +27,14 @@ export class FileService {
    * @param {string} id
    * @returns {Promise<FileAccessEntity>}
    */
-  public async download(id: string): Promise<FileAccessEntity> {
-    const file = this.fileAccessRepository.findById(id);
+  public async download(id: string): Promise<UserFile> {
+    const file = await this.fileAccessRepository.findById(id);
 
     if (!file) {
       Logger.error('File with id does not exists:', id);
       throw new Error('File does not exists');
     }
 
-    return file;
+    return file.toObject();
   }
 }

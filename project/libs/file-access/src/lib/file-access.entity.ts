@@ -21,7 +21,11 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
       return;
     }
 
-    this.id = this.id ?? '';
+    this.id = file.id;
+    this.createdAt = file.createdAt;
+    this.updatedAt = file.updatedAt;
+    this.deletedAt = file.deletedAt;
+
     this.name = file.name;
     this.content = file.content;
     this.userId = file.userId;
@@ -32,6 +36,14 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
    * @returns {UserFile}
    */
   public toObject(): UserFile {
-    return Object.assign({}, this);
+    return {
+      id: this.id,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      deletedAt: this.deletedAt,
+      name: this.name,
+      content: this.content,
+      userId: this.userId,
+    };
   }
 }

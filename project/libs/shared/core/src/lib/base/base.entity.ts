@@ -2,8 +2,12 @@ import { BaseInterface } from './base.interface';
 
 /** Сущность */
 export abstract class BaseEntity implements BaseInterface {
+  // id: string;
+  // createdAt: Date;
+  // updatedAt: Date;
+  // deletedAt: Date;
   /** Идентификатор */
-  private _id = '';
+  private _id: string;
 
   /** Дата обновления */
   private _updatedAt: Date;
@@ -27,7 +31,7 @@ export abstract class BaseEntity implements BaseInterface {
   }
 
   public set createdAt(value: Date) {
-    this._updatedAt = value;
+    this._createdAt = value;
   }
 
   public get updatedAt(): Date {
