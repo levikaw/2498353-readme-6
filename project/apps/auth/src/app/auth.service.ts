@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { UserAccountRepository, UserAccountEntity } from '@project/account';
+import { UserAccessRepository, UserAccessEntity } from '@project/account';
 import { UserRole } from '@project/core';
 import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from '@project/constants';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,14 +8,14 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UserAccountRepository, private readonly jwtService: JwtService) {}
+  constructor(private readonly userRepository: UserAccessRepository, private readonly jwtService: JwtService) {}
 
   /**
    * Регистрация пользователя
    * @param {CreateUserDto} user
-   * @returns {Promise<UserAccountEntity>}
+   * @returns {Promise<UserAccessEntity>}
    */
-  public async register(user: CreateUserDto): Promise<UserAccountEntity> {
+  public async register(user: CreateUserDto): Promise<UserAccessEntity> {
     const { email, password, avatar, login } = user;
 
     const newUser = {
@@ -32,7 +32,7 @@ export class AuthService {
       throw new ConflictException(AUTH_USER_EXISTS);
     }
 
-    const userEntity = await new UserAccountEntity(newUser).createPassword(password);
+    const userEntity = await new UserAccessEntity(newUser).createPassword(password);
 
     this.userRepository.save(userEntity);
 
@@ -42,7 +42,7 @@ export class AuthService {
   /**
    * Аутентификация пользователя
    * @param {LoginUserDto} user
-   * @returns {Promise<UserAccountEntity>}
+   * @returns {Promise<UserAccessEntity>}
    */
   public async authUser(user: LoginUserDto): Promise<{ token: string }> {
     const { email, password } = user;
