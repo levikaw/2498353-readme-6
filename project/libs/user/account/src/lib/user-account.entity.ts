@@ -30,7 +30,11 @@ export class UserAccountEntity extends BaseEntity implements StorableEntity<Auth
       return;
     }
 
-    this.id = this.id ?? '';
+    this.id = user.id;
+    this.createdAt = user.createdAt;
+    this.updatedAt = user.updatedAt;
+    this.deletedAt = user.deletedAt;
+
     this.email = user.email;
     this.avatar = user.avatar;
     this.passwordHash = user.passwordHash;
@@ -43,7 +47,17 @@ export class UserAccountEntity extends BaseEntity implements StorableEntity<Auth
    * @returns {AuthUser}
    */
   public toObject(): AuthUser {
-    return Object.assign({}, this);
+    return {
+      id: this.id,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      deletedAt: this.deletedAt,
+      email: this.email,
+      avatar: this.avatar,
+      login: this.login,
+      role: this.role,
+      passwordHash: this.passwordHash,
+    };
   }
 
   /**

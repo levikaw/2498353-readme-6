@@ -14,6 +14,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FileAccessEntity } from '@project/file-access';
 import { FileService } from './file.service';
 import { MAX_FILE_SIZE, MAX_AVATAR_SIZE } from '@project/constants';
+import { UserFile } from '@project/core';
 
 @ApiTags('file')
 @Controller('file')
@@ -75,7 +76,7 @@ export class FileController {
    */
   @ApiOkResponse({ type: FileAccessEntity })
   @Get('download/:id')
-  public async download(@Param('id') id: string): Promise<FileAccessEntity> {
+  public async download(@Param('id') id: string): Promise<UserFile> {
     return await this.fileService.download(id);
   }
 }
