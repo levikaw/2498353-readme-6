@@ -1,5 +1,6 @@
-import { BaseEntity, UserFile } from '@project/core';
+import { BaseEntity } from '@project/core';
 import { StorableEntity } from '@project/core';
+import { UserFile } from './types/file.interface';
 
 export class FileAccessEntity extends BaseEntity implements StorableEntity<UserFile> {
   constructor(file?: UserFile) {
