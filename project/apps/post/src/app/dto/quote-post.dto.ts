@@ -10,14 +10,20 @@ import { CreateBasePostDto } from './base-post.dto';
 import { QuotePost } from '@project/post-access';
 
 export class CreateQuotePostDto extends CreateBasePostDto implements QuotePost {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Quote text',
+    example: 'The way to get started is to quit talking and begin doing',
+  })
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_TEXT_QUOTE_POST)
   @MaxLength(MAX_LENGTH_TEXT_QUOTE_POST)
   @IsString()
   text!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Quote author',
+    example: 'Walt Disney',
+  })
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_AUTHOR_QUOTE_POST)
   @MaxLength(MAX_LENGTH_AUTHOR_QUOTE_POST)

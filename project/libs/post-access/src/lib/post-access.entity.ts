@@ -36,7 +36,8 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
   public status?: PostStatus;
 
   /** Идентификатор публикаци, с которой был сделан репост */
-  public reposted?: string;
+  public repostedFrom?: string;
+  public reposted?: boolean;
 
   /** Автор публикации */
   public author?: string;
@@ -64,6 +65,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
     this.fileId = post.fileId;
     this.tags = post.tags;
     this.status = post.status;
+    this.repostedFrom = post.repostedFrom;
     this.reposted = post.reposted;
     this.author = post.author;
     this.text = post.text;
@@ -87,6 +89,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       fileId: this.fileId,
       tags: this.tags,
       status: this.status,
+      repostedFrom: this.repostedFrom,
       reposted: this.reposted,
       author: this.author,
       text: this.text,
@@ -98,7 +101,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
    * Преобразование из PostAccessEntity в объект типа ссылка
    * @returns {LinkPost}
    */
-  public toOLinkbject(): LinkPost {
+  public toLinkObject(): LinkPost {
     return {
       id: this.id,
       createdAt: this.createdAt,
@@ -109,6 +112,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       link: this.link,
       tags: this.tags,
       status: this.status,
+      repostedFrom: this.repostedFrom,
       reposted: this.reposted,
     };
   }
@@ -127,7 +131,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       type: this.type,
       tags: this.tags,
       status: this.status,
-      reposted: this.reposted,
+      repostedFrom: this.repostedFrom,
       author: this.author,
       text: this.text,
     };
@@ -148,7 +152,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       name: this.name,
       tags: this.tags,
       status: this.status,
-      reposted: this.reposted,
+      repostedFrom: this.repostedFrom,
       text: this.text,
       announcement: this.announcement,
     };
@@ -170,7 +174,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       link: this.link,
       tags: this.tags,
       status: this.status,
-      reposted: this.reposted,
+      repostedFrom: this.repostedFrom,
     };
   }
 
@@ -185,7 +189,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       fileId: this.fileId,
       tags: this.tags,
       status: this.status,
-      reposted: this.reposted,
+      repostedFrom: this.repostedFrom,
     };
   }
 }

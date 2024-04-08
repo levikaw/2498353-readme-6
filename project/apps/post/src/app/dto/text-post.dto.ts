@@ -12,21 +12,27 @@ import { TextPost } from '@project/post-access';
 import { CreateBasePostDto } from './base-post.dto';
 
 export class CreateTextPostDto extends CreateBasePostDto implements TextPost {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Post title',
+  })
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_NAME_POST)
   @MaxLength(MAX_LENGTH_NAME_POST)
   @IsString()
   name!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Post text',
+  })
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_TEXT_TEXT_POST)
   @MaxLength(MAX_LENGTH_TEXT_TEXT_POST)
   @IsString()
   text!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Post announcement',
+  })
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_ANNONCE_TEXT_POST)
   @MaxLength(MAX_LENGTH_ANNONCE_TEXT_POST)

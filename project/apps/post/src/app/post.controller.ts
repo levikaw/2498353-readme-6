@@ -45,7 +45,7 @@ export class PostController {
    * @param {string} postId
    */
   @Delete('/:postId')
-  // @ApiOkResponse({ type: PostAccessEntity })
+  @ApiOkResponse()
   public async deletePost(@Param('postId') postId: string): Promise<void> {
     return await this.postService.deletePost(postId);
   }

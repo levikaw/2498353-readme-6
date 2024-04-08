@@ -2,6 +2,7 @@ import {
   Controller,
   FileTypeValidator,
   Get,
+  HttpStatus,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -10,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileAccessEntity } from '@project/file-access';
 import { FileService } from './file.service';
 import { MAX_FILE_SIZE, MAX_AVATAR_SIZE } from '@project/constants';
@@ -28,6 +29,14 @@ export class FileController {
    * @param {string} userId
    * @returns
    */
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: '{ filesId: string[] }',
+    isArray: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+  })
   @UseInterceptors(FilesInterceptor('files'))
   @Post('upload/:userId')
   public async upload(
@@ -52,6 +61,14 @@ export class FileController {
    * @param {string} userId
    * @returns
    */
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: '{ filesId: string[] }',
+    isArray: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+  })
   @UseInterceptors(FilesInterceptor('files'))
   @Post('avatar/:userId')
   public async avatar(
@@ -75,7 +92,11 @@ export class FileController {
    * @param {string} id
    * @returns {Promise<FileAccessEntity>}
    */
-  @ApiOkResponse({ type: FileAccessEntity })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [FileAccessEntity],
+    isArray: true,
+  })
   @Get('download/:id')
   public async download(@Param('id') id: string): Promise<UserFile> {
     return await this.fileService.download(id);

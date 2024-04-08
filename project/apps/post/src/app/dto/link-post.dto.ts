@@ -5,13 +5,19 @@ import { MAX_LENGTH_TEXT_LINK_POST } from '@project/constants';
 import { CreateBasePostDto } from './base-post.dto';
 
 export class CreateLinkPostDto extends CreateBasePostDto implements LinkPost {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Link description',
+    example: 'To see my project follow link below',
+  })
   @IsOptional()
   @MaxLength(MAX_LENGTH_TEXT_LINK_POST)
   @IsString()
   text?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Link',
+    example: 'https://example.com',
+  })
   @IsNotEmpty()
   @IsUrl()
   link!: string;

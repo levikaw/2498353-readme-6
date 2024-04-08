@@ -20,7 +20,7 @@ export class AuthService {
 
     const newUser = {
       email,
-      avatar,
+      avatar, // TODO: /api/upload -> fileid
       login,
       role: UserRole.User,
       passwordHash: '',

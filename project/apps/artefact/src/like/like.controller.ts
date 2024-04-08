@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, ValidationPipe } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, ValidationPipe } from '@nestjs/common';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LikeAccessEntity, UserLike } from '@project/like-access';
 import { LikeService } from './like.service';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -14,7 +14,11 @@ export class LikeController {
    * @param {string} postId
    * @returns {Promise<LikeAccessEntity[]>}
    */
-  @ApiOkResponse({ type: [LikeAccessEntity] })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [LikeAccessEntity],
+    isArray: true,
+  })
   @Get(':postId')
   public async get(@Param('postId') postId: string): Promise<UserLike[]> {
     return await this.likeService.find(postId);
@@ -25,7 +29,14 @@ export class LikeController {
    * @param {CreateLikeDto} dto
    * @returns {Promise<UserLike>}
    */
-  @ApiOkResponse({ type: LikeAccessEntity })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: LikeAccessEntity,
+    isArray: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+  })
   @Post('create')
   public async create(@Body(new ValidationPipe()) dto: CreateLikeDto): Promise<UserLike> {
     return await this.likeService.create(dto);
@@ -36,6 +47,9 @@ export class LikeController {
    * @param {string} postId
    * @param {string} userId
    */
+  @ApiResponse({
+    status: HttpStatus.OK,
+  })
   // TODO: сделать получение id текущего авторизованного пользователя
   @Delete('delete/:postId/:userId')
   public async delete(@Param('postId') postId: string, @Param('userId') userId: string): Promise<void> {
