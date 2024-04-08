@@ -1,5 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserAccessEntity } from '@project/user-access';
 import { AuthUser } from '@project/user-access';
 import { AuthService } from './auth.service';
@@ -12,7 +12,14 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   //TODO: @useGuards()
-  @ApiOkResponse({ type: UserAccessEntity })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: UserAccessEntity,
+    isArray: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+  })
   @ApiBody({
     description: 'Создание пользователя',
     required: true,
@@ -24,7 +31,14 @@ export class AuthController {
     return newUser.toObject();
   }
 
-  @ApiOkResponse({ type: '{ token: string }' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: '{ token: string }',
+    isArray: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+  })
   @ApiBody({
     description: 'Аутентификация пользователя',
     required: true,

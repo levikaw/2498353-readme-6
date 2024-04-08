@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, ValidationPipe } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, ValidationPipe } from '@nestjs/common';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SubscriptionAccessEntity, Subscription } from '@project/subscription-access';
 import { SubscriptionService } from './subscription.service';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
@@ -14,7 +14,11 @@ export class SubscriptionController {
    * @param {string} userId
    * @returns {Promise<SubscriptionAccessEntity[]>}
    */
-  @ApiOkResponse({ type: [SubscriptionAccessEntity] })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [SubscriptionAccessEntity],
+    isArray: true,
+  })
   @Get(':userId')
   public async get(@Param('userId') userId: string): Promise<Subscription[]> {
     return await this.subscriptionService.find(userId);
@@ -25,7 +29,14 @@ export class SubscriptionController {
    * @param {CreateSubscriptionDto} dto
    * @returns {Promise<Subscription>}
    */
-  @ApiOkResponse({ type: SubscriptionAccessEntity })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: SubscriptionAccessEntity,
+    isArray: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+  })
   @Post('create')
   public async create(@Body(new ValidationPipe()) dto: CreateSubscriptionDto): Promise<Subscription> {
     return await this.subscriptionService.create(dto);
@@ -36,6 +47,9 @@ export class SubscriptionController {
    * @param {string} followUserId
    * @param {string} userId
    */
+  @ApiResponse({
+    status: HttpStatus.OK,
+  })
   // TODO: сделать получение id текущего авторизованного пользователя
   @Delete('delete/:followUserId/:userId')
   public async delete(@Param('followUserId') followUserId: string, @Param('userId') userId: string): Promise<void> {

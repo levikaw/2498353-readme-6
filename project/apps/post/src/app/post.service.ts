@@ -9,10 +9,10 @@ export class PostService {
    * Создание поста
    * @param {CommonPost} dto
    * @param {string} userId
-   * @returns {Promise<CommonPost>}
+   * @returns {Promise<PostAccessEntity>}
    */
-  public async createPost(dto: CommonPost, userId: string): Promise<CommonPost> {
-    return (await this.postAccessRepository.save(new PostAccessEntity({ ...dto, userId }))).toObject();
+  public async createPost(dto: CommonPost, userId: string): Promise<PostAccessEntity> {
+    return await this.postAccessRepository.save(new PostAccessEntity({ ...dto, userId }));
   }
 
   /**
@@ -52,8 +52,8 @@ export class PostService {
     delete existsPost.createdAt;
     delete existsPost.id;
     existsPost.userId = userId;
-    // TODO: хватит ли идентификатора репоста или нужен еще и boolean признак
-    existsPost.reposted = postId;
+    existsPost.repostedFrom = postId;
+    existsPost.reposted = true;
 
     return (await this.postAccessRepository.save(new PostAccessEntity(existsPost))).toObject();
   }

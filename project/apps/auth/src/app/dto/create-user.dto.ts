@@ -10,19 +10,27 @@ import {
 } from '@project/constants';
 
 export class CreateUserDto {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'User email',
+    example: 'user@example.mail',
+  })
   @IsNotEmpty()
   @IsEmail()
   public email!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'User login',
+    example: 'user_login',
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(MIN_LENGTH_LOGIN)
   @MaxLength(MAX_LENGTH_LOGIN)
   public login!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Avatar',
+  })
   @IsOptional()
   public avatar?: Express.Multer.File;
 
