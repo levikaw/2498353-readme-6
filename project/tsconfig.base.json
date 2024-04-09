@@ -14,7 +14,17 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@project/comment-access": ["libs/comment-access/src/index.ts"],
+      "@project/constants": ["libs/constants/src/index.ts"],
+      "@project/core": ["libs/core/src/index.ts"],
+      "@project/data-access": ["libs/data-access/src/index.ts"],
+      "@project/file-access": ["libs/file-access/src/index.ts"],
+      "@project/like-access": ["libs/like-access/src/index.ts"],
+      "@project/post-access": ["libs/post-access/src/index.ts"],
+      "@project/subscription-access": ["libs/subscription-access/src/index.ts"],
+      "@project/user-access": ["libs/user-access/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
