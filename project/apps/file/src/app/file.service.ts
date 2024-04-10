@@ -14,7 +14,7 @@ export class FileService {
   public async upload(files: Express.Multer.File[], userId: string): Promise<string[]> {
     const uploadedFiles: string[] = [];
     for (const file of files) {
-      const fileEntity = new FileAccessEntity({ name: file.originalname, content: file.buffer.toString(), userId });
+      const fileEntity = new FileAccessEntity({ name: file.originalname, content: file.buffer.toString('base64'), userId });
       const processedFile = await this.fileAccessRepository.save(fileEntity);
       uploadedFiles.push(processedFile.id);
     }
@@ -27,7 +27,7 @@ export class FileService {
    * @param {string} id
    * @returns {Promise<FileAccessEntity>}
    */
-  public async download(id: string): Promise<UserFile> {
+  public async download(id: string): Promise<Buffer> {
     const file = await this.fileAccessRepository.findById(id);
 
     if (!file) {
@@ -35,6 +35,6 @@ export class FileService {
       throw new Error('File does not exists');
     }
 
-    return file.toObject();
+    return Buffer.from(file.content);
   }
 }

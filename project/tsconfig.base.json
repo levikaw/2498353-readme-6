@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@project/comment-access": ["libs/comment-access/src/index.ts"],
+      "@project/configuration": ["libs/configuration/src/index.ts"],
       "@project/constants": ["libs/constants/src/index.ts"],
       "@project/core": ["libs/core/src/index.ts"],
       "@project/data-access": ["libs/data-access/src/index.ts"],

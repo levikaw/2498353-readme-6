@@ -90,15 +90,15 @@ export class FileController {
   /**
    * Получение файла по идентификатору
    * @param {string} id
-   * @returns {Promise<FileAccessEntity>}
+   * @returns {Promise<Buffer>}
    */
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [FileAccessEntity],
-    isArray: true,
+    type: Buffer,
+    isArray: false,
   })
   @Get('download/:id')
-  public async download(@Param('id') id: string): Promise<UserFile> {
+  public async download(@Param('id') id: string): Promise<Buffer> {
     return await this.fileService.download(id);
   }
 }
