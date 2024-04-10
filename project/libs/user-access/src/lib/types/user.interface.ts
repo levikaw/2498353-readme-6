@@ -1,8 +1,8 @@
 import { UserRole } from './user-role.enum';
 import 'multer';
-import { BaseInterface } from '@project/core';
+import { BaseEntityInterface } from '@project/core';
 
-export interface User extends BaseInterface {
+export interface User extends BaseEntityInterface {
   email: string;
   login: string;
   avatar?: Express.Multer.File | null;

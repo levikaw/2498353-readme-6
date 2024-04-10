@@ -1,8 +1,8 @@
-import { BaseInterface } from '@project/core';
+import { BaseEntityInterface } from '@project/core';
 import { PostStatus } from './post-status.enum';
 import { PostType } from './post-type.enum';
 
-export interface UserPost extends BaseInterface {
+export interface UserPost extends BaseEntityInterface {
   type?: PostType;
   userId?: string;
   tags?: string[];

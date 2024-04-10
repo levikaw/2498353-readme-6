@@ -1,6 +1,6 @@
-import { BaseInterface } from './base.interface';
+import { BaseEntityInterface } from './base-entity.interface';
 
-export abstract class BaseEntity implements BaseInterface {
+export abstract class BaseEntity implements BaseEntityInterface {
   private _id: string;
 
   private _updatedAt: Date;
