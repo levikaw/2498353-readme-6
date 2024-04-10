@@ -6,6 +6,7 @@
     "file": "npx nx run file:serve",
     "auth": "npx nx run auth:serve",
     "post": "npx nx run post:serve",
+    "user": "npx nx run user:serve",
     "artefact": "npx nx run artefact:serve"
   },
   "private": true,
