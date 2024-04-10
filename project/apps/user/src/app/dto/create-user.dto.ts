@@ -1,27 +1,16 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import 'multer';
-import {
-  FAIL_PASSWORD_VALIDATION,
-  MAX_LENGTH_LOGIN,
-  MAX_LENGTH_PASSWORD,
-  MIN_LENGTH_LOGIN,
-  MIN_LENGTH_PASSWORD,
-} from '@project/constants';
+import { EMAIL_API, FAIL_PASSWORD_VALIDATION, MAX_LENGTH_PASSWORD, MIN_LENGTH_PASSWORD } from '@project/constants';
+import { LOGIN_API, MAX_LENGTH_LOGIN, MIN_LENGTH_LOGIN } from '../constants';
 
 export class CreateUserDto {
-  @ApiProperty({
-    description: 'User email',
-    example: 'user@example.mail',
-  })
+  @ApiProperty(EMAIL_API)
   @IsNotEmpty()
   @IsEmail()
   public email!: string;
 
-  @ApiProperty({
-    description: 'User login',
-    example: 'user_login',
-  })
+  @ApiProperty(LOGIN_API)
   @IsNotEmpty()
   @IsString()
   @MinLength(MIN_LENGTH_LOGIN)
@@ -39,13 +28,6 @@ export class CreateUserDto {
   @IsString()
   @MinLength(MIN_LENGTH_PASSWORD)
   @MaxLength(MAX_LENGTH_PASSWORD)
-  @IsStrongPassword(
-    {
-      minLength: MIN_LENGTH_PASSWORD,
-    },
-    {
-      message: FAIL_PASSWORD_VALIDATION,
-    },
-  )
+  @IsStrongPassword({ minLength: MIN_LENGTH_PASSWORD }, { message: FAIL_PASSWORD_VALIDATION })
   public password!: string;
 }

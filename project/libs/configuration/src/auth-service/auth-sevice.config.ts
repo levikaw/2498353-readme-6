@@ -9,7 +9,8 @@ import {
   Min,
   validateOrReject,
 } from 'class-validator';
-import { MIN_PORT, MAX_PORT, DEFAULT_AUTH_SERVICE_PORT, Environment, DEFAULT_EXPIRES_TOKEN_IN } from '@project/constants';
+import { MIN_PORT, MAX_PORT, Environment } from '../constants';
+import { DEFAULT_AUTH_SERVICE_PORT, DEFAULT_EXPIRES_TOKEN_IN } from './constants';
 
 export class AuthServiceConfiguration {
   @IsNumber()

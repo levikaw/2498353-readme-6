@@ -1,30 +1,31 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min, validateOrReject } from 'class-validator';
-import { MongoDBValidationMessage, MIN_PORT, MAX_PORT, DEFAULT_MONGO_PORT } from '@project/constants';
+import { MIN_PORT, MAX_PORT } from '../../constants';
+import { MONGO_DB_VaLIDATION_MESSAGE, DEFAULT_MONGO_PORT } from './constants';
 
 export class MongoConfiguration {
-  @IsString({ message: MongoDBValidationMessage.DBNameRequired })
+  @IsString({ message: MONGO_DB_VaLIDATION_MESSAGE.NameRequired })
   @IsNotEmpty()
   public name: string;
 
-  @IsString({ message: MongoDBValidationMessage.DBHostRequired })
+  @IsString({ message: MONGO_DB_VaLIDATION_MESSAGE.HostRequired })
   @IsNotEmpty()
   public host: string;
 
-  @IsNumber({}, { message: MongoDBValidationMessage.DBPortRequired })
+  @IsNumber({}, { message: MONGO_DB_VaLIDATION_MESSAGE.PortRequired })
   @Min(MIN_PORT)
   @Max(MAX_PORT)
   @IsOptional()
   public port: number = DEFAULT_MONGO_PORT;
 
-  @IsString({ message: MongoDBValidationMessage.DBUserRequired })
+  @IsString({ message: MONGO_DB_VaLIDATION_MESSAGE.UserRequired })
   @IsNotEmpty()
   public user: string;
 
-  @IsString({ message: MongoDBValidationMessage.DBPasswordRequired })
+  @IsString({ message: MONGO_DB_VaLIDATION_MESSAGE.PasswordRequired })
   @IsNotEmpty()
   public password: string;
 
-  @IsString({ message: MongoDBValidationMessage.DBBaseAuthRequired })
+  @IsString({ message: MONGO_DB_VaLIDATION_MESSAGE.BaseAuthRequired })
   @IsNotEmpty()
   public authBase: string;
 

@@ -1,5 +1,6 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min, validateOrReject } from 'class-validator';
-import { MIN_PORT, MAX_PORT, DEFAULT_FILE_SERVICE_PORT, Environment } from '@project/constants';
+import { MIN_PORT, MAX_PORT, Environment } from '../constants';
+import { DEFAULT_FILE_SERVICE_PORT } from './constants';
 
 export class FileServiceConfiguration {
   @IsNumber()

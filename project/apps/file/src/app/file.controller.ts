@@ -13,7 +13,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileService } from './file.service';
-import { MAX_FILE_SIZE, MAX_AVATAR_SIZE } from '@project/constants';
+import { MAX_FILE_SIZE, MAX_AVATAR_SIZE, ALLOWED_FILE_TYPES } from './constants';
 import 'multer';
 
 @ApiTags('file')
@@ -36,7 +36,7 @@ export class FileController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: MAX_FILE_SIZE }),
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new FileTypeValidator({ fileType: ALLOWED_FILE_TYPES }),
         ],
       }),
     )
@@ -62,7 +62,7 @@ export class FileController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: MAX_AVATAR_SIZE }),
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new FileTypeValidator({ fileType: ALLOWED_FILE_TYPES }),
         ],
       }),
     )

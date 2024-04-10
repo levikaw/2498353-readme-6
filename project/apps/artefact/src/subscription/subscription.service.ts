@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SubscriptionAccessEntity, SubscriptionAccessRepository, Subscription } from '@project/subscription-access';
+import { SUBSCRIPTION_EXCEPTION_MESSAGES } from './constants';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class SubscriptionService {
   public async deleteSubscription(followedUserId: string, userId: string): Promise<any> {
     const subscription = await this.subscriptionAccessRepository.findByUserIdFollowedUserId(followedUserId, userId);
     if (!subscription) {
-      throw new Error('Subscription not found!');
+      throw new Error(SUBSCRIPTION_EXCEPTION_MESSAGES.NotFound);
     }
 
     await this.subscriptionAccessRepository.deleteById(subscription.toObject().id);

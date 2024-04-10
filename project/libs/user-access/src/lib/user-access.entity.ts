@@ -2,7 +2,7 @@ import { compare, genSalt, hash } from 'bcrypt';
 import { BaseEntity } from '@project/core';
 import { StorableEntity } from '@project/core';
 import 'multer';
-import { SALT_ROUNDS } from '@project/constants';
+import { SALT_ROUNDS } from './constants';
 import { AuthUser } from './types/auth-user.interface';
 import { UserRole } from './types/user-role.enum';
 

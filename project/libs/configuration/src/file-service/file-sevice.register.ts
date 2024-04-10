@@ -1,5 +1,5 @@
 import { ConfigType, registerAs } from '@nestjs/config';
-import { DEFAULT_FILE_SERVICE_PORT, FILES_ALIAS } from '@project/constants';
+import { DEFAULT_FILE_SERVICE_PORT, FILES_ALIAS } from './constants';
 import { plainToClass } from 'class-transformer';
 import { FileServiceConfiguration } from './file-sevice.config';
 

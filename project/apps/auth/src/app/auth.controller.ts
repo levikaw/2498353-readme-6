@@ -1,7 +1,5 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, ValidationPipe } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserAccessEntity } from '@project/user-access';
-import { AuthUser } from '@project/user-access';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 
@@ -19,12 +17,11 @@ export class AuthController {
     status: HttpStatus.CONFLICT,
   })
   @ApiBody({
-    description: 'auth user',
     required: true,
     isArray: false,
   })
   @Post('login')
-  public async login(@Body() dto: LoginUserDto): Promise<{ token: string }> {
+  public async login(@Body(new ValidationPipe()) dto: LoginUserDto): Promise<{ token: string }> {
     const token = await this.authService.authUser(dto);
     return token;
   }

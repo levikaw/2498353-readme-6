@@ -1,18 +1,16 @@
 import { IsNotEmpty, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { USERID_API } from '@project/constants';
 
 export class CreateSubscriptionDto {
-  @ApiProperty({
-    description: 'User identificator (who create subscription)',
-    example: 'da783896-dc38-48ff-9b1a-a01ec545c33a',
-  })
+  @ApiProperty(USERID_API)
   @IsNotEmpty()
   @IsUUID()
   userId!: string;
 
   @ApiProperty({
-    description: 'User identificator (who is object subscription)',
-    example: 'da783896-dc38-48ff-9b1a-a01ec545c33a',
+    description: `${USERID_API.description} (who is object subscription)`,
+    example: USERID_API.example,
   })
   @IsNotEmpty()
   @IsUUID()

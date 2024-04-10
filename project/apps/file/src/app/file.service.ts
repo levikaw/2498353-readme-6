@@ -1,5 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { FileAccessEntity, FileAccessRepository } from '@project/file-access';
+import { FILES_MESSAGES_EXCEPTION } from './constants';
 
 @Injectable()
 export class FileService {
@@ -19,8 +20,7 @@ export class FileService {
     const file = await this.fileAccessRepository.findById(id);
 
     if (!file) {
-      Logger.error('File with id does not exists:', id);
-      throw new Error('File does not exists');
+      throw new Error(FILES_MESSAGES_EXCEPTION.NotFound);
     }
 
     return Buffer.from(file.content);

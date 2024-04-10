@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LikeAccessEntity, LikeAccessRepository, UserLike } from '@project/like-access';
+import { LIKE_EXCEPTION_MESSAGES } from './constants';
 import { CreateLikeDto } from './dto/create-like.dto';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class LikeService {
   public async deleteLikeByPostIdUserId(postId: string, userId: string): Promise<any> {
     const like = await this.likeAccessRepository.findByPostIdUserId(postId, userId);
     if (!like) {
-      throw new Error('Like not found!');
+      throw new Error(LIKE_EXCEPTION_MESSAGES.NotFound);
     }
 
     await this.likeAccessRepository.deleteById(like.toObject().id);
