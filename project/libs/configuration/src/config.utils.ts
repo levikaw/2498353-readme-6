@@ -1,8 +1,9 @@
 import { MongooseModuleAsyncOptions } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
-import { MONGO_ALIAS } from '@project/constants';
+import { AUTH_ALIAS, MONGO_ALIAS } from '@project/constants';
+import { JwtModuleAsyncOptions } from '@nestjs/jwt';
 
-export function getMongoConnectionString({ username, password, host, port, databaseName, authDatabase }): string {
+function getMongoConnectionString({ username, password, host, port, databaseName, authDatabase }): string {
   return `mongodb://${username}:${password}@${host}:${port}/${databaseName}?authSource=${authDatabase}`;
 }
 
@@ -18,6 +19,19 @@ export function getMongooseOptions(): MongooseModuleAsyncOptions {
           authDatabase: config.get<string>(`${MONGO_ALIAS}.authBase`),
           databaseName: config.get<string>(`${MONGO_ALIAS}.name`),
         }),
+      };
+    },
+    inject: [ConfigService],
+  };
+}
+
+export function getJwtOptions(): JwtModuleAsyncOptions {
+  return {
+    useFactory: async (config: ConfigService) => {
+      return {
+        global: true,
+        secret: config.get<string>(`${AUTH_ALIAS}.jwtSecret`),
+        signOptions: { expiresIn: `${config.get<string>(`${AUTH_ALIAS}.expiresTokenIn`)}s` },
       };
     },
     inject: [ConfigService],

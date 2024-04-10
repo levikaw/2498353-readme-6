@@ -1,12 +1,12 @@
 // Auth
-export const jwtConstants = {
-  secret: 'DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.',
-};
 export const SALT_ROUNDS: number = 10;
 export const MIN_LENGTH_LOGIN: number = 3;
 export const MAX_LENGTH_LOGIN: number = 50;
 export const MAX_LENGTH_PASSWORD: number = 12;
 export const MIN_LENGTH_PASSWORD: number = 6;
+export const DEFAULT_EXPIRES_TOKEN_IN: number = 60;
+export const DEFAULT_AUTH_SERVICE_PORT: number = 3000;
+export const AUTH_ALIAS: string = 'auth';
 
 // Messages
 export const AUTH_USER_EXISTS: string = 'User with this email exists';
