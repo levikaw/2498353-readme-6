@@ -1,6 +1,6 @@
-import { BaseInterface } from '@project/core';
+import { BaseEntityInterface } from '@project/core';
 
-export interface UserLike extends BaseInterface {
+export interface UserLike extends BaseEntityInterface {
   postId: string;
   userId: string;
 }
