@@ -3,33 +3,12 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserAccessEntity } from '@project/user-access';
 import { AuthUser } from '@project/user-access';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  //TODO: @useGuards()
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: UserAccessEntity,
-    isArray: false,
-  })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
-  })
-  @ApiBody({
-    description: 'Create user',
-    required: true,
-    isArray: false,
-  })
-  @Post('register')
-  public async createUser(@Body() dto: CreateUserDto): Promise<AuthUser> {
-    const newUser = await this.authService.register(dto);
-    return newUser.toObject();
-  }
 
   @ApiResponse({
     status: HttpStatus.CREATED,
