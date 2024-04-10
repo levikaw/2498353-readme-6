@@ -36,3 +36,28 @@ export const MAX_LENGTH_AUTHOR_QUOTE_POST: number = 50;
 export const MAX_LENGTH_TEXT_LINK_POST: number = 300;
 export const MIN_LENGTH_ANNONCE_TEXT_POST: number = 50;
 export const MAX_LENGTH_ANNONCE_TEXT_POST: number = 255;
+
+// db
+export enum MongoDBValidationMessage {
+  DBHostRequired = 'MongoDB host is required',
+  DBNameRequired = 'Database name is required',
+  DBPortRequired = 'MongoDB port is required',
+  DBUserRequired = 'MongoDB user is required',
+  DBPasswordRequired = 'MongoDB password is required',
+  DBBaseAuthRequired = 'MongoDB authentication base is required',
+}
+export const DEFAULT_MONGO_PORT = 27017;
+export const MONGO_ALIAS: string = 'mongodb';
+
+// ports
+export const MIN_PORT: number = 0;
+export const MAX_PORT: number = 65535;
+export const DEFAULT_FILE_SERVICE_PORT: number = 3000;
+
+// file-access-service
+export const FILES_ALIAS: string = 'file-access';
+export enum Environment {
+  Dev = 'development',
+  Stage = 'stage',
+  Prod = 'production',
+}

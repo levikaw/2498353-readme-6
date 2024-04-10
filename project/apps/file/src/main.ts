@@ -4,15 +4,19 @@
  */
 
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { FILES_ALIAS } from '@project/constants';
 import { FileModule } from './app/file.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(FileModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  const configService = app.get(ConfigService);
+  const port = configService.get(`${FILES_ALIAS}.port`);
+  // const port = process.env.PORT || 3000;
 
   const config = new DocumentBuilder()
     .setTitle('file api')
