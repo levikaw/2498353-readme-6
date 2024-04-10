@@ -9,26 +9,16 @@ import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  /**
-   * Получение подписок по идентификатору пользователя
-   * @param {string} userId
-   * @returns {Promise<SubscriptionAccessEntity[]>}
-   */
   @ApiResponse({
     status: HttpStatus.OK,
     type: [SubscriptionAccessEntity],
     isArray: true,
   })
   @Get(':userId')
-  public async get(@Param('userId') userId: string): Promise<Subscription[]> {
-    return await this.subscriptionService.find(userId);
+  public async getSubscriptionByUserId(@Param('userId') userId: string): Promise<Subscription[]> {
+    return await this.subscriptionService.findSubscriptionByUserId(userId);
   }
 
-  /**
-   * Создание подписки
-   * @param {CreateSubscriptionDto} dto
-   * @returns {Promise<Subscription>}
-   */
   @ApiResponse({
     status: HttpStatus.CREATED,
     type: SubscriptionAccessEntity,
@@ -38,21 +28,19 @@ export class SubscriptionController {
     status: HttpStatus.CONFLICT,
   })
   @Post('create')
-  public async create(@Body(new ValidationPipe()) dto: CreateSubscriptionDto): Promise<Subscription> {
-    return await this.subscriptionService.create(dto);
+  public async createSubscription(@Body(new ValidationPipe()) dto: CreateSubscriptionDto): Promise<Subscription> {
+    return await this.subscriptionService.createSubscription(dto);
   }
 
-  /**
-   * Удаление подписки по идентификатору пользователя
-   * @param {string} followUserId
-   * @param {string} userId
-   */
   @ApiResponse({
     status: HttpStatus.OK,
   })
   // TODO: сделать получение id текущего авторизованного пользователя
-  @Delete('delete/:followUserId/:userId')
-  public async delete(@Param('followUserId') followUserId: string, @Param('userId') userId: string): Promise<void> {
-    await this.subscriptionService.delete(followUserId, userId);
+  @Delete('delete/:followedUserId/:userId')
+  public async deleteSubscription(
+    @Param('followedUserId') followedUserId: string,
+    @Param('userId') userId: string,
+  ): Promise<void> {
+    await this.subscriptionService.deleteSubscription(followedUserId, userId);
   }
 }

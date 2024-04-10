@@ -7,10 +7,7 @@ export class SubscriptionAccessEntity extends BaseEntity implements StorableEnti
     this.populate(subscription);
   }
 
-  /** Идентификатор пользователя, на которого создали подписку */
-  public followUserId: string;
-
-  /** Идентификатор пользователя, который создал подписку */
+  public followedUserId: string;
   public userId: string;
 
   public populate(subscription?: Subscription): void {
@@ -23,21 +20,17 @@ export class SubscriptionAccessEntity extends BaseEntity implements StorableEnti
     this.updatedAt = subscription.updatedAt;
     this.deletedAt = subscription.deletedAt;
 
-    this.followUserId = subscription.followUserId;
+    this.followedUserId = subscription.followedUserId;
     this.userId = subscription.userId;
   }
 
-  /**
-   * Преобразование из SubscriptionAccessEntity в объект
-   * @returns {Subscription}
-   */
   public toObject(): Subscription {
     return {
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
-      followUserId: this.followUserId,
+      followedUserId: this.followedUserId,
       userId: this.userId,
     };
   }

@@ -6,30 +6,15 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 export class CommentService {
   constructor(private readonly commentAccessRepository: CommentAccessRepository) {}
 
-  /**
-   * Получение комментариев по идентификатору публикации
-   * @param {string} postId
-   * @returns {Promise<Commentary[]>}
-   */
-  public async find(postId: string): Promise<Commentary[]> {
-    return (await this.commentAccessRepository.findByPostId(postId)).map((c) => c.toObject());
+  public async findCommentByPostId(postId: string): Promise<Commentary[]> {
+    return (await this.commentAccessRepository.findCommentByPostId(postId)).map((c) => c.toObject());
   }
 
-  /**
-   * Создание комментария для публикации
-   * @param {CreateCommentDto} dto
-   * @param {string} postId
-   * @returns {Promise<any>}
-   */
-  public async create(dto: CreateCommentDto, postId: string): Promise<Commentary> {
-    return (await this.commentAccessRepository.save(new CommentAccessEntity({ ...dto, postId }))).toObject();
+  public async createCommentByPostId(comment: CreateCommentDto, postId: string): Promise<Commentary> {
+    return (await this.commentAccessRepository.save(new CommentAccessEntity({ ...comment, postId }))).toObject();
   }
 
-  /**
-   * Удаление комментария по идентификатору
-   * @param {string} id
-   */
-  public async delete(id: string): Promise<any> {
+  public async deleteCommentById(id: string): Promise<any> {
     await this.commentAccessRepository.deleteById(id);
   }
 }

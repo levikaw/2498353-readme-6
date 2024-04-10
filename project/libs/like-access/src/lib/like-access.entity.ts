@@ -7,10 +7,7 @@ export class LikeAccessEntity extends BaseEntity implements StorableEntity<UserL
     this.populate(like);
   }
 
-  /** Идентификатор публиции, под которой оставили лайк */
   public postId: string;
-
-  /** Идентификатор автора лайка */
   public userId: string;
 
   public populate(like?: UserLike): void {
@@ -27,10 +24,6 @@ export class LikeAccessEntity extends BaseEntity implements StorableEntity<UserL
     this.userId = like.userId;
   }
 
-  /**
-   * Преобразование из LikeAccessEntity в объект
-   * @returns {UserLike}
-   */
   public toObject(): UserLike {
     return {
       id: this.id,

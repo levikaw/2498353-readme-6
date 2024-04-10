@@ -16,13 +16,9 @@ export abstract class BaseMongoRepository<
     }
 
     const plainObject = document.toObject({ versionKey: false }) as ReturnType<T['toObject']>;
-    return this.entityFactory.create(plainObject);
+    return this.entityFactory.createEntity(plainObject);
   }
 
-  /**
-   * Получение всех сущностей как список объектов
-   * @returns {Promise<ReturnType<T['toObject']>[]>}
-   */
   public async findAll(): Promise<ReturnType<T['toObject']>[]> {
     return await this.model.find(); //.map((d) => d.toObject());
   }

@@ -1,4 +1,3 @@
-/** Тип публикации */
 export enum PostType {
   Video = 'video',
   Text = 'text',

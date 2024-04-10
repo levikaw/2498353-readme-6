@@ -41,19 +41,19 @@ export class CreateBasePostDto implements UserPost {
   status!: PostStatus;
 
   @ApiProperty({
-    description: 'Post id that was reposted ',
+    description: 'Post id that was isReposted ',
     example: 'da783896-dc38-48ff-9b1a-a01ec545c33a',
   })
   @IsOptional()
   @IsUUID()
-  repostedFrom?: string;
+  repostedFromPostId?: string;
 
   @ApiProperty({
-    description: 'Is current post reposted?',
+    description: 'Is current post isReposted?',
     example: 'true',
   })
   @IsOptional()
   @IsBoolean()
-  @ValidateIf((post) => isNotEmpty(post.repostedFrom))
-  reposted?: boolean;
+  @ValidateIf((post) => isNotEmpty(post.repostedFromPostId))
+  isReposted?: boolean;
 }

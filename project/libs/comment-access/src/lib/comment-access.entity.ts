@@ -7,13 +7,10 @@ export class CommentAccessEntity extends BaseEntity implements StorableEntity<Co
     this.populate(comment);
   }
 
-  /** Текст комментария */
   public text: string;
 
-  /** Идентификатор публиции, под которой оставили комментарий */
   public postId: string;
 
-  /** Идентификатор автора комментария */
   public userId: string;
 
   public populate(comment?: Commentary): void {
@@ -31,10 +28,6 @@ export class CommentAccessEntity extends BaseEntity implements StorableEntity<Co
     this.userId = comment.userId;
   }
 
-  /**
-   * Преобразование из CommentAccessEntity в объект
-   * @returns {Commentary}
-   */
   public toObject(): Commentary {
     return {
       id: this.id,

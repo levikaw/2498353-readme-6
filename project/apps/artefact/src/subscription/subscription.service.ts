@@ -6,34 +6,20 @@ import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 export class SubscriptionService {
   constructor(private readonly subscriptionAccessRepository: SubscriptionAccessRepository) {}
 
-  /**
-   * Получение подписок по идентификатору пользователя
-   * @param {string} userId
-   * @returns {Promise<Subscription[]>}
-   */
-  public async find(userId: string): Promise<Subscription[]> {
+  public async findSubscriptionByUserId(userId: string): Promise<Subscription[]> {
     return (await this.subscriptionAccessRepository.findByUserId(userId)).map((c) => c.toObject());
   }
 
-  /**
-   * Создание подписки
-   * @param {CreateSubscriptionDto} dto
-   * @returns {Promise<Subscription>}
-   */
-  public async create(dto: CreateSubscriptionDto): Promise<Subscription> {
-    // TODO: Проверка при создании лайка (может быть только один лайк пользователя для публикации)
-    return (await this.subscriptionAccessRepository.save(new SubscriptionAccessEntity(dto))).toObject();
+  public async createSubscription(subscription: CreateSubscriptionDto): Promise<Subscription> {
+    // TODO: Проверка при создании подписки (может быть только один лайк пользователя для публикации)
+    return (await this.subscriptionAccessRepository.save(new SubscriptionAccessEntity(subscription))).toObject();
   }
 
-  /**
-   * Удаление подписки по идентификатору пользователя
-   * @param {string} followUserId
-   * @param {string} userId
-   */
-  public async delete(followUserId: string, userId: string): Promise<any> {
-    const subscription = await this.subscriptionAccessRepository.findByFollowUserIdUserId(followUserId, userId);
+  // TODO: подумать над форматом
+  public async deleteSubscription(followedUserId: string, userId: string): Promise<any> {
+    const subscription = await this.subscriptionAccessRepository.findByUserIdFollowedUserId(followedUserId, userId);
     if (!subscription) {
-      throw new Error('Подписка не найдена!');
+      throw new Error('Subscription not found!');
     }
 
     await this.subscriptionAccessRepository.deleteById(subscription.toObject().id);

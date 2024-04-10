@@ -11,58 +11,33 @@ export class PostAccessRepository extends BaseMemoryRepository<PostAccessEntity>
     super(entityFactory);
   }
 
-  /**
-   * Поиск публикаций по названию
-   * @param {string} name
-   * @returns {Promise<PostAccessEntity[]>}
-   */
   public async findByName(name: string): Promise<PostAccessEntity[]> {
-    const entities = Array.from(this.entities.values());
-    const posts = entities.filter((entity) => new RegExp(`.*${name}.*`).test(entity.name) && !entity.deletedAt);
-    return posts.map((c) => this.entityFactory.create(c));
+    return Array.from(this.entities.values())
+      .filter((entity) => new RegExp(`.*${name}.*`).test(entity.name) && !entity.deletedAt)
+      .map((c) => this.entityFactory.createEntity(c));
   }
 
-  /**
-   * Поиск публикаций по типу
-   * @param {PostType} type
-   * @returns {Promise<PostAccessEntity[]>}
-   */
   public async findByType(type: PostType): Promise<PostAccessEntity[]> {
-    const entities = Array.from(this.entities.values());
-    const posts = entities.filter((entity) => entity.type === type && !entity.deletedAt);
-    return posts.map((c) => this.entityFactory.create(c));
+    return Array.from(this.entities.values())
+      .filter((entity) => entity.type === type && !entity.deletedAt)
+      .map((c) => this.entityFactory.createEntity(c));
   }
 
-  /**
-   * Поиск публикаций по статусу
-   * @param {PostStatus} status
-   * @returns {Promise<PostAccessEntity[]>}
-   */
   public async findByStatus(status: PostStatus): Promise<PostAccessEntity[]> {
-    const entities = Array.from(this.entities.values());
-    const posts = entities.filter((entity) => entity.status === status && !entity.deletedAt);
-    return posts.map((c) => this.entityFactory.create(c));
+    return Array.from(this.entities.values())
+      .filter((entity) => entity.status === status && !entity.deletedAt)
+      .map((c) => this.entityFactory.createEntity(c));
   }
 
-  /**
-   * Поиск публикаций по тегам
-   * @param {string[]} tags
-   * @returns {Promise<PostAccessEntity[]>}
-   */
   public async findByTags(tags: string[]): Promise<PostAccessEntity[]> {
-    const entities = Array.from(this.entities.values());
-    const posts = entities.filter((entity) => tags.some((tag) => entity.tags.includes(tag)) && !entity.deletedAt);
-    return posts.map((c) => this.entityFactory.create(c));
+    return Array.from(this.entities.values())
+      .filter((entity) => tags.some((tag) => entity.tags.includes(tag)) && !entity.deletedAt)
+      .map((c) => this.entityFactory.createEntity(c));
   }
 
-  /**
-   * Поиск публикаций по идентификатору пользователя
-   * @param {string} userId
-   * @returns {Promise<PostAccessEntity[]>}
-   */
   public async findByUserId(userId: string): Promise<PostAccessEntity[]> {
-    const entities = Array.from(this.entities.values());
-    const posts = entities.filter((entity) => entity.userId === userId && !entity.deletedAt);
-    return posts.map((c) => this.entityFactory.create(c));
+    return Array.from(this.entities.values())
+      .filter((entity) => entity.userId === userId && !entity.deletedAt)
+      .map((c) => this.entityFactory.createEntity(c));
   }
 }

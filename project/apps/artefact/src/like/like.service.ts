@@ -6,34 +6,19 @@ import { CreateLikeDto } from './dto/create-like.dto';
 export class LikeService {
   constructor(private readonly likeAccessRepository: LikeAccessRepository) {}
 
-  /**
-   * Получение комментариев по идентификатору публикации
-   * @param {string} postId
-   * @returns {Promise<UserLike[]>}
-   */
-  public async find(postId: string): Promise<UserLike[]> {
+  public async findLikeByPostId(postId: string): Promise<UserLike[]> {
     return (await this.likeAccessRepository.findByPostId(postId)).map((c) => c.toObject());
   }
 
-  /**
-   * Создание комментария для публикации
-   * @param {CreateLikeDto} dto
-   * @returns {Promise<UserLike>}
-   */
-  public async create(dto: CreateLikeDto): Promise<UserLike> {
+  public async createLike(like: CreateLikeDto): Promise<UserLike> {
     // TODO: Проверка при создании лайка (может быть только один лайк пользователя для публикации)
-    return (await this.likeAccessRepository.save(new LikeAccessEntity(dto))).toObject();
+    return (await this.likeAccessRepository.save(new LikeAccessEntity(like))).toObject();
   }
 
-  /**
-   * Удаление комментария по идентификатору публикации и пользователя
-   * @param {string} postId
-   * @param {string} userId
-   */
-  public async delete(postId: string, userId: string): Promise<any> {
+  public async deleteLikeByPostIdUserId(postId: string, userId: string): Promise<any> {
     const like = await this.likeAccessRepository.findByPostIdUserId(postId, userId);
     if (!like) {
-      throw new Error('Оценка публикации не найдена!');
+      throw new Error('Like not found!');
     }
 
     await this.likeAccessRepository.deleteById(like.toObject().id);

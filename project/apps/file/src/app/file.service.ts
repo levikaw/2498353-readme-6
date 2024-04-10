@@ -1,16 +1,10 @@
-import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { UserFile } from '@project/file-access';
+import { Injectable, Logger } from '@nestjs/common';
 import { FileAccessEntity, FileAccessRepository } from '@project/file-access';
 
 @Injectable()
 export class FileService {
   constructor(private readonly fileAccessRepository: FileAccessRepository) {}
 
-  /**
-   * Загрузка файлов
-   * @param {Express.Multer.File[]} files
-   * @returns {Promise<FileAccessEntity>}
-   */
   public async upload(files: Express.Multer.File[], userId: string): Promise<string[]> {
     const uploadedFiles: string[] = [];
     for (const file of files) {
@@ -22,11 +16,6 @@ export class FileService {
     return uploadedFiles;
   }
 
-  /**
-   * Получение файла по идентификатору
-   * @param {string} id
-   * @returns {Promise<FileAccessEntity>}
-   */
   public async download(id: string): Promise<Buffer> {
     const file = await this.fileAccessRepository.findById(id);
 

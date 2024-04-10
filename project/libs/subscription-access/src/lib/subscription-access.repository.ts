@@ -8,27 +8,16 @@ export class SubscriptionAccessRepository extends BaseMemoryRepository<Subscript
   constructor(entityFactory: SubscriptionAccessFactory) {
     super(entityFactory);
   }
-
-  /**
-   * Поиск подписок для пользователя по идентификатору
-   * @param {string} userId
-   * @returns {Promise<SubscriptionAccessEntity[]>}
-   */
   public async findByUserId(userId: string): Promise<SubscriptionAccessEntity[]> {
-    const entities = Array.from(this.entities.values());
-    const likes = entities.filter((entity) => entity.userId === userId && !entity.deletedAt);
-    return likes.map((c) => this.entityFactory.create(c));
+    return Array.from(this.entities.values())
+      .filter((entity) => entity.userId === userId && !entity.deletedAt)
+      .map((c) => this.entityFactory.createEntity(c));
   }
 
-  /**
-   * Поиск подписки
-   * @param {string} followUserId
-   * @param {string} userId
-   * @returns {Promise<LikeAccessEntity>}
-   */
-  public async findByFollowUserIdUserId(followUserId: string, userId: string): Promise<SubscriptionAccessEntity> {
-    const entities = Array.from(this.entities.values());
-    const like = entities.find((entity) => entity.followUserId === followUserId && entity.userId === userId && !entity.deletedAt);
-    return !!like ? this.entityFactory.create(like) : null;
+  public async findByUserIdFollowedUserId(followedUserId: string, userId: string): Promise<SubscriptionAccessEntity> {
+    const like = Array.from(this.entities.values()).find(
+      (entity) => entity.followedUserId === followedUserId && entity.userId === userId && !entity.deletedAt,
+    );
+    return !!like ? this.entityFactory.createEntity(like) : null;
   }
 }
