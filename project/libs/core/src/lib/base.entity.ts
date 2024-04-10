@@ -1,21 +1,12 @@
 import { BaseInterface } from './base.interface';
 
-/** Сущность */
 export abstract class BaseEntity implements BaseInterface {
-  // id: string;
-  // createdAt: Date;
-  // updatedAt: Date;
-  // deletedAt: Date;
-  /** Идентификатор */
   private _id: string;
 
-  /** Дата обновления */
   private _updatedAt: Date;
 
-  /** Дата создания */
   private _createdAt: Date;
 
-  /** Дата удаления */
   private _deletedAt: Date;
 
   public get id(): string {

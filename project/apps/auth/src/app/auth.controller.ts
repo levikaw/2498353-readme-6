@@ -1,5 +1,5 @@
 import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserAccessEntity } from '@project/user-access';
 import { AuthUser } from '@project/user-access';
 import { AuthService } from './auth.service';
@@ -21,12 +21,12 @@ export class AuthController {
     status: HttpStatus.CONFLICT,
   })
   @ApiBody({
-    description: 'Создание пользователя',
+    description: 'Create user',
     required: true,
     isArray: false,
   })
   @Post('register')
-  public async create(@Body() dto: CreateUserDto): Promise<AuthUser> {
+  public async createUser(@Body() dto: CreateUserDto): Promise<AuthUser> {
     const newUser = await this.authService.register(dto);
     return newUser.toObject();
   }
@@ -40,7 +40,7 @@ export class AuthController {
     status: HttpStatus.CONFLICT,
   })
   @ApiBody({
-    description: 'Аутентификация пользователя',
+    description: 'auth user',
     required: true,
     isArray: false,
   })

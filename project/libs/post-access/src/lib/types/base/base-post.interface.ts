@@ -7,6 +7,6 @@ export interface UserPost extends BaseInterface {
   userId?: string;
   tags?: string[];
   status?: PostStatus;
-  repostedFrom?: string;
-  reposted?: boolean;
+  repostedFromPostId?: string;
+  isReposted?: boolean;
 }

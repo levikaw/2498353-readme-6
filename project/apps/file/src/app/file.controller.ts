@@ -12,10 +12,8 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FileAccessEntity } from '@project/file-access';
 import { FileService } from './file.service';
 import { MAX_FILE_SIZE, MAX_AVATAR_SIZE } from '@project/constants';
-import { UserFile } from '@project/file-access';
 import 'multer';
 
 @ApiTags('file')
@@ -23,12 +21,6 @@ import 'multer';
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  /**
-   * Загрузка файлов с ограничением в 1000 кб
-   * @param {Express.Multer.File[]} files
-   * @param {string} userId
-   * @returns
-   */
   @ApiResponse({
     status: HttpStatus.OK,
     type: '{ filesId: string[] }',
@@ -55,12 +47,6 @@ export class FileController {
     return { filesId: newFiles };
   }
 
-  /**
-   * Загрузка аватара с ограничением в 500 кб
-   * @param {Express.Multer.File[]} files
-   * @param {string} userId
-   * @returns
-   */
   @ApiResponse({
     status: HttpStatus.OK,
     type: '{ filesId: string[] }',
@@ -71,7 +57,7 @@ export class FileController {
   })
   @UseInterceptors(FilesInterceptor('files'))
   @Post('avatar/:userId')
-  public async avatar(
+  public async uploadAvatar(
     @UploadedFiles(
       new ParseFilePipe({
         validators: [
@@ -87,11 +73,6 @@ export class FileController {
     return { filesId: newFiles };
   }
 
-  /**
-   * Получение файла по идентификатору
-   * @param {string} id
-   * @returns {Promise<Buffer>}
-   */
   @ApiResponse({
     status: HttpStatus.OK,
     type: Buffer,

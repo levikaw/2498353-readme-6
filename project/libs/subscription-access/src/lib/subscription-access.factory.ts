@@ -5,12 +5,7 @@ import { Subscription } from './types/subscription.interface';
 
 @Injectable()
 export class SubscriptionAccessFactory implements EntityFactory<SubscriptionAccessEntity> {
-  /**
-   * Создание SubscriptionAccessEntity из обекта
-   * @param {Subscription} entityPlainData
-   * @returns {SubscriptionAccessEntity}
-   */
-  public create(entityPlainData: Subscription): SubscriptionAccessEntity {
+  public createEntity(entityPlainData: Subscription): SubscriptionAccessEntity {
     return new SubscriptionAccessEntity(entityPlainData);
   }
 }

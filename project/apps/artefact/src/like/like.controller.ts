@@ -9,26 +9,16 @@ import { CreateLikeDto } from './dto/create-like.dto';
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 
-  /**
-   * Получение лайков по идентификатору публикации
-   * @param {string} postId
-   * @returns {Promise<LikeAccessEntity[]>}
-   */
   @ApiResponse({
     status: HttpStatus.OK,
     type: [LikeAccessEntity],
     isArray: true,
   })
   @Get(':postId')
-  public async get(@Param('postId') postId: string): Promise<UserLike[]> {
-    return await this.likeService.find(postId);
+  public async getLikeByPostId(@Param('postId') postId: string): Promise<UserLike[]> {
+    return await this.likeService.findLikeByPostId(postId);
   }
 
-  /**
-   * Создание лайка для публикации
-   * @param {CreateLikeDto} dto
-   * @returns {Promise<UserLike>}
-   */
   @ApiResponse({
     status: HttpStatus.CREATED,
     type: LikeAccessEntity,
@@ -38,21 +28,16 @@ export class LikeController {
     status: HttpStatus.CONFLICT,
   })
   @Post('create')
-  public async create(@Body(new ValidationPipe()) dto: CreateLikeDto): Promise<UserLike> {
-    return await this.likeService.create(dto);
+  public async createLike(@Body(new ValidationPipe()) dto: CreateLikeDto): Promise<UserLike> {
+    return await this.likeService.createLike(dto);
   }
 
-  /**
-   * Удаление лайка по идентификатору публикации и пользователя
-   * @param {string} postId
-   * @param {string} userId
-   */
   @ApiResponse({
     status: HttpStatus.OK,
   })
   // TODO: сделать получение id текущего авторизованного пользователя
   @Delete('delete/:postId/:userId')
-  public async delete(@Param('postId') postId: string, @Param('userId') userId: string): Promise<void> {
-    await this.likeService.delete(postId, userId);
+  public async deleteLikeByPostIdUserId(@Param('postId') postId: string, @Param('userId') userId: string): Promise<void> {
+    await this.likeService.deleteLikeByPostIdUserId(postId, userId);
   }
 }

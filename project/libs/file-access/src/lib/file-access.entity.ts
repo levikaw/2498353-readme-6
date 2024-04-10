@@ -8,13 +8,8 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
     this.populate(file);
   }
 
-  /** Имя файла */
   public name: string;
-
-  /** Содержание */
   public content: string;
-
-  /** Пользователь, который загрузил файл */
   public userId: string;
 
   public populate(file?: UserFile): void {
@@ -32,10 +27,6 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
     this.userId = file.userId;
   }
 
-  /**
-   * Преобразование из FileAccessEntity в объект
-   * @returns {UserFile}
-   */
   public toObject(): UserFile {
     return {
       id: this.id,

@@ -24,7 +24,6 @@ export class MongoConfiguration {
   public authBase: string;
 
   public async validate(): Promise<void> {
-    // debugger;
     await validateOrReject(this);
   }
 }

@@ -16,5 +16,5 @@ export class CreateSubscriptionDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  followUserId!: string;
+  followedUserId!: string;
 }
