@@ -2,21 +2,8 @@ import { BaseEntity, StorableEntity } from '@project/core';
 import { Commentary } from './types/comment.interface';
 
 export class CommentAccessEntity extends BaseEntity implements StorableEntity<Commentary> {
-  constructor(comment?: Commentary) {
+  constructor(comment: Commentary) {
     super();
-    this.populate(comment);
-  }
-
-  public text: string;
-
-  public postId: string;
-
-  public userId: string;
-
-  public populate(comment?: Commentary): void {
-    if (!comment) {
-      return;
-    }
 
     this.id = comment.id;
     this.createdAt = comment.createdAt;
@@ -27,6 +14,10 @@ export class CommentAccessEntity extends BaseEntity implements StorableEntity<Co
     this.postId = comment.postId;
     this.userId = comment.userId;
   }
+
+  public text: string;
+  public postId: string;
+  public userId: string;
 
   public toObject(): Commentary {
     return {
