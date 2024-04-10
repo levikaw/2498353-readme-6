@@ -1,10 +1,9 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { UserFile } from './types/file.interface';
-import { FILES_ALIAS } from '@project/constants';
 
 @Schema({
-  collection: FILES_ALIAS,
+  collection: 'files',
   timestamps: true,
 })
 export class FileAccessModel extends Document implements UserFile {

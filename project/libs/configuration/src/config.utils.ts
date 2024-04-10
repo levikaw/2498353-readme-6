@@ -1,7 +1,8 @@
 import { MongooseModuleAsyncOptions } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
-import { AUTH_ALIAS, MONGO_ALIAS } from '@project/constants';
 import { JwtModuleAsyncOptions } from '@nestjs/jwt';
+import { MONGO_ALIAS } from './database/mongodb/constants';
+import { AUTH_ALIAS } from './auth-service/constants';
 
 function getMongoConnectionString({ username, password, host, port, databaseName, authDatabase }): string {
   return `mongodb://${username}:${password}@${host}:${port}/${databaseName}?authSource=${authDatabase}`;

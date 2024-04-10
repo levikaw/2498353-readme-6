@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UserAccessRepository, UserAccessEntity } from '@project/user-access';
 import { UserRole } from '@project/user-access';
-import { AUTH_USER_EXISTS } from '@project/constants';
+import { AUTH_USER_EXISTS } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()

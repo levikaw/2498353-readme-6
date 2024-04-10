@@ -1,5 +1,5 @@
 import { Body, Controller, HttpStatus, Param, Post, ValidationPipe } from '@nestjs/common';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LinkPost, PhotoPost, PostAccessEntity, QuotePost, TextPost, VideoPost } from '@project/post-access';
 import { PostService } from './post.service';
 import { CreateLinkPostDto } from './dto/link-post.dto';

@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, ValidationPipe } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserAccessEntity } from '@project/user-access';
 import { AuthUser } from '@project/user-access';
@@ -20,12 +20,11 @@ export class UserController {
     status: HttpStatus.CONFLICT,
   })
   @ApiBody({
-    description: 'Create user',
     required: true,
     isArray: false,
   })
   @Post('register')
-  public async createUser(@Body() dto: CreateUserDto): Promise<AuthUser> {
+  public async createUser(@Body(new ValidationPipe()) dto: CreateUserDto): Promise<AuthUser> {
     const newUser = await this.userService.register(dto);
     return newUser.toObject();
   }

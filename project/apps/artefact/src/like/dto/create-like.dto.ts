@@ -1,19 +1,14 @@
 import { IsNotEmpty, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { POSTID_API, USERID_API } from '@project/constants';
 
 export class CreateLikeDto {
-  @ApiProperty({
-    description: 'User identificator',
-    example: 'da783896-dc38-48ff-9b1a-a01ec545c33a',
-  })
+  @ApiProperty(USERID_API)
   @IsNotEmpty()
   @IsUUID()
   userId!: string;
 
-  @ApiProperty({
-    description: 'Post identificator',
-    example: 'da783896-dc38-48ff-9b1a-a01ec545c33a',
-  })
+  @ApiProperty(POSTID_API)
   @IsNotEmpty()
   @IsUUID()
   postId!: string;

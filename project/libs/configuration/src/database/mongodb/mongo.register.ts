@@ -1,5 +1,5 @@
 import { ConfigType, registerAs } from '@nestjs/config';
-import { DEFAULT_MONGO_PORT, MONGO_ALIAS } from '@project/constants';
+import { DEFAULT_MONGO_PORT, MONGO_ALIAS } from './constants';
 import { MongoConfiguration } from './mongo.config';
 import { plainToClass } from 'class-transformer';
 

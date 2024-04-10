@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UserAccessRepository } from '@project/user-access';
-import { AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from '@project/constants';
+import { AUTH_MESSAGES_EXCEPTION } from './constants';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 
@@ -12,11 +12,11 @@ export class AuthService {
     const existUser = await this.userRepository.findByEmail(user.email);
 
     if (!existUser) {
-      throw new NotFoundException(AUTH_USER_NOT_FOUND);
+      throw new NotFoundException(AUTH_MESSAGES_EXCEPTION.NotFound);
     }
 
     if (!(await existUser.comparePassword(user.password))) {
-      throw new UnauthorizedException(AUTH_USER_PASSWORD_WRONG);
+      throw new UnauthorizedException(AUTH_MESSAGES_EXCEPTION.WrongPassword);
     }
 
     return {
