@@ -7,21 +7,8 @@ import { AuthUser } from './types/auth-user.interface';
 import { UserRole } from './types/user-role.enum';
 
 export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthUser> {
-  constructor(user?: AuthUser) {
+  constructor(user: AuthUser) {
     super();
-    this.populate(user);
-  }
-
-  public email: string;
-  public login: string;
-  public avatar?: Express.Multer.File | null;
-  public role: UserRole;
-  public passwordHash: string;
-
-  public populate(user?: AuthUser): void {
-    if (!user) {
-      return;
-    }
 
     this.id = user.id;
     this.createdAt = user.createdAt;
@@ -34,6 +21,12 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
     this.role = user.role;
     this.login = user.login;
   }
+
+  public email: string;
+  public login: string;
+  public avatar?: Express.Multer.File | null;
+  public role: UserRole;
+  public passwordHash: string;
 
   public toObject(): AuthUser {
     return {

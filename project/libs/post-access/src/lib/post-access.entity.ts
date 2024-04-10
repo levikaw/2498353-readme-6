@@ -9,28 +9,8 @@ import { TextPost } from './types/text-post.interface';
 import { VideoPost } from './types/video-post.interface';
 
 export class PostAccessEntity extends BaseEntity implements StorableEntity<CommonPost> {
-  constructor(post?: CommonPost) {
+  constructor(post: CommonPost) {
     super();
-    this.populate(post);
-  }
-
-  public type?: PostType;
-  public userId?: string;
-  public name?: string;
-  public link?: string;
-  public fileId?: string;
-  public tags?: string[];
-  public status?: PostStatus;
-  public repostedFromPostId?: string;
-  public isReposted?: boolean;
-  public author?: string;
-  public text?: string;
-  public announcement?: string;
-
-  public populate(post?: CommonPost): void {
-    if (!post) {
-      return;
-    }
 
     this.id = post.id;
     this.createdAt = post.createdAt;
@@ -50,6 +30,19 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
     this.text = post.text;
     this.announcement = post.announcement;
   }
+
+  public type?: PostType;
+  public userId?: string;
+  public name?: string;
+  public link?: string;
+  public fileId?: string;
+  public tags?: string[];
+  public status?: PostStatus;
+  public repostedFromPostId?: string;
+  public isReposted?: boolean;
+  public author?: string;
+  public text?: string;
+  public announcement?: string;
 
   public toObject(): CommonPost {
     return {

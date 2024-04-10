@@ -3,20 +3,8 @@ import { StorableEntity } from '@project/core';
 import { UserFile } from './types/file.interface';
 
 export class FileAccessEntity extends BaseEntity implements StorableEntity<UserFile> {
-  constructor(file?: UserFile) {
+  constructor(file: UserFile) {
     super();
-    this.populate(file);
-  }
-
-  public name: string;
-  public content: string;
-  public userId: string;
-
-  public populate(file?: UserFile): void {
-    if (!file) {
-      return;
-    }
-
     this.id = file.id;
     this.createdAt = file.createdAt;
     this.updatedAt = file.updatedAt;
@@ -26,6 +14,10 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
     this.content = file.content;
     this.userId = file.userId;
   }
+
+  public name: string;
+  public content: string;
+  public userId: string;
 
   public toObject(): UserFile {
     return {

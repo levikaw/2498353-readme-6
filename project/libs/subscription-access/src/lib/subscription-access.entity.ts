@@ -2,18 +2,8 @@ import { BaseEntity, StorableEntity } from '@project/core';
 import { Subscription } from './types/subscription.interface';
 
 export class SubscriptionAccessEntity extends BaseEntity implements StorableEntity<Subscription> {
-  constructor(subscription?: Subscription) {
+  constructor(subscription: Subscription) {
     super();
-    this.populate(subscription);
-  }
-
-  public followedUserId: string;
-  public userId: string;
-
-  public populate(subscription?: Subscription): void {
-    if (!subscription) {
-      return;
-    }
 
     this.id = subscription.id;
     this.createdAt = subscription.createdAt;
@@ -23,6 +13,9 @@ export class SubscriptionAccessEntity extends BaseEntity implements StorableEnti
     this.followedUserId = subscription.followedUserId;
     this.userId = subscription.userId;
   }
+
+  public followedUserId: string;
+  public userId: string;
 
   public toObject(): Subscription {
     return {
