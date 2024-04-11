@@ -45,7 +45,7 @@ export class PostService {
       throw new Error(POST_EXCEPTION_MESSAGES.NotFound);
     }
 
-    this.postAccessRepository.update(new PostAccessEntity({ ...post, id: existsPost.id }));
+    await this.postAccessRepository.update(new PostAccessEntity({ ...post, id: existsPost.id }));
   }
 
   public async deletePostById(id: string): Promise<void> {

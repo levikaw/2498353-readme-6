@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Post, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SubscriptionAccessEntity, Subscription } from '@project/subscription-access';
 import { SubscriptionService } from './subscription.service';
@@ -14,7 +14,7 @@ export class SubscriptionController {
     type: [SubscriptionAccessEntity],
     isArray: true,
   })
-  @Get(':userId')
+  @Get('/:userId')
   public async getSubscriptionByUserId(@Param('userId') userId: string): Promise<Subscription[]> {
     return this.subscriptionService.findSubscriptionByUserId(userId);
   }
@@ -41,6 +41,11 @@ export class SubscriptionController {
     @Param('followedUserId') followedUserId: string,
     @Param('userId') userId: string,
   ): Promise<void> {
-    this.subscriptionService.deleteSubscription(followedUserId, userId);
+    try {
+      await this.subscriptionService.deleteSubscription(followedUserId, userId);
+    } catch (error) {
+      Logger.error(error, `deleteSubscription - followedUserId: ${followedUserId}, userId: ${userId}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 }

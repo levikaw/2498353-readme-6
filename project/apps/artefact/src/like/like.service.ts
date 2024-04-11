@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { LikeAccessEntity, LikeAccessRepository, UserLike } from '@project/like-access';
 import { LIKE_EXCEPTION_MESSAGES } from './constants';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -22,6 +22,6 @@ export class LikeService {
       throw new Error(LIKE_EXCEPTION_MESSAGES.NotFound);
     }
 
-    this.likeAccessRepository.deleteById(like.toObject().id);
+    await this.likeAccessRepository.deleteById(like.toObject().id);
   }
 }

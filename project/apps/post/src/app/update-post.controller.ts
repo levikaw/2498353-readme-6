@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Put, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Logger, Param, Put, ValidationPipe } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PostAccessEntity } from '@project/post-access';
 import { PostService } from './post.service';
@@ -19,7 +19,12 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreateVideoPostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    this.postService.updatePostById(dto, postId);
+    try {
+      await this.postService.updatePostById(dto, postId);
+    } catch (error) {
+      Logger.error(error, `createVideoPost - postId: ${postId}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 
   @Put('text/:postId')
@@ -28,7 +33,12 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreateTextPostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    this.postService.updatePostById(dto, postId);
+    try {
+      await this.postService.updatePostById(dto, postId);
+    } catch (error) {
+      Logger.error(error, `createTextPost - postId: ${postId}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 
   @Put('photo/:postId')
@@ -37,7 +47,12 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreatePhotoPostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    this.postService.updatePostById(dto, postId);
+    try {
+      await this.postService.updatePostById(dto, postId);
+    } catch (error) {
+      Logger.error(error, `createPhotoPost - postId: ${postId}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 
   @Put('link/:postId')
@@ -46,7 +61,12 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreateLinkPostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    this.postService.updatePostById(dto, postId);
+    try {
+      await this.postService.updatePostById(dto, postId);
+    } catch (error) {
+      Logger.error(error, `createLinkPost - postId: ${postId}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 
   @Put('quote/:postId')
@@ -55,6 +75,11 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreateQuotePostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    this.postService.updatePostById(dto, postId);
+    try {
+      await this.postService.updatePostById(dto, postId);
+    } catch (error) {
+      Logger.error(error, `createQuotePost - postId: ${postId}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 }

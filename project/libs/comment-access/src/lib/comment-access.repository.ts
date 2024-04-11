@@ -9,7 +9,7 @@ export class CommentAccessRepository extends BaseMemoryRepository<CommentAccessE
     super(entityFactory);
   }
 
-  public async findCommentByPostId(postId: string): Promise<CommentAccessEntity[]> {
+  public async findCommentsByPostId(postId: string): Promise<CommentAccessEntity[]> {
     return Array.from(this.entities.values())
       .filter((entity) => entity.postId === postId && !entity.deletedAt)
       .map((c) => this.entityFactory.createEntity(c));

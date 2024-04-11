@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, ValidationPipe } from '@nestjs/common';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Post, ValidationPipe } from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LikeAccessEntity, UserLike } from '@project/like-access';
 import { LikeService } from './like.service';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -14,7 +14,7 @@ export class LikeController {
     type: [LikeAccessEntity],
     isArray: true,
   })
-  @Get(':postId')
+  @Get('/:postId')
   public async getLikeByPostId(@Param('postId') postId: string): Promise<UserLike[]> {
     return this.likeService.findLikeByPostId(postId);
   }
@@ -38,6 +38,11 @@ export class LikeController {
   // TODO: сделать получение id текущего авторизованного пользователя
   @Delete('delete/:postId/:userId')
   public async deleteLikeByPostIdUserId(@Param('postId') postId: string, @Param('userId') userId: string): Promise<void> {
-    this.likeService.deleteLikeByPostIdUserId(postId, userId);
+    try {
+      await this.likeService.deleteLikeByPostIdUserId(postId, userId);
+    } catch (error) {
+      Logger.error(error, `postId: ${postId}, userId: ${userId}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 }
