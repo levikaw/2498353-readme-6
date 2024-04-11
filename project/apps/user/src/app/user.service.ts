@@ -15,11 +15,12 @@ export class UserService {
     }
 
     // TODO: for avatar /api/upload -> fileid
-    const userEntity = await new UserAccessEntity({ role: UserRole.User, passwordHash: '', ...user }).createPassword(
-      user.password,
-    );
-    this.userRepository.save(userEntity);
 
-    return userEntity;
+    return new UserAccessEntity({ role: UserRole.User, passwordHash: '', ...user })
+      .createPassword(user.password)
+      .then((userEntity) => {
+        this.userRepository.save(userEntity);
+        return userEntity;
+      });
   }
 }

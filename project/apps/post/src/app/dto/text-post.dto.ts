@@ -17,19 +17,19 @@ export class CreateTextPostDto extends CreateBasePostDto implements TextPost {
   @MinLength(MIN_LENGTH_NAME_POST)
   @MaxLength(MAX_LENGTH_NAME_POST)
   @IsString()
-  name!: string;
+  public name!: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_TEXT_TEXT_POST)
   @MaxLength(MAX_LENGTH_TEXT_TEXT_POST)
   @IsString()
-  text!: string;
+  public text!: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_ANNONCE_TEXT_POST)
   @MaxLength(MAX_LENGTH_ANNONCE_TEXT_POST)
   @IsString()
-  announcement!: string;
+  public announcement!: string;
 }

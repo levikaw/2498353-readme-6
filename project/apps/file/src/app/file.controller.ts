@@ -43,8 +43,9 @@ export class FileController {
     files: Express.Multer.File[],
     @Param('userId') userId: string,
   ): Promise<{ filesId: string[] }> {
-    const newFiles = await this.fileService.upload(files, userId);
-    return { filesId: newFiles };
+    return this.fileService.upload(files, userId).then((filesId) => {
+      return { filesId };
+    });
   }
 
   @ApiResponse({
@@ -69,8 +70,9 @@ export class FileController {
     files: Express.Multer.File[],
     @Param('userId') userId: string,
   ): Promise<{ filesId: string[] }> {
-    const newFiles = await this.fileService.upload(files, userId);
-    return { filesId: newFiles };
+    return this.fileService.upload(files, userId).then((filesId) => {
+      return { filesId };
+    });
   }
 
   @ApiResponse({
@@ -80,6 +82,6 @@ export class FileController {
   })
   @Get('download/:id')
   public async download(@Param('id') id: string): Promise<Buffer> {
-    return await this.fileService.download(id);
+    return this.fileService.download(id);
   }
 }

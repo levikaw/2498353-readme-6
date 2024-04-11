@@ -25,7 +25,6 @@ export class UserController {
   })
   @Post('register')
   public async createUser(@Body(new ValidationPipe()) dto: CreateUserDto): Promise<AuthUser> {
-    const newUser = await this.userService.register(dto);
-    return newUser.toObject();
+    return this.userService.register(dto).then((resp) => resp.toObject());
   }
 }

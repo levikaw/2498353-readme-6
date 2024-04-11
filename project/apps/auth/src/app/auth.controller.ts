@@ -22,7 +22,6 @@ export class AuthController {
   })
   @Post('login')
   public async login(@Body(new ValidationPipe()) dto: LoginUserDto): Promise<{ token: string }> {
-    const token = await this.authService.authUser(dto);
-    return token;
+    return this.authService.authUser(dto);
   }
 }

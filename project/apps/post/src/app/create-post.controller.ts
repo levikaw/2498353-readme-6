@@ -26,7 +26,7 @@ export class CreatePostController {
     @Body(new ValidationPipe()) dto: CreateVideoPostDto,
     @Param('userId') userId: string,
   ): Promise<VideoPost> {
-    return (await this.postService.createPost(dto, userId)).toVideoObject();
+    return this.postService.createPost(dto, userId).then((resp) => resp.toVideoObject());
   }
 
   @Post('text/:userId')
@@ -42,7 +42,7 @@ export class CreatePostController {
     @Body(new ValidationPipe()) dto: CreateTextPostDto,
     @Param('userId') userId: string,
   ): Promise<TextPost> {
-    return (await this.postService.createPost(dto, userId)).toTextObject();
+    return this.postService.createPost(dto, userId).then((resp) => resp.toTextObject());
   }
 
   @Post('photo/:userId')
@@ -58,7 +58,7 @@ export class CreatePostController {
     @Body(new ValidationPipe()) dto: CreatePhotoPostDto,
     @Param('userId') userId: string,
   ): Promise<PhotoPost> {
-    return (await this.postService.createPost(dto, userId)).toPhotoObject();
+    return this.postService.createPost(dto, userId).then((resp) => resp.toPhotoObject());
   }
 
   @Post('link/:userId')
@@ -74,7 +74,7 @@ export class CreatePostController {
     @Body(new ValidationPipe()) dto: CreateLinkPostDto,
     @Param('userId') userId: string,
   ): Promise<LinkPost> {
-    return (await this.postService.createPost(dto, userId)).toLinkObject();
+    return this.postService.createPost(dto, userId).then((resp) => resp.toLinkObject());
   }
 
   @Post('quote/:userId')
@@ -90,6 +90,6 @@ export class CreatePostController {
     @Body(new ValidationPipe()) dto: CreateQuotePostDto,
     @Param('userId') userId: string,
   ): Promise<QuotePost> {
-    return (await this.postService.createPost(dto, userId)).toQuoteObject();
+    return this.postService.createPost(dto, userId).then((resp) => resp.toQuoteObject());
   }
 }

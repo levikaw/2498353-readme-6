@@ -6,7 +6,7 @@ export class CreateSubscriptionDto {
   @ApiProperty(USERID_API)
   @IsNotEmpty()
   @IsUUID()
-  userId!: string;
+  public userId!: string;
 
   @ApiProperty({
     description: `${USERID_API.description} (who is object subscription)`,
@@ -14,5 +14,5 @@ export class CreateSubscriptionDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  followedUserId!: string;
+  public followedUserId!: string;
 }

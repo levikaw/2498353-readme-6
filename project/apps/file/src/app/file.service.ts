@@ -7,11 +7,17 @@ export class FileService {
   constructor(private readonly fileAccessRepository: FileAccessRepository) {}
 
   public async upload(files: Express.Multer.File[], userId: string): Promise<string[]> {
-    return await Promise.all(
+    return Promise.all(
       files.map(async (file) => {
-        const fileEntity = new FileAccessEntity({ name: file.originalname, content: file.buffer.toString('base64'), userId });
-        const processedFile = await this.fileAccessRepository.save(fileEntity);
-        return processedFile.id;
+        return this.fileAccessRepository
+          .save(
+            new FileAccessEntity({
+              name: file.originalname,
+              content: file.buffer.toString('base64'),
+              userId,
+            }),
+          )
+          .then((resp) => resp.id);
       }),
     );
   }

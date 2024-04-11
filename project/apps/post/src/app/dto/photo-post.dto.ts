@@ -8,5 +8,5 @@ export class CreatePhotoPostDto extends CreateBasePostDto implements PhotoPost {
   @ApiProperty(FILEID_API)
   @IsNotEmpty()
   @IsUUID()
-  fileId!: string;
+  public fileId!: string;
 }

@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, ValidationPipe } from '@nestjs/common';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SubscriptionAccessEntity, Subscription } from '@project/subscription-access';
 import { SubscriptionService } from './subscription.service';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
@@ -16,7 +16,7 @@ export class SubscriptionController {
   })
   @Get(':userId')
   public async getSubscriptionByUserId(@Param('userId') userId: string): Promise<Subscription[]> {
-    return await this.subscriptionService.findSubscriptionByUserId(userId);
+    return this.subscriptionService.findSubscriptionByUserId(userId);
   }
 
   @ApiResponse({
@@ -29,7 +29,7 @@ export class SubscriptionController {
   })
   @Post('create')
   public async createSubscription(@Body(new ValidationPipe()) dto: CreateSubscriptionDto): Promise<Subscription> {
-    return await this.subscriptionService.createSubscription(dto);
+    return this.subscriptionService.createSubscription(dto);
   }
 
   @ApiResponse({
@@ -41,6 +41,6 @@ export class SubscriptionController {
     @Param('followedUserId') followedUserId: string,
     @Param('userId') userId: string,
   ): Promise<void> {
-    await this.subscriptionService.deleteSubscription(followedUserId, userId);
+    this.subscriptionService.deleteSubscription(followedUserId, userId);
   }
 }

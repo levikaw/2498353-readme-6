@@ -9,10 +9,10 @@ export class CreateLinkPostDto extends CreateBasePostDto implements LinkPost {
   @IsOptional()
   @MaxLength(MAX_LENGTH_TEXT_LINK_POST)
   @IsString()
-  text?: string;
+  public text?: string;
 
   @ApiProperty(LINK_API)
   @IsNotEmpty()
   @IsUrl()
-  link!: string;
+  public link!: string;
 }

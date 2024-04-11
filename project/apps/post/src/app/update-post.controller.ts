@@ -19,7 +19,7 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreateVideoPostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    return await this.postService.updatePostById(dto, postId);
+    this.postService.updatePostById(dto, postId);
   }
 
   @Put('text/:postId')
@@ -28,7 +28,7 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreateTextPostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    return await this.postService.updatePostById(dto, postId);
+    this.postService.updatePostById(dto, postId);
   }
 
   @Put('photo/:postId')
@@ -37,7 +37,7 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreatePhotoPostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    return await this.postService.updatePostById(dto, postId);
+    this.postService.updatePostById(dto, postId);
   }
 
   @Put('link/:postId')
@@ -46,7 +46,7 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreateLinkPostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    return await this.postService.updatePostById(dto, postId);
+    this.postService.updatePostById(dto, postId);
   }
 
   @Put('quote/:postId')
@@ -55,6 +55,6 @@ export class UpdatePostController {
     @Body(new ValidationPipe()) dto: CreateQuotePostDto,
     @Param('postId') postId: string,
   ): Promise<void> {
-    return await this.postService.updatePostById(dto, postId);
+    this.postService.updatePostById(dto, postId);
   }
 }
