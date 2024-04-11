@@ -9,32 +9,32 @@ export class CreateBasePostDto implements UserPost {
   @ApiProperty(USERID_API)
   @IsNotEmpty()
   @IsUUID()
-  userId!: string;
+  public userId!: string;
 
   @ApiProperty(POST_TYPE_API)
   @IsNotEmpty()
   @IsEnum(PostType)
-  type!: PostType;
+  public type!: PostType;
 
   @ApiProperty(POST_TAGS_API)
   @IsOptional()
   @IsArray({ each: true })
   @Type(() => String)
-  tags?: string[];
+  public tags?: string[];
 
   @ApiProperty(POST_STATUS_API)
   @IsNotEmpty()
   @IsEnum(PostStatus)
-  status!: PostStatus;
+  public status!: PostStatus;
 
   @ApiProperty(POSTID_API)
   @IsOptional()
   @IsUUID()
-  repostedFromPostId?: string;
+  public repostedFromPostId?: string;
 
   @ApiProperty(REPOSTED_API)
   @IsOptional()
   @IsBoolean()
   @ValidateIf((post) => isNotEmpty(post.repostedFromPostId))
-  isReposted?: boolean;
+  public isReposted?: boolean;
 }

@@ -16,7 +16,7 @@ export class CommentController {
   })
   @Get(':postId')
   public async getCommentByPostId(@Param('postId') postId: string): Promise<Commentary[]> {
-    return await this.commentService.findCommentByPostId(postId);
+    return this.commentService.findCommentByPostId(postId);
   }
 
   @ApiResponse({
@@ -32,7 +32,7 @@ export class CommentController {
     @Body(new ValidationPipe()) dto: CreateCommentDto,
     @Param('postId') postId: string,
   ): Promise<Commentary> {
-    return await this.commentService.createCommentByPostId(dto, postId);
+    return this.commentService.createCommentByPostId(dto, postId);
   }
 
   @ApiResponse({
@@ -40,6 +40,6 @@ export class CommentController {
   })
   @Delete('delete/:id')
   public async deleteCommentById(@Param('id') id: string): Promise<void> {
-    await this.commentService.deleteCommentById(id);
+    this.commentService.deleteCommentById(id);
   }
 }

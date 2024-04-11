@@ -16,7 +16,7 @@ export class LikeController {
   })
   @Get(':postId')
   public async getLikeByPostId(@Param('postId') postId: string): Promise<UserLike[]> {
-    return await this.likeService.findLikeByPostId(postId);
+    return this.likeService.findLikeByPostId(postId);
   }
 
   @ApiResponse({
@@ -29,7 +29,7 @@ export class LikeController {
   })
   @Post('create')
   public async createLike(@Body(new ValidationPipe()) dto: CreateLikeDto): Promise<UserLike> {
-    return await this.likeService.createLike(dto);
+    return this.likeService.createLike(dto);
   }
 
   @ApiResponse({
@@ -38,6 +38,6 @@ export class LikeController {
   // TODO: сделать получение id текущего авторизованного пользователя
   @Delete('delete/:postId/:userId')
   public async deleteLikeByPostIdUserId(@Param('postId') postId: string, @Param('userId') userId: string): Promise<void> {
-    await this.likeService.deleteLikeByPostIdUserId(postId, userId);
+    this.likeService.deleteLikeByPostIdUserId(postId, userId);
   }
 }

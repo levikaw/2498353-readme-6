@@ -17,12 +17,12 @@ export class CreateQuotePostDto extends CreateBasePostDto implements QuotePost {
   @MinLength(MIN_LENGTH_TEXT_QUOTE_POST)
   @MaxLength(MAX_LENGTH_TEXT_QUOTE_POST)
   @IsString()
-  text!: string;
+  public text!: string;
 
   @ApiProperty(QUOTE_AUTHOR_API)
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_AUTHOR_QUOTE_POST)
   @MaxLength(MAX_LENGTH_AUTHOR_QUOTE_POST)
   @IsString()
-  author!: string;
+  public author!: string;
 }

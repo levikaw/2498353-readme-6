@@ -10,10 +10,10 @@ export class CreateCommentDto {
   @MinLength(MIN_COMMENT_LENGTH)
   @MaxLength(MAX_COMMENT_LENGTH)
   @IsString()
-  text!: string;
+  public text!: string;
 
   @ApiProperty(USERID_API)
   @IsNotEmpty()
   @IsUUID()
-  userId!: string;
+  public userId!: string;
 }

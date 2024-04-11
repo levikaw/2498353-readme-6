@@ -8,20 +8,20 @@ export class LikeService {
   constructor(private readonly likeAccessRepository: LikeAccessRepository) {}
 
   public async findLikeByPostId(postId: string): Promise<UserLike[]> {
-    return (await this.likeAccessRepository.findByPostId(postId)).map((c) => c.toObject());
+    return this.likeAccessRepository.findByPostId(postId).then((resp) => resp.map((c) => c.toObject()));
   }
 
   public async createLike(like: CreateLikeDto): Promise<UserLike> {
     // TODO: Проверка при создании лайка (может быть только один лайк пользователя для публикации)
-    return (await this.likeAccessRepository.save(new LikeAccessEntity(like))).toObject();
+    return this.likeAccessRepository.save(new LikeAccessEntity(like)).then((resp) => resp.toObject());
   }
 
-  public async deleteLikeByPostIdUserId(postId: string, userId: string): Promise<any> {
+  public async deleteLikeByPostIdUserId(postId: string, userId: string): Promise<void> {
     const like = await this.likeAccessRepository.findByPostIdUserId(postId, userId);
     if (!like) {
       throw new Error(LIKE_EXCEPTION_MESSAGES.NotFound);
     }
 
-    await this.likeAccessRepository.deleteById(like.toObject().id);
+    this.likeAccessRepository.deleteById(like.toObject().id);
   }
 }

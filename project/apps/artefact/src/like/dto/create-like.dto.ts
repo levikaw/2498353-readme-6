@@ -6,10 +6,10 @@ export class CreateLikeDto {
   @ApiProperty(USERID_API)
   @IsNotEmpty()
   @IsUUID()
-  userId!: string;
+  public userId!: string;
 
   @ApiProperty(POSTID_API)
   @IsNotEmpty()
   @IsUUID()
-  postId!: string;
+  public postId!: string;
 }

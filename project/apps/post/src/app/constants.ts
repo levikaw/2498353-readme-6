@@ -70,3 +70,7 @@ export const VIDEO_LINK_API = {
   description: 'Link to YouTube',
   example: 'https://www.youtube.com/watch?v=85wgFaxg6AY; https://youtu.be/85wgFaxg6AY',
 } as const;
+
+export const POST_EXCEPTION_MESSAGES = {
+  NotFound: 'Post not found!',
+} as const;

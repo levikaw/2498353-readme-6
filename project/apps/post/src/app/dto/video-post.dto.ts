@@ -10,10 +10,10 @@ export class CreateVideoPostDto extends CreateBasePostDto implements VideoPost {
   @MinLength(MIN_LENGTH_NAME_POST)
   @MaxLength(MAX_LENGTH_NAME_POST)
   @IsString()
-  name!: string;
+  public name!: string;
 
   @ApiProperty(VIDEO_LINK_API)
   @IsNotEmpty()
   @IsUrl({ host_whitelist: ALLOWED_VIDEO_URLS })
-  link!: string;
+  public link!: string;
 }
