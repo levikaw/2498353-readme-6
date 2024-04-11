@@ -2,7 +2,9 @@ import {
   Controller,
   FileTypeValidator,
   Get,
+  HttpException,
   HttpStatus,
+  Logger,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -82,6 +84,11 @@ export class FileController {
   })
   @Get('download/:id')
   public async download(@Param('id') id: string): Promise<Buffer> {
-    return this.fileService.download(id);
+    try {
+      return await this.fileService.download(id);
+    } catch (error) {
+      Logger.error(error, `download - id: ${id}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 }

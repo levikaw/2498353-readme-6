@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Logger, Post, ValidationPipe } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -22,6 +22,11 @@ export class AuthController {
   })
   @Post('login')
   public async login(@Body(new ValidationPipe()) dto: LoginUserDto): Promise<{ token: string }> {
-    return this.authService.authUser(dto);
+    try {
+      return await this.authService.authUser(dto);
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 }

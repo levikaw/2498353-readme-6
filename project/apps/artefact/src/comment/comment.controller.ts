@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Post, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentAccessEntity, Commentary } from '@project/comment-access';
 import { CommentService } from './comment.service';
@@ -14,9 +14,9 @@ export class CommentController {
     type: [CommentAccessEntity],
     isArray: true,
   })
-  @Get(':postId')
-  public async getCommentByPostId(@Param('postId') postId: string): Promise<Commentary[]> {
-    return this.commentService.findCommentByPostId(postId);
+  @Get('/:postId')
+  public async getCommentsByPostId(@Param('postId') postId: string): Promise<Commentary[]> {
+    return this.commentService.findCommentsByPostId(postId);
   }
 
   @ApiResponse({
@@ -40,6 +40,11 @@ export class CommentController {
   })
   @Delete('delete/:id')
   public async deleteCommentById(@Param('id') id: string): Promise<void> {
-    this.commentService.deleteCommentById(id);
+    try {
+      await this.commentService.deleteCommentById(id);
+    } catch (error) {
+      Logger.error(error, `deleteCommentById - id: ${id}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 }

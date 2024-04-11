@@ -23,6 +23,6 @@ export class SubscriptionService {
       throw new Error(SUBSCRIPTION_EXCEPTION_MESSAGES.NotFound);
     }
 
-    this.subscriptionAccessRepository.deleteById(subscription.toObject().id);
+    await this.subscriptionAccessRepository.deleteById(subscription.toObject().id);
   }
 }
