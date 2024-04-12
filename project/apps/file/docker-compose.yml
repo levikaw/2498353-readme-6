@@ -4,15 +4,18 @@ services:
     image: mongo:4.4
     restart: always
     container_name: mongo.db
-
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo.db:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB}
-
     ports:
       - 27017:27017
-
     volumes:
       - ${MONGO_STORAGE}:/data/db
 
