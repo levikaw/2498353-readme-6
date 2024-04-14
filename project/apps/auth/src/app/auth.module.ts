@@ -5,6 +5,7 @@ import { UserAccessModule } from '@project/user-access';
 import { authServiceRegister, getJwtOptions } from '@project/configuration';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { ENV_FILE } from '@project/prisma';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { AuthService } from './auth.service';
       isGlobal: true,
       cache: true,
       load: [authServiceRegister],
-      envFilePath: 'apps/auth/.env',
+      envFilePath: ENV_FILE,
     }),
     JwtModule.registerAsync(getJwtOptions()),
   ],
