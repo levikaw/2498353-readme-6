@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://admin:123456@localhost:5432/test?schema=public"
+}
+
+enum UserRole {
+  admin
+  user
+}
+
+model User {
+  id           String   @id @default(uuid()) @map("id")
+  email        String
+  login        String
+  avatar       String?
+  role         UserRole @default(user)
+  passwordHash String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  posts         Post[]
+  subscriptions Subscription[]
+
+  @@index([id, email])
+  @@map("users")
+}
+
+model Subscription {
+  id             String   @id @default(uuid()) @map("id")
+  userId         String   @map("user_id")
+  followedUserId String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, followedUserId])
+  @@map("subscriptions")
+}
+
+model Like {
+  id        String   @id @default(uuid()) @map("id")
+  userId    String   @map("user_id")
+  postId    String   @map("post_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@map("likes")
+}
+
+model Comment {
+  id        String   @id @default(uuid()) @map("id")
+  text      String
+  userId    String   @map("user_id")
+  postId    String   @map("post_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@map("comments")
+}
+
+enum PostType {
+  video
+  text
+  link
+  photo
+  quote
+}
+
+model Post {
+  id                 String   @id @default(uuid()) @map("id")
+  type               PostType
+  userId             String   @map("user_id")
+  repostedFromPostId String?  @map("reposted_from_post_id")
+  isReposted         Boolean? @default(false) @map("is_reposted")
+  isPublished        Boolean? @default(true) @map("is_published")
+  tags               String[]
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  text         String?
+  link         String?
+  author       String?
+  name         String?
+  announcement String?
+  fileId       String? @map("file_id")
+
+  comments Comment[]
+  likes    Like[]
+  User     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, tags, type])
+  @@map("posts")
+}
