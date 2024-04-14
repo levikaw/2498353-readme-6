@@ -5,7 +5,7 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { SetUpSwaggerModule } from '@project/utils';
+import { setUpSwaggerModule } from '@project/utils';
 import { UserModule } from './app/user.module';
 
 async function bootstrap() {
@@ -14,7 +14,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3000;
 
-  SetUpSwaggerModule<UserModule>(app, 'user');
+  setUpSwaggerModule<UserModule>(app, 'user');
 
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);

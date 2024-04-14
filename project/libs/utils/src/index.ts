@@ -1,1 +1,1 @@
-export { SetUpSwaggerModule } from './lib/set-up-swagger';
+export { setUpSwaggerModule } from './lib/set-up-swagger';
