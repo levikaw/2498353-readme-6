@@ -4,7 +4,7 @@ import { ALLOWED_VIDEO_URLS, MAX_LENGTH_NAME_POST, MIN_LENGTH_NAME_POST, VIDEO_L
 import { VideoPost } from '@project/post-access';
 import { CreateBasePostDto } from './base-post.dto';
 
-export class CreateVideoPostDto extends CreateBasePostDto implements VideoPost {
+export class CreateVideoPostDto extends CreateBasePostDto {
   @ApiProperty()
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_NAME_POST)

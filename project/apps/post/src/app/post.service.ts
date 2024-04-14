@@ -1,25 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { PostAccessEntity, PostAccessRepository, CommonPost } from '@project/post-access';
+import { UpdateCommonnPost } from 'libs/post-access/src/lib/types/update-common-post.interface';
 import { POST_EXCEPTION_MESSAGES } from './constants';
 
 @Injectable()
 export class PostService {
   constructor(private readonly postAccessRepository: PostAccessRepository) {}
 
-  public async createPost(post: CommonPost, userId: string): Promise<PostAccessEntity> {
-    return this.postAccessRepository.save(new PostAccessEntity({ ...post, userId }));
+  public async createPost(post: CommonPost): Promise<PostAccessEntity> {
+    return this.postAccessRepository.save(new PostAccessEntity(post));
   }
 
-  public async findAllPosts(): Promise<CommonPost[]> {
-    return this.postAccessRepository.findAll();
+  public async findPosts(where?: Partial<CommonPost>, skip?: number, take?: number): Promise<CommonPost[]> {
+    return this.postAccessRepository.findManyBy(where, skip, take).then((resp) => resp.map((post) => post.toObject()));
   }
 
   public async findPostById(id: string): Promise<CommonPost> {
     return this.postAccessRepository.findById(id).then((resp) => resp.toObject());
-  }
-
-  public async findPostByUserId(userId: string): Promise<CommonPost[]> {
-    return this.postAccessRepository.findByUserId(userId).then((resp) => resp.map((post) => post.toObject()));
   }
 
   public async rePost(postId: string, userId: string): Promise<CommonPost> {
@@ -30,6 +27,7 @@ export class PostService {
     }
 
     delete existsPost.createdAt;
+    delete existsPost.updatedAt;
     delete existsPost.id;
     existsPost.userId = userId;
     existsPost.repostedFromPostId = postId;
@@ -38,14 +36,15 @@ export class PostService {
     return this.postAccessRepository.save(new PostAccessEntity(existsPost)).then((resp) => resp.toObject());
   }
 
-  public async updatePostById(post: CommonPost, id: string): Promise<void> {
-    const existsPost = await this.postAccessRepository.findById(id);
+  // обновление репоста?
+  public async updatePostById(post: UpdateCommonnPost): Promise<void> {
+    const existsPost = await this.postAccessRepository.findById(post.id);
 
     if (!existsPost) {
       throw new Error(POST_EXCEPTION_MESSAGES.NotFound);
     }
-
-    await this.postAccessRepository.update(new PostAccessEntity({ ...post, id: existsPost.id }));
+    // TODO: сделать проверку на userId
+    await this.postAccessRepository.update(post);
   }
 
   public async deletePostById(id: string): Promise<void> {

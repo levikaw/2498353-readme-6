@@ -1,5 +1,4 @@
-import { PostStatus, PostType } from '@project/post-access';
-
+import { PostType } from '@prisma/client';
 export const MIN_LENGTH_NAME_POST: number = 20;
 export const MAX_LENGTH_NAME_POST: number = 50;
 export const MIN_LENGTH_TEXT_TEXT_POST: number = 100;
@@ -32,8 +31,7 @@ export const POST_TAGS_API = {
 
 export const POST_STATUS_API = {
   description: 'Post status',
-  example: 'published',
-  enum: PostStatus,
+  example: 'true',
 } as const;
 
 export const REPOSTED_API = {

@@ -4,7 +4,7 @@ import { LinkPost } from '@project/post-access';
 import { MAX_LENGTH_TEXT_LINK_POST, LINK_TEXT_API, LINK_API } from '../constants';
 import { CreateBasePostDto } from './base-post.dto';
 
-export class CreateLinkPostDto extends CreateBasePostDto implements LinkPost {
+export class CreateLinkPostDto extends CreateBasePostDto {
   @ApiProperty(LINK_TEXT_API)
   @IsOptional()
   @MaxLength(MAX_LENGTH_TEXT_LINK_POST)

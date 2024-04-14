@@ -1,12 +1,11 @@
 import { BaseEntityInterface } from '@project/core';
-import { PostStatus } from './post-status.enum';
-import { PostType } from './post-type.enum';
+import { PostType } from '@prisma/client';
 
 export interface UserPost extends BaseEntityInterface {
-  type?: PostType;
-  userId?: string;
+  type: PostType;
+  userId: string;
   tags?: string[];
-  status?: PostStatus;
+  isPublished?: boolean; // todo исправить статус null === черновик
   repostedFromPostId?: string;
   isReposted?: boolean;
 }

@@ -11,7 +11,7 @@ import {
 import { CreateBasePostDto } from './base-post.dto';
 import { QuotePost } from '@project/post-access';
 
-export class CreateQuotePostDto extends CreateBasePostDto implements QuotePost {
+export class CreateQuotePostDto extends CreateBasePostDto {
   @ApiProperty(QUOTE_TEXT_API)
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_TEXT_QUOTE_POST)
