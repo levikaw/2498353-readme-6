@@ -21,7 +21,7 @@ export class CreateUserDto {
     description: 'Avatar',
   })
   @IsOptional()
-  public avatar?: Express.Multer.File;
+  public avatar?: string;
 
   @ApiHideProperty()
   @IsNotEmpty()

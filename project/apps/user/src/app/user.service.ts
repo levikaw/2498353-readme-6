@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UserAccessRepository, UserAccessEntity } from '@project/user-access';
-import { UserRole } from '@project/user-access';
+import { UserRole } from '@prisma/client';
 import { AUTH_USER_EXISTS } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -15,8 +15,7 @@ export class UserService {
     }
 
     // TODO: for avatar /api/upload -> fileid
-
-    return new UserAccessEntity({ role: UserRole.User, passwordHash: '', ...user })
+    return new UserAccessEntity({ role: UserRole.user, passwordHash: '', ...user })
       .createPassword(user.password)
       .then((userEntity) => {
         this.userRepository.save(userEntity);

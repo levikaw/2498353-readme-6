@@ -1,10 +1,10 @@
-import { UserRole } from './user-role.enum';
+import { UserRole } from '@prisma/client';
 import 'multer';
 import { BaseEntityInterface } from '@project/core';
 
 export interface User extends BaseEntityInterface {
   email: string;
   login: string;
-  avatar?: Express.Multer.File | null;
+  avatar?: string;
   role: UserRole;
 }
