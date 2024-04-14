@@ -5,12 +5,7 @@ import { UserFile } from './types/file.interface';
 
 @Injectable()
 export class FileAccessFactory implements EntityFactory<FileAccessEntity> {
-  /**
-   * Создание FileAccessEntity из обекта
-   * @param {UserFile} entityPlainData
-   * @returns {FileAccessEntity}
-   */
-  public create(entityPlainData: UserFile): FileAccessEntity {
+  public createEntity(entityPlainData: UserFile): FileAccessEntity {
     return new FileAccessEntity(entityPlainData);
   }
 }

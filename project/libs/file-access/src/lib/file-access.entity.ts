@@ -3,25 +3,8 @@ import { StorableEntity } from '@project/core';
 import { UserFile } from './types/file.interface';
 
 export class FileAccessEntity extends BaseEntity implements StorableEntity<UserFile> {
-  constructor(file?: UserFile) {
+  constructor(file: UserFile) {
     super();
-    this.populate(file);
-  }
-
-  /** Имя файла */
-  public name: string;
-
-  /** Содержание */
-  public content: string;
-
-  /** Пользователь, который загрузил файл */
-  public userId: string;
-
-  public populate(file?: UserFile): void {
-    if (!file) {
-      return;
-    }
-
     this.id = file.id;
     this.createdAt = file.createdAt;
     this.updatedAt = file.updatedAt;
@@ -32,10 +15,10 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
     this.userId = file.userId;
   }
 
-  /**
-   * Преобразование из FileAccessEntity в объект
-   * @returns {UserFile}
-   */
+  public name: string;
+  public content: string;
+  public userId: string;
+
   public toObject(): UserFile {
     return {
       id: this.id,

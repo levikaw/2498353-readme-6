@@ -2,7 +2,9 @@ import {
   Controller,
   FileTypeValidator,
   Get,
+  HttpException,
   HttpStatus,
+  Logger,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -12,10 +14,8 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FileAccessEntity } from '@project/file-access';
 import { FileService } from './file.service';
-import { MAX_FILE_SIZE, MAX_AVATAR_SIZE } from '@project/constants';
-import { UserFile } from '@project/file-access';
+import { MAX_FILE_SIZE, MAX_AVATAR_SIZE, ALLOWED_FILE_TYPES } from './constants';
 import 'multer';
 
 @ApiTags('file')
@@ -23,12 +23,6 @@ import 'multer';
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  /**
-   * Загрузка файлов с ограничением в 1000 кб
-   * @param {Express.Multer.File[]} files
-   * @param {string} userId
-   * @returns
-   */
   @ApiResponse({
     status: HttpStatus.OK,
     type: '{ filesId: string[] }',
@@ -44,23 +38,18 @@ export class FileController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: MAX_FILE_SIZE }),
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new FileTypeValidator({ fileType: ALLOWED_FILE_TYPES }),
         ],
       }),
     )
     files: Express.Multer.File[],
     @Param('userId') userId: string,
   ): Promise<{ filesId: string[] }> {
-    const newFiles = await this.fileService.upload(files, userId);
-    return { filesId: newFiles };
+    return this.fileService.upload(files, userId).then((filesId) => {
+      return { filesId };
+    });
   }
 
-  /**
-   * Загрузка аватара с ограничением в 500 кб
-   * @param {Express.Multer.File[]} files
-   * @param {string} userId
-   * @returns
-   */
   @ApiResponse({
     status: HttpStatus.OK,
     type: '{ filesId: string[] }',
@@ -71,34 +60,35 @@ export class FileController {
   })
   @UseInterceptors(FilesInterceptor('files'))
   @Post('avatar/:userId')
-  public async avatar(
+  public async uploadAvatar(
     @UploadedFiles(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: MAX_AVATAR_SIZE }),
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new FileTypeValidator({ fileType: ALLOWED_FILE_TYPES }),
         ],
       }),
     )
     files: Express.Multer.File[],
     @Param('userId') userId: string,
   ): Promise<{ filesId: string[] }> {
-    const newFiles = await this.fileService.upload(files, userId);
-    return { filesId: newFiles };
+    return this.fileService.upload(files, userId).then((filesId) => {
+      return { filesId };
+    });
   }
 
-  /**
-   * Получение файла по идентификатору
-   * @param {string} id
-   * @returns {Promise<FileAccessEntity>}
-   */
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [FileAccessEntity],
-    isArray: true,
+    type: Buffer,
+    isArray: false,
   })
   @Get('download/:id')
-  public async download(@Param('id') id: string): Promise<UserFile> {
-    return await this.fileService.download(id);
+  public async download(@Param('id') id: string): Promise<Buffer> {
+    try {
+      return await this.fileService.download(id);
+    } catch (error) {
+      Logger.error(error, `download - id: ${id}`);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 }

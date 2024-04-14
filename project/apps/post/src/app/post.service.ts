@@ -1,80 +1,55 @@
 import { Injectable } from '@nestjs/common';
 import { PostAccessEntity, PostAccessRepository, CommonPost } from '@project/post-access';
+import { POST_EXCEPTION_MESSAGES } from './constants';
 
 @Injectable()
 export class PostService {
   constructor(private readonly postAccessRepository: PostAccessRepository) {}
 
-  /**
-   * Создание поста
-   * @param {CommonPost} dto
-   * @param {string} userId
-   * @returns {Promise<PostAccessEntity>}
-   */
-  public async createPost(dto: CommonPost, userId: string): Promise<PostAccessEntity> {
-    return await this.postAccessRepository.save(new PostAccessEntity({ ...dto, userId }));
+  public async createPost(post: CommonPost, userId: string): Promise<PostAccessEntity> {
+    return this.postAccessRepository.save(new PostAccessEntity({ ...post, userId }));
   }
 
-  /**
-   * Лента публикаций
-   * @returns {Promise<CommonPost[]>}
-   */
-  public async findAll(): Promise<CommonPost[]> {
-    return await this.postAccessRepository.findAll();
+  public async findAllPosts(): Promise<CommonPost[]> {
+    return this.postAccessRepository.findAll();
   }
 
-  /**
-   * Поиск поста по идентификатору
-   * @param {string} postId
-   * @returns {Promise<CommonPost>}
-   */
-  public async findPostById(postId: string): Promise<CommonPost> {
-    return (await this.postAccessRepository.findById(postId)).toObject();
+  public async findPostById(id: string): Promise<CommonPost> {
+    return this.postAccessRepository.findById(id).then((resp) => resp.toObject());
   }
 
-  /**
-   * Поиск постов пользователя по идентификатору
-   * @param {string} userId
-   * @returns {Promise<CommonPost[]>}
-   */
   public async findPostByUserId(userId: string): Promise<CommonPost[]> {
-    return (await this.postAccessRepository.findByUserId(userId)).map((post) => post.toObject());
+    return this.postAccessRepository.findByUserId(userId).then((resp) => resp.map((post) => post.toObject()));
   }
 
-  /**
-   * Репост
-   * @param {string} postId
-   * @param {string} userId
-   * @returns {Promise<CommonPost>}
-   */
   public async rePost(postId: string, userId: string): Promise<CommonPost> {
     const existsPost = await this.postAccessRepository.findById(postId);
+
+    if (!existsPost) {
+      throw new Error(POST_EXCEPTION_MESSAGES.NotFound);
+    }
+
     delete existsPost.createdAt;
     delete existsPost.id;
     existsPost.userId = userId;
-    existsPost.repostedFrom = postId;
-    existsPost.reposted = true;
+    existsPost.repostedFromPostId = postId;
+    existsPost.isReposted = true;
 
-    return (await this.postAccessRepository.save(new PostAccessEntity(existsPost))).toObject();
+    return this.postAccessRepository.save(new PostAccessEntity(existsPost)).then((resp) => resp.toObject());
   }
 
-  /**
-   * Обновление поста по идентификатору
-   * @param {CommonPost} dto
-   * @param {string} postId
-   */
-  public async updatePost(dto: CommonPost, postId: string): Promise<void> {
-    const existsPost = await this.postAccessRepository.findById(postId);
+  public async updatePostById(post: CommonPost, id: string): Promise<void> {
+    const existsPost = await this.postAccessRepository.findById(id);
 
-    await this.postAccessRepository.update(new PostAccessEntity({ ...dto, id: existsPost.id }));
+    if (!existsPost) {
+      throw new Error(POST_EXCEPTION_MESSAGES.NotFound);
+    }
+
+    await this.postAccessRepository.update(new PostAccessEntity({ ...post, id: existsPost.id }));
   }
 
-  /**
-   * Удаление поста по идентификатору
-   * @param {string} postId
-   */
-  public async deletePost(postId: string): Promise<void> {
+  public async deletePostById(id: string): Promise<void> {
     // TODO: удаление артефактов публикации
-    await this.postAccessRepository.deleteById(postId);
+    this.postAccessRepository.deleteById(id);
   }
 }

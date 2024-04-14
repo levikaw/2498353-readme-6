@@ -9,14 +9,9 @@ export class CommentAccessRepository extends BaseMemoryRepository<CommentAccessE
     super(entityFactory);
   }
 
-  /**
-   * Поиск комментариев для публикации
-   * @param {string} postId
-   * @returns {Promise<CommentAccessEntity[]>}
-   */
-  public async findByPostId(postId: string): Promise<CommentAccessEntity[]> {
-    const entities = Array.from(this.entities.values());
-    const comments = entities.filter((entity) => entity.postId === postId && !entity.deletedAt);
-    return comments.map((c) => this.entityFactory.create(c));
+  public async findCommentsByPostId(postId: string): Promise<CommentAccessEntity[]> {
+    return Array.from(this.entities.values())
+      .filter((entity) => entity.postId === postId && !entity.deletedAt)
+      .map((c) => this.entityFactory.createEntity(c));
   }
 }

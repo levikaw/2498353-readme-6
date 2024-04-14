@@ -5,12 +5,7 @@ import { UserLike } from './types/like.interface';
 
 @Injectable()
 export class LikeAccessFactory implements EntityFactory<LikeAccessEntity> {
-  /**
-   * Создание LikeAccessEntity из обекта
-   * @param {UserLike} entityPlainData
-   * @returns {LikeAccessEntity}
-   */
-  public create(entityPlainData: UserLike): LikeAccessEntity {
+  public createEntity(entityPlainData: UserLike): LikeAccessEntity {
     return new LikeAccessEntity(entityPlainData);
   }
 }

@@ -1,59 +1,40 @@
-import { IsArray, IsBoolean, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateIf } from 'class-validator';
+import { IsArray, IsBoolean, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsUUID, ValidateIf } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus, PostType, UserPost } from '@project/post-access';
+import { POSTID_API, USERID_API } from '@project/constants';
 import { Type } from 'class-transformer';
+import { POST_STATUS_API, POST_TAGS_API, POST_TYPE_API, REPOSTED_API } from '../constants';
 
 export class CreateBasePostDto implements UserPost {
-  @ApiProperty({
-    description: 'User identificator',
-    example: 'da783896-dc38-48ff-9b1a-a01ec545c33a',
-  })
+  @ApiProperty(USERID_API)
   @IsNotEmpty()
   @IsUUID()
-  userId!: string;
+  public userId!: string;
 
-  @ApiProperty({
-    description: 'Post type',
-    example: 'video',
-    enum: PostType,
-  })
+  @ApiProperty(POST_TYPE_API)
   @IsNotEmpty()
   @IsEnum(PostType)
-  type!: PostType;
+  public type!: PostType;
 
-  @ApiProperty({
-    description: 'Post tags array',
-    example: '["video", "cats", "funny"]',
-    isArray: true,
-  })
+  @ApiProperty(POST_TAGS_API)
   @IsOptional()
   @IsArray({ each: true })
   @Type(() => String)
-  tags?: string[];
+  public tags?: string[];
 
-  @ApiProperty({
-    description: 'Post status',
-    example: 'published',
-    enum: PostStatus,
-  })
+  @ApiProperty(POST_STATUS_API)
   @IsNotEmpty()
   @IsEnum(PostStatus)
-  status!: PostStatus;
+  public status!: PostStatus;
 
-  @ApiProperty({
-    description: 'Post id that was reposted ',
-    example: 'da783896-dc38-48ff-9b1a-a01ec545c33a',
-  })
+  @ApiProperty(POSTID_API)
   @IsOptional()
   @IsUUID()
-  repostedFrom?: string;
+  public repostedFromPostId?: string;
 
-  @ApiProperty({
-    description: 'Is current post reposted?',
-    example: 'true',
-  })
+  @ApiProperty(REPOSTED_API)
   @IsOptional()
   @IsBoolean()
-  @ValidateIf((post) => isNotEmpty(post.repostedFrom))
-  reposted?: boolean;
+  @ValidateIf((post) => isNotEmpty(post.repostedFromPostId))
+  public isReposted?: boolean;
 }

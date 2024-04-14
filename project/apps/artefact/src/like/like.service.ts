@@ -1,39 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { LikeAccessEntity, LikeAccessRepository, UserLike } from '@project/like-access';
+import { LIKE_EXCEPTION_MESSAGES } from './constants';
 import { CreateLikeDto } from './dto/create-like.dto';
 
 @Injectable()
 export class LikeService {
   constructor(private readonly likeAccessRepository: LikeAccessRepository) {}
 
-  /**
-   * Получение комментариев по идентификатору публикации
-   * @param {string} postId
-   * @returns {Promise<UserLike[]>}
-   */
-  public async find(postId: string): Promise<UserLike[]> {
-    return (await this.likeAccessRepository.findByPostId(postId)).map((c) => c.toObject());
+  public async findLikeByPostId(postId: string): Promise<UserLike[]> {
+    return this.likeAccessRepository.findByPostId(postId).then((resp) => resp.map((c) => c.toObject()));
   }
 
-  /**
-   * Создание комментария для публикации
-   * @param {CreateLikeDto} dto
-   * @returns {Promise<UserLike>}
-   */
-  public async create(dto: CreateLikeDto): Promise<UserLike> {
+  public async createLike(like: CreateLikeDto): Promise<UserLike> {
     // TODO: Проверка при создании лайка (может быть только один лайк пользователя для публикации)
-    return (await this.likeAccessRepository.save(new LikeAccessEntity(dto))).toObject();
+    return this.likeAccessRepository.save(new LikeAccessEntity(like)).then((resp) => resp.toObject());
   }
 
-  /**
-   * Удаление комментария по идентификатору публикации и пользователя
-   * @param {string} postId
-   * @param {string} userId
-   */
-  public async delete(postId: string, userId: string): Promise<any> {
+  public async deleteLikeByPostIdUserId(postId: string, userId: string): Promise<void> {
     const like = await this.likeAccessRepository.findByPostIdUserId(postId, userId);
     if (!like) {
-      throw new Error('Оценка публикации не найдена!');
+      throw new Error(LIKE_EXCEPTION_MESSAGES.NotFound);
     }
 
     await this.likeAccessRepository.deleteById(like.toObject().id);
