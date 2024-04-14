@@ -1,0 +1,8 @@
+# create this user before in /user/register
+POST http://localhost:3000/api/auth/login 
+Content-Type: application/json
+
+{
+    "email": "somemail@mail.com", 
+    "password": "!lDTE2701!"
+}
