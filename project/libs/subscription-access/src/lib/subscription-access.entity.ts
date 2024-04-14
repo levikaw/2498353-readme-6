@@ -1,9 +1,14 @@
 import { BaseEntity, StorableEntity } from '@project/core';
+import { isNotEmpty } from 'class-validator';
 import { Subscription } from './types/subscription.interface';
 
 export class SubscriptionAccessEntity extends BaseEntity implements StorableEntity<Subscription> {
   constructor(subscription: Subscription) {
     super();
+
+    if (!isNotEmpty(subscription)) {
+      return undefined;
+    }
 
     this.id = subscription.id;
     this.createdAt = subscription.createdAt;
