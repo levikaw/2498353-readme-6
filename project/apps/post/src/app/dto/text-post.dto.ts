@@ -11,7 +11,7 @@ import {
 import { TextPost } from '@project/post-access';
 import { CreateBasePostDto } from './base-post.dto';
 
-export class CreateTextPostDto extends CreateBasePostDto implements TextPost {
+export class CreateTextPostDto extends CreateBasePostDto {
   @ApiProperty()
   @IsNotEmpty()
   @MinLength(MIN_LENGTH_NAME_POST)

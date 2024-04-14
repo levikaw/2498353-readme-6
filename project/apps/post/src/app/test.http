@@ -1,0 +1,36 @@
+POST http://localhost:3000/api/create-post/text 
+Content-Type: application/json
+
+{
+    "userId": "7cc9fceb-f0f1-4228-9177-cb17855ff2e0",
+    "name": "dbfbdbgbfsfbsccccccccgrbrwb", 
+    "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of ",
+    "announcement": "remaining essentially unchanged. It was popularised in the 1960s with the release of ",
+    "isPublished": true
+}
+
+###
+
+GET http://localhost:3000/api/post
+
+###
+
+# change id
+DELETE http://localhost:3000/api/post/931b5427-39d5-4108-9daf-1f8db5225b4a 
+
+###
+
+# repost
+PUT http://localhost:3000/api/post/repost/1cb6bd97-cdce-4fbf-af8d-0298bb502601/f1775cdb-b978-4525-86a3-a960f7291216 
+
+###
+
+PUT http://localhost:3000/api/update-post/text/1cb6bd97-cdce-4fbf-af8d-0298bb502601
+Content-Type: application/json
+
+{
+    "userId": "7cc9fceb-f0f1-4228-9177-cb17855ff2e0",
+    "name": "1dbfbdbgbfsfbsccccccccgrbrwb", 
+    "text": "1Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of ",
+    "announcement": "1remaining essentially unchanged. It was popularised in the 1960s with the release of "
+}

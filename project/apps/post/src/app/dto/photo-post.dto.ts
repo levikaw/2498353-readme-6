@@ -4,7 +4,7 @@ import { PhotoPost } from '@project/post-access';
 import { CreateBasePostDto } from './base-post.dto';
 import { FILEID_API } from '../constants';
 
-export class CreatePhotoPostDto extends CreateBasePostDto implements PhotoPost {
+export class CreatePhotoPostDto extends CreateBasePostDto {
   @ApiProperty(FILEID_API)
   @IsNotEmpty()
   @IsUUID()

@@ -1,5 +1,4 @@
 import { UserPost } from './base/base-post.interface';
-
 import { VideoPost } from './video-post.interface';
 import { TextPost } from './text-post.interface';
 import { LinkPost } from './link-post.interface';

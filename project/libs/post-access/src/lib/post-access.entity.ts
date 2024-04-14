@@ -1,16 +1,20 @@
 import { BaseEntity, StorableEntity } from '@project/core';
-import { PostStatus } from './types/base/post-status.enum';
-import { PostType } from './types/base/post-type.enum';
+import { PostType } from '@prisma/client';
 import { CommonPost } from './types/common-post.interface';
 import { LinkPost } from './types/link-post.interface';
 import { PhotoPost } from './types/photo-post.interface';
 import { QuotePost } from './types/quote-post.interface';
 import { TextPost } from './types/text-post.interface';
 import { VideoPost } from './types/video-post.interface';
+import { isNotEmpty } from 'class-validator';
 
 export class PostAccessEntity extends BaseEntity implements StorableEntity<CommonPost> {
   constructor(post: CommonPost) {
     super();
+
+    if (!isNotEmpty(post)) {
+      return undefined;
+    }
 
     this.id = post.id;
     this.createdAt = post.createdAt;
@@ -23,7 +27,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
     this.link = post.link;
     this.fileId = post.fileId;
     this.tags = post.tags;
-    this.status = post.status;
+    this.isPublished = post.isPublished;
     this.repostedFromPostId = post.repostedFromPostId;
     this.isReposted = post.isReposted;
     this.author = post.author;
@@ -31,13 +35,13 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
     this.announcement = post.announcement;
   }
 
-  public type?: PostType;
-  public userId?: string;
+  public type: PostType;
+  public userId: string;
   public name?: string;
   public link?: string;
   public fileId?: string;
   public tags?: string[];
-  public status?: PostStatus;
+  public isPublished?: boolean;
   public repostedFromPostId?: string;
   public isReposted?: boolean;
   public author?: string;
@@ -56,7 +60,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       link: this.link,
       fileId: this.fileId,
       tags: this.tags,
-      status: this.status,
+      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
       isReposted: this.isReposted,
       author: this.author,
@@ -75,7 +79,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       type: this.type,
       link: this.link,
       tags: this.tags,
-      status: this.status,
+      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
       isReposted: this.isReposted,
     };
@@ -90,7 +94,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       userId: this.userId,
       type: this.type,
       tags: this.tags,
-      status: this.status,
+      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
       author: this.author,
       text: this.text,
@@ -107,7 +111,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       type: this.type,
       name: this.name,
       tags: this.tags,
-      status: this.status,
+      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
       text: this.text,
       announcement: this.announcement,
@@ -125,7 +129,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       name: this.name,
       link: this.link,
       tags: this.tags,
-      status: this.status,
+      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
     };
   }
@@ -136,7 +140,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       type: this.type,
       fileId: this.fileId,
       tags: this.tags,
-      status: this.status,
+      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
     };
   }

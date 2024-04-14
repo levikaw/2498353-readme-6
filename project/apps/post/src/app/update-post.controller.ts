@@ -20,7 +20,7 @@ export class UpdatePostController {
     @Param('postId') postId: string,
   ): Promise<void> {
     try {
-      await this.postService.updatePostById(dto, postId);
+      await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
       Logger.error(error, `createVideoPost - postId: ${postId}`);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
@@ -34,7 +34,7 @@ export class UpdatePostController {
     @Param('postId') postId: string,
   ): Promise<void> {
     try {
-      await this.postService.updatePostById(dto, postId);
+      await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
       Logger.error(error, `createTextPost - postId: ${postId}`);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
@@ -48,7 +48,7 @@ export class UpdatePostController {
     @Param('postId') postId: string,
   ): Promise<void> {
     try {
-      await this.postService.updatePostById(dto, postId);
+      await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
       Logger.error(error, `createPhotoPost - postId: ${postId}`);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
@@ -62,7 +62,7 @@ export class UpdatePostController {
     @Param('postId') postId: string,
   ): Promise<void> {
     try {
-      await this.postService.updatePostById(dto, postId);
+      await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
       Logger.error(error, `createLinkPost - postId: ${postId}`);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
@@ -76,7 +76,7 @@ export class UpdatePostController {
     @Param('postId') postId: string,
   ): Promise<void> {
     try {
-      await this.postService.updatePostById(dto, postId);
+      await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
       Logger.error(error, `createQuotePost - postId: ${postId}`);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
