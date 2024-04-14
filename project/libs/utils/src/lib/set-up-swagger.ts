@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-export function SetUpSwaggerModule<T>(
+export function setUpSwaggerModule<T>(
   app: INestApplication<T>,
   appTag: string,
   swaggerPath: string = 'api',

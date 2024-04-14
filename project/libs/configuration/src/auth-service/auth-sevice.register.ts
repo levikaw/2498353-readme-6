@@ -16,6 +16,4 @@ async function getAuthConfig(): Promise<AuthServiceConfiguration> {
   return config;
 }
 
-export default registerAs(AUTH_ALIAS, async (): Promise<ConfigType<typeof getAuthConfig>> => {
-  return await getAuthConfig();
-});
+export default registerAs(AUTH_ALIAS, async (): Promise<ConfigType<typeof getAuthConfig>> => getAuthConfig());

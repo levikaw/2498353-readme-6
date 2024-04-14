@@ -14,6 +14,4 @@ async function getFilesAccessConfig(): Promise<FileServiceConfiguration> {
   return config;
 }
 
-export default registerAs(FILES_ALIAS, async (): Promise<ConfigType<typeof getFilesAccessConfig>> => {
-  return await getFilesAccessConfig();
-});
+export default registerAs(FILES_ALIAS, async (): Promise<ConfigType<typeof getFilesAccessConfig>> => getFilesAccessConfig());

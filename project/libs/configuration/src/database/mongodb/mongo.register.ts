@@ -18,6 +18,4 @@ async function getMongoDbConfig(): Promise<MongoConfiguration> {
   return config;
 }
 
-export default registerAs(MONGO_ALIAS, async (): Promise<ConfigType<typeof getMongoDbConfig>> => {
-  return await getMongoDbConfig();
-});
+export default registerAs(MONGO_ALIAS, async (): Promise<ConfigType<typeof getMongoDbConfig>> => getMongoDbConfig());
