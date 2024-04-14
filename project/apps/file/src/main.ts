@@ -6,7 +6,7 @@
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { FILES_ALIAS } from '@project/constants';
+import { FILES_ALIAS } from '@project/configuration';
 import { SetUpSwaggerModule } from '@project/utils';
 import { FileModule } from './app/file.module';
 
