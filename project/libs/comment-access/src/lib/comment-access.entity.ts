@@ -1,9 +1,14 @@
 import { BaseEntity, StorableEntity } from '@project/core';
+import { isNotEmpty } from 'class-validator';
 import { Commentary } from './types/comment.interface';
 
 export class CommentAccessEntity extends BaseEntity implements StorableEntity<Commentary> {
   constructor(comment: Commentary) {
     super();
+
+    if (!isNotEmpty(comment)) {
+      return undefined;
+    }
 
     this.id = comment.id;
     this.createdAt = comment.createdAt;
