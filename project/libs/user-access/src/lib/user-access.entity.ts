@@ -4,11 +4,16 @@ import { StorableEntity } from '@project/core';
 import 'multer';
 import { SALT_ROUNDS } from './constants';
 import { AuthUser } from './types/auth-user.interface';
-import { UserRole } from './types/user-role.enum';
+import { UserRole } from '@prisma/client';
+import { isNotEmpty } from 'class-validator';
 
 export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthUser> {
   constructor(user: AuthUser) {
     super();
+
+    if (!isNotEmpty(user)) {
+      return undefined;
+    }
 
     this.id = user.id;
     this.createdAt = user.createdAt;
@@ -24,7 +29,7 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
 
   public email: string;
   public login: string;
-  public avatar?: Express.Multer.File | null;
+  public avatar?: string;
   public role: UserRole;
   public passwordHash: string;
 
