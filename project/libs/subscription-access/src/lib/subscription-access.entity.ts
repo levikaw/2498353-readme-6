@@ -13,7 +13,6 @@ export class SubscriptionAccessEntity extends BaseEntity implements StorableEnti
     this.id = subscription.id;
     this.createdAt = subscription.createdAt;
     this.updatedAt = subscription.updatedAt;
-    this.deletedAt = subscription.deletedAt;
 
     this.followedUserId = subscription.followedUserId;
     this.userId = subscription.userId;
@@ -27,7 +26,6 @@ export class SubscriptionAccessEntity extends BaseEntity implements StorableEnti
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       followedUserId: this.followedUserId,
       userId: this.userId,
     };

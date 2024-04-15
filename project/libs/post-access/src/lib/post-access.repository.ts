@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/data-access';
 import { PostAccessEntity } from './post-access.entity';
 import { PostAccessFactory } from './post-access.factory';
-// import { PostType, Prisma } from '@prisma/client';
 import { PrismaService } from '@project/prisma';
 import { convertToPrismaFilter } from './post-access.filter';
 import { CommonPost } from './types/common-post.interface';
@@ -56,34 +55,4 @@ export class PostAccessRepository extends BasePostgresRepository<PostAccessEntit
       })
       .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
   }
-
-  /*public async findByName(name: string): Promise<PostAccessEntity[]> {
-    return Array.from(this.entities.values())
-      .filter((entity) => new RegExp(`.*${name}.*`).test(entity.name) && !entity.deletedAt)
-      .map((c) => this.entityFactory.createEntity(c));
-  }
-
-  public async findByType(type: PostType): Promise<PostAccessEntity[]> {
-    return Array.from(this.entities.values())
-      .filter((entity) => entity.type === type && !entity.deletedAt)
-      .map((c) => this.entityFactory.createEntity(c));
-  }
-
-  public async findByStatus(status: PostStatus): Promise<PostAccessEntity[]> {
-    return Array.from(this.entities.values())
-      .filter((entity) => entity.status === status && !entity.deletedAt)
-      .map((c) => this.entityFactory.createEntity(c));
-  }
-
-  public async findByTags(tags: string[]): Promise<PostAccessEntity[]> {
-    return Array.from(this.entities.values())
-      .filter((entity) => tags.some((tag) => entity.tags.includes(tag)) && !entity.deletedAt)
-      .map((c) => this.entityFactory.createEntity(c));
-  }
-
-  public async findByUserId(userId: string): Promise<PostAccessEntity[]> {
-    return Array.from(this.entities.values())
-      .filter((entity) => entity.userId === userId && !entity.deletedAt)
-      .map((c) => this.entityFactory.createEntity(c));
-  }*/
 }
