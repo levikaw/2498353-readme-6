@@ -1,9 +1,12 @@
 import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, MaxLength, MinLength } from 'class-validator';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { EMAIL_API, FAIL_PASSWORD_VALIDATION, MAX_LENGTH_PASSWORD, MIN_LENGTH_PASSWORD } from '@project/constants';
+import { EMAIL_API, FAIL_PASSWORD_VALIDATION, LENGTH_PASSWORD } from '@project/constants';
 
 export class LoginUserDto {
-  @ApiProperty(EMAIL_API)
+  @ApiProperty({
+    description: EMAIL_API.DESCRIPTION,
+    example: EMAIL_API.EXAMPLE,
+  })
   @IsNotEmpty()
   @IsEmail()
   public email!: string;
@@ -11,8 +14,8 @@ export class LoginUserDto {
   @ApiHideProperty()
   @IsNotEmpty()
   @IsString()
-  @MinLength(MIN_LENGTH_PASSWORD)
-  @MaxLength(MAX_LENGTH_PASSWORD)
-  @IsStrongPassword({ minLength: MIN_LENGTH_PASSWORD }, { message: FAIL_PASSWORD_VALIDATION })
+  @MinLength(LENGTH_PASSWORD.MIN)
+  @MaxLength(LENGTH_PASSWORD.MAX)
+  @IsStrongPassword({ minLength: LENGTH_PASSWORD.MIN }, { message: FAIL_PASSWORD_VALIDATION })
   public password!: string;
 }

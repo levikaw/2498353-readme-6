@@ -1,28 +1,26 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  MAX_LENGTH_AUTHOR_QUOTE_POST,
-  MIN_LENGTH_TEXT_QUOTE_POST,
-  MAX_LENGTH_TEXT_QUOTE_POST,
-  MIN_LENGTH_AUTHOR_QUOTE_POST,
-  QUOTE_TEXT_API,
-  QUOTE_AUTHOR_API,
-} from '../constants';
+import { LENGTH_TEXT_QUOTE_POST, LENGTH_AUTHOR_QUOTE_POST, QUOTE_TEXT_API, QUOTE_AUTHOR_API } from '../constants';
 import { CreateBasePostDto } from './base-post.dto';
-import { QuotePost } from '@project/post-access';
 
 export class CreateQuotePostDto extends CreateBasePostDto {
-  @ApiProperty(QUOTE_TEXT_API)
+  @ApiProperty({
+    description: QUOTE_TEXT_API.DESCRIPTION,
+    example: QUOTE_TEXT_API.EXAMPLE,
+  })
   @IsNotEmpty()
-  @MinLength(MIN_LENGTH_TEXT_QUOTE_POST)
-  @MaxLength(MAX_LENGTH_TEXT_QUOTE_POST)
+  @MinLength(LENGTH_TEXT_QUOTE_POST.MIN)
+  @MaxLength(LENGTH_TEXT_QUOTE_POST.MAX)
   @IsString()
   public text!: string;
 
-  @ApiProperty(QUOTE_AUTHOR_API)
+  @ApiProperty({
+    description: QUOTE_AUTHOR_API.DESCRIPTION,
+    example: QUOTE_AUTHOR_API.EXAMPLE,
+  })
   @IsNotEmpty()
-  @MinLength(MIN_LENGTH_AUTHOR_QUOTE_POST)
-  @MaxLength(MAX_LENGTH_AUTHOR_QUOTE_POST)
+  @MinLength(LENGTH_AUTHOR_QUOTE_POST.MIN)
+  @MaxLength(LENGTH_AUTHOR_QUOTE_POST.MAX)
   @IsString()
   public author!: string;
 }

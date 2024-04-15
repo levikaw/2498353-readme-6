@@ -1,10 +1,10 @@
-export const MONGO_DB_VaLIDATION_MESSAGE = {
-  HostRequired: 'Host is required',
-  NameRequired: 'Database name is required',
-  PortRequired: 'Port is required',
-  UserRequired: 'User is required',
-  PasswordRequired: 'Password is required',
-  BaseAuthRequired: 'MongoDB authentication base is required',
+export const MONGO_VALIDATION_MESSAGE = {
+  HOST: 'Host is required',
+  NAME: 'Database name is required',
+  PORT: 'Port is required',
+  USER: 'User is required',
+  PASSWORD: 'Password is required',
+  AUTH: 'MongoDB authentication base is required',
 } as const;
 export const DEFAULT_MONGO_PORT = 27017;
 export const MONGO_ALIAS: string = 'mongodb';

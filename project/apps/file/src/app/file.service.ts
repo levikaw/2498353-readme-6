@@ -26,7 +26,7 @@ export class FileService {
     const file = await this.fileAccessRepository.findById(id);
 
     if (!file) {
-      throw new Error(FILES_MESSAGES_EXCEPTION.NotFound);
+      throw new Error(FILES_MESSAGES_EXCEPTION.NOT_FOUND);
     }
 
     return Buffer.from(file.content);

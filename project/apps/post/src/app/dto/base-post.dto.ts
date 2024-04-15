@@ -1,12 +1,14 @@
-import { IsArray, IsBoolean, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsUUID, ValidateIf } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-// import { PostType, UserPost } from '@project/post-access';
-import { POSTID_API, USERID_API } from '@project/constants';
+import { USERID_API } from '@project/constants';
 import { Type } from 'class-transformer';
-import { POST_STATUS_API, POST_TAGS_API, POST_TYPE_API, REPOSTED_API } from '../constants';
+import { POST_TAGS_API } from '../constants';
 
 export class CreateBasePostDto {
-  @ApiProperty(USERID_API)
+  @ApiProperty({
+    description: USERID_API.DESCRIPTION,
+    example: USERID_API.EXAMPLE,
+  })
   @IsNotEmpty()
   @IsUUID()
   public userId!: string;
