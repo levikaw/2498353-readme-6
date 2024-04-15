@@ -8,18 +8,16 @@ function getMongoConnectionString({ username, password, host, port, databaseName
 
 export function getMongooseOptions(): MongooseModuleAsyncOptions {
   return {
-    useFactory: async (config: ConfigService) => {
-      return {
-        uri: getMongoConnectionString({
-          username: config.get<string>(`${MONGO_ALIAS}.user`),
-          password: config.get<string>(`${MONGO_ALIAS}.password`),
-          host: config.get<string>(`${MONGO_ALIAS}.host`),
-          port: config.get<string>(`${MONGO_ALIAS}.port`),
-          authDatabase: config.get<string>(`${MONGO_ALIAS}.authBase`),
-          databaseName: config.get<string>(`${MONGO_ALIAS}.name`),
-        }),
-      };
-    },
+    useFactory: (config: ConfigService) => ({
+      uri: getMongoConnectionString({
+        username: config.get<string>(`${MONGO_ALIAS}.user`),
+        password: config.get<string>(`${MONGO_ALIAS}.password`),
+        host: config.get<string>(`${MONGO_ALIAS}.host`),
+        port: config.get<string>(`${MONGO_ALIAS}.port`),
+        authDatabase: config.get<string>(`${MONGO_ALIAS}.authBase`),
+        databaseName: config.get<string>(`${MONGO_ALIAS}.name`),
+      }),
+    }),
     inject: [ConfigService],
   };
 }
