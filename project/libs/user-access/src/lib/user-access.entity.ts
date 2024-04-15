@@ -18,7 +18,6 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
     this.id = user.id;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
-    this.deletedAt = user.deletedAt;
 
     this.email = user.email;
     this.avatar = user.avatar;
@@ -38,7 +37,6 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       email: this.email,
       avatar: this.avatar,
       login: this.login,

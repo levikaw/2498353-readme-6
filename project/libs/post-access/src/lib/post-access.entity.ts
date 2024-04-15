@@ -19,7 +19,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
     this.id = post.id;
     this.createdAt = post.createdAt;
     this.updatedAt = post.updatedAt;
-    this.deletedAt = post.deletedAt;
 
     this.userId = post.userId;
     this.type = post.type;
@@ -53,7 +52,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       userId: this.userId,
       type: this.type,
       name: this.name,
@@ -74,7 +72,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       userId: this.userId,
       type: this.type,
       link: this.link,
@@ -90,7 +87,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       userId: this.userId,
       type: this.type,
       tags: this.tags,
@@ -106,7 +102,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       userId: this.userId,
       type: this.type,
       name: this.name,
@@ -123,7 +118,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       userId: this.userId,
       type: this.type,
       name: this.name,

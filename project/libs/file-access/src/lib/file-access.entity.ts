@@ -8,7 +8,6 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
     this.id = file.id;
     this.createdAt = file.createdAt;
     this.updatedAt = file.updatedAt;
-    this.deletedAt = file.deletedAt;
 
     this.name = file.name;
     this.content = file.content;
@@ -24,7 +23,6 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       name: this.name,
       content: this.content,
       userId: this.userId,

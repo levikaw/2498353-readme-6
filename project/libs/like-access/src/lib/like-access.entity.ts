@@ -13,7 +13,6 @@ export class LikeAccessEntity extends BaseEntity implements StorableEntity<UserL
     this.id = like.id;
     this.createdAt = like.createdAt;
     this.updatedAt = like.updatedAt;
-    this.deletedAt = like.deletedAt;
 
     this.postId = like.postId;
     this.userId = like.userId;
@@ -27,7 +26,6 @@ export class LikeAccessEntity extends BaseEntity implements StorableEntity<UserL
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      deletedAt: this.deletedAt,
       postId: this.postId,
       userId: this.userId,
     };

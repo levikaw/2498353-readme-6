@@ -20,8 +20,7 @@ export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity
       return null;
     }
 
-    const foundEntity = this.entityFactory.createEntity(founded);
-    return !foundEntity.deletedAt ? foundEntity : null;
+    return this.entityFactory.createEntity(founded);
   }
 
   public async save(entity: T): Promise<T> {
@@ -50,13 +49,6 @@ export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity
       throw new Error('Entity not found');
     }
 
-    const entity = await this.findById(id);
-
-    entity.updatedAt = new Date();
-    entity.deletedAt = entity.updatedAt;
-
-    this.entities.set(entity.id, entity.toObject());
-
-    // this.entities.delete(id);
+    this.entities.delete(id);
   }
 }
