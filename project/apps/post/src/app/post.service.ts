@@ -23,7 +23,7 @@ export class PostService {
     const existsPost = await this.postAccessRepository.findById(postId);
 
     if (!existsPost) {
-      throw new Error(POST_EXCEPTION_MESSAGES.NotFound);
+      throw new Error(POST_EXCEPTION_MESSAGES.NOT_FOUND);
     }
 
     delete existsPost.createdAt;
@@ -41,7 +41,7 @@ export class PostService {
     const existsPost = await this.postAccessRepository.findById(post.id);
 
     if (!existsPost) {
-      throw new Error(POST_EXCEPTION_MESSAGES.NotFound);
+      throw new Error(POST_EXCEPTION_MESSAGES.NOT_FOUND);
     }
     // TODO: сделать проверку на userId
     await this.postAccessRepository.update(post);

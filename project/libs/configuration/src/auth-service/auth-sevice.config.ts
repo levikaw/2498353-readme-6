@@ -9,13 +9,13 @@ import {
   Min,
   validateOrReject,
 } from 'class-validator';
-import { MIN_PORT, MAX_PORT, Environment } from '../constants';
+import { PORT.MIN, PORT.MAX, Environment } from '../constants';
 import { DEFAULT_AUTH_SERVICE_PORT, DEFAULT_EXPIRES_TOKEN_IN } from './constants';
 
 export class AuthServiceConfiguration {
   @IsNumber()
-  @Min(MIN_PORT)
-  @Max(MAX_PORT)
+  @Min(PORT.MIN)
+  @Max(PORT.MAX)
   @IsOptional()
   public port: number = DEFAULT_AUTH_SERVICE_PORT;
 

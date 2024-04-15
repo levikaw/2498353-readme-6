@@ -20,7 +20,7 @@ export class SubscriptionService {
   public async deleteSubscription(followedUserId: string, userId: string): Promise<void> {
     const subscription = await this.subscriptionAccessRepository.findByUserIdFollowedUserId(followedUserId, userId);
     if (!subscription) {
-      throw new Error(SUBSCRIPTION_EXCEPTION_MESSAGES.NotFound);
+      throw new Error(SUBSCRIPTION_EXCEPTION_MESSAGES.NOT_FOUND);
     }
 
     await this.subscriptionAccessRepository.deleteById(subscription.toObject().id);

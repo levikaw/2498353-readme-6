@@ -1,3 +1,3 @@
 export const LIKE_EXCEPTION_MESSAGES = {
-  NotFound: 'Like not found!',
+  NOT_FOUND: 'Like not found!',
 } as const;
