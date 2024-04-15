@@ -9,7 +9,7 @@ import {
   Min,
   validateOrReject,
 } from 'class-validator';
-import { PORT.MIN, PORT.MAX, Environment } from '../constants';
+import { PORT, Environment } from '../constants';
 import { DEFAULT_AUTH_SERVICE_PORT, DEFAULT_EXPIRES_TOKEN_IN } from './constants';
 
 export class AuthServiceConfiguration {

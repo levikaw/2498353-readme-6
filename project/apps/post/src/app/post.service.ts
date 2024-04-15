@@ -49,6 +49,6 @@ export class PostService {
 
   public async deletePostById(id: string): Promise<void> {
     // TODO: удаление артефактов публикации
-    this.postAccessRepository.deleteById(id);
+    await this.postAccessRepository.deleteById(id);
   }
 }

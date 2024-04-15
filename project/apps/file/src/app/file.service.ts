@@ -8,8 +8,8 @@ export class FileService {
 
   public async upload(files: Express.Multer.File[], userId: string): Promise<string[]> {
     return Promise.all(
-      files.map(async (file) => {
-        return this.fileAccessRepository
+      files.map((file) =>
+        this.fileAccessRepository
           .save(
             new FileAccessEntity({
               name: file.originalname,
@@ -17,8 +17,8 @@ export class FileService {
               userId,
             }),
           )
-          .then((resp) => resp.id);
-      }),
+          .then((resp) => resp.id),
+      ),
     );
   }
 
