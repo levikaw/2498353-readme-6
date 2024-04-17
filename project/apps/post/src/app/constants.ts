@@ -14,7 +14,7 @@ export const LENGTH_AUTHOR_QUOTE_POST = {
   MIN: 3,
   MAX: 50,
 };
-export const MAX_LENGTH_TEXT_LINK_POST: number = 300;
+export const MAX_LENGTH_TEXT_LINK_POST = 300;
 export const LENGTH_ANNONCE_TEXT_POST = {
   MIN: 50,
   MAX: 255,

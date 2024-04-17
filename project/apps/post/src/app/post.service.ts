@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PostAccessEntity, PostAccessRepository, CommonPost } from '@project/post-access';
-import { UpdateCommonnPost } from 'libs/post-access/src/lib/types/update-common-post.interface';
+import { UpdateCommonnPost } from '@project/post-access';
 import { POST_EXCEPTION_MESSAGES } from './constants';
 
 @Injectable()

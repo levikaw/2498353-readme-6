@@ -4,8 +4,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 export function setUpSwaggerModule<T>(
   app: INestApplication<T>,
   appTag: string,
-  swaggerPath: string = 'api',
-  version: string = '1.0',
+  swaggerPath = 'api',
+  version = '1.0',
 ): void {
   const config = new DocumentBuilder()
     .setTitle(`${appTag} api`)

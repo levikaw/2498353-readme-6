@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateBasePostDto } from './base-post.dto';
+import { BasePostDto } from './base-post.dto';
 import { FILEID_API } from '../constants';
 
-export class CreatePhotoPostDto extends CreateBasePostDto {
+export class PhotoPostDto extends BasePostDto {
   @ApiProperty({
     description: FILEID_API.DESCRIPTION,
     example: FILEID_API.EXAMPLE,

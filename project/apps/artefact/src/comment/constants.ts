@@ -1,4 +1,4 @@
-export const COMMENTS_PAGE_SIZE: number = 50;
+export const COMMENTS_PAGE_SIZE = 50;
 export const COMMENT_LENGTH = {
   MIN: 10,
   MAX: 300,

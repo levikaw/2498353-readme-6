@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { LENGTH_ANNONCE_TEXT_POST, LENGTH_NAME_POST, LENGTH_TEXT_TEXT_POST } from '../constants';
-import { CreateBasePostDto } from './base-post.dto';
+import { BasePostDto } from './base-post.dto';
 
-export class CreateTextPostDto extends CreateBasePostDto {
+export class TextPostDto extends BasePostDto {
   @ApiProperty()
   @IsNotEmpty()
   @MinLength(LENGTH_NAME_POST.MIN)
