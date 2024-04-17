@@ -26,4 +26,4 @@ export class FileAccessModel extends Document implements UserFile {
   public userId: string;
 }
 
-export const FileAccessSchema = SchemaFactory.createForClass(FileAccessModel);
+export const fileAccessSchema = SchemaFactory.createForClass(FileAccessModel);

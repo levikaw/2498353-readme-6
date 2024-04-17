@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { ALLOWED_VIDEO_URLS, LENGTH_NAME_POST, VIDEO_LINK_API } from '../constants';
-import { CreateBasePostDto } from './base-post.dto';
+import { BasePostDto } from './base-post.dto';
 
-export class CreateVideoPostDto extends CreateBasePostDto {
+export class VideoPostDto extends BasePostDto {
   @ApiProperty()
   @IsNotEmpty()
   @MinLength(LENGTH_NAME_POST.MIN)

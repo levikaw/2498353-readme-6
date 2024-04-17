@@ -7,4 +7,4 @@ export const MONGO_VALIDATION_MESSAGE = {
   AUTH: 'MongoDB authentication base is required',
 } as const;
 export const DEFAULT_MONGO_PORT = 27017;
-export const MONGO_ALIAS: string = 'mongodb';
+export const MONGO_ALIAS = 'mongodb';

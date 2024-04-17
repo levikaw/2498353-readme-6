@@ -1,1 +1,1 @@
-export const ENV_FILE: string = 'infra/prisma/.env';
+export const ENV_FILE = 'infra/prisma/.env';

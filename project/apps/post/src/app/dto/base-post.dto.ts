@@ -4,7 +4,7 @@ import { USERID_API } from '@project/constants';
 import { Type } from 'class-transformer';
 import { POST_TAGS_API } from '../constants';
 
-export class CreateBasePostDto {
+export class BasePostDto {
   @ApiProperty({
     description: USERID_API.DESCRIPTION,
     example: USERID_API.EXAMPLE,
