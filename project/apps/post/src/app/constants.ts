@@ -1,24 +1,24 @@
 export const LENGTH_NAME_POST = {
   MIN: 20,
   MAX: 50,
-};
+} as const;
 export const LENGTH_TEXT_TEXT_POST = {
   MIN: 100,
   MAX: 1024,
-};
+} as const;
 export const LENGTH_TEXT_QUOTE_POST = {
   MIN: 20,
   MAX: 300,
-};
+} as const;
 export const LENGTH_AUTHOR_QUOTE_POST = {
   MIN: 3,
   MAX: 50,
-};
+} as const;
 export const MAX_LENGTH_TEXT_LINK_POST = 300;
 export const LENGTH_ANNONCE_TEXT_POST = {
   MIN: 50,
   MAX: 255,
-};
+} as const;
 
 export const ALLOWED_VIDEO_URLS = [
   'youtube.com',

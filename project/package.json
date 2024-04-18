@@ -3,11 +3,18 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "file": "npx nx run file:serve",
-    "auth": "npx nx run auth:serve",
-    "post": "npx nx run post:serve",
-    "user": "npx nx run user:serve",
-    "artefact": "npx nx run artefact:serve"
+    "service:file": "npx nx run file:serve",
+    "service:auth": "npx nx run auth:serve",
+    "service:post": "npx nx run post:serve",
+    "service:user": "npx nx run user:serve",
+    "service:artefact": "npx nx run artefact:serve",
+    "service:postgres": "cd infra/configuration/src/database/postgres && docker compose up -d",
+    "service:mongo": "cd infra/configuration/src/database/mongodb && docker compose up -d",
+    "lint:all": "npx nx run-many --all --target=lint --fix",
+    "prisma:seed": "cd infra/prisma && npx ts-node src/seed-data.ts",
+    "prisma:generate": "cd infra/prisma && npx prisma generate",
+    "prisma:migration:create": "cd infra/prisma && npx prisma migrate dev --skip-seed",
+    "prisma:migration:apply": "cd infra/prisma && npx prisma db push"
   },
   "private": true,
   "dependencies": {

@@ -15,18 +15,17 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@project/comment-access": ["libs/comment-access/src/index.ts"],
-      "@project/configuration": ["libs/configuration/src/index.ts"],
+      "@project/comment-access": ["libs/data-access/comment-access/src/index.ts"],
+      "@project/configuration": ["infra/configuration/src/index.ts"],
       "@project/constants": ["libs/constants/src/index.ts"],
       "@project/core": ["libs/core/src/index.ts"],
-      "@project/data-access": ["libs/data-access/src/index.ts"],
-      "@project/file-access": ["libs/file-access/src/index.ts"],
-      "@project/like-access": ["libs/like-access/src/index.ts"],
-      "@project/post-access": ["libs/post-access/src/index.ts"],
+      "@project/file-access": ["libs/data-access/file-access/src/index.ts"],
+      "@project/like-access": ["libs/data-access/like-access/src/index.ts"],
+      "@project/post-access": ["libs/data-access/post-access/src/index.ts"],
       "@project/prisma": ["infra/prisma/src/index.ts"],
-      "@project/subscription-access": ["libs/subscription-access/src/index.ts"],
-      "@project/user-access": ["libs/user-access/src/index.ts"],
-      "@project/utils": ["libs/utils/src/index.ts"]
+      "@project/subscription-access": ["libs/data-access/subscription-access/src/index.ts"],
+      "@project/swagger": ["infra/swagger/src/index.ts"],
+      "@project/user-access": ["libs/data-access/user-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

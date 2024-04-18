@@ -7,7 +7,7 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { FILES_ALIAS } from '@project/configuration';
-import { setUpSwaggerModule } from '@project/utils';
+import { setUpSwaggerModule } from '@project/swagger';
 import { FileModule } from './app/file.module';
 
 async function bootstrap() {
