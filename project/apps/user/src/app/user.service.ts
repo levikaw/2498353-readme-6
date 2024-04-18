@@ -10,7 +10,6 @@ export class UserService {
 
   public async register(user: CreateUserDto): Promise<UserAccessEntity> {
     const existUser = await this.userRepository.findByEmail(user.email);
-    // TODO: not work
     if (existUser) {
       throw new ConflictException(AUTH_USER_EXISTS);
     }

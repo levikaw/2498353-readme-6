@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { SubscriptionAccessEntity, SubscriptionAccessRepository, Subscription } from '@project/subscription-access';
 import { SUBSCRIPTION_EXCEPTION_MESSAGES } from './constants';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
@@ -12,11 +12,16 @@ export class SubscriptionService {
   }
 
   public async createSubscription(subscription: CreateSubscriptionDto): Promise<Subscription> {
-    // TODO: Проверка при создании подписки (может быть только один лайк пользователя для публикации)
+    const existSubscription = await this.subscriptionAccessRepository.findByUserIdFollowedUserId(
+      subscription.followedUserId,
+      subscription.userId,
+    );
+    if (existSubscription) {
+      throw new ConflictException(SUBSCRIPTION_EXCEPTION_MESSAGES.EXISTS);
+    }
     return this.subscriptionAccessRepository.save(new SubscriptionAccessEntity(subscription)).then((resp) => resp.toObject());
   }
 
-  // TODO: подумать над форматом
   public async deleteSubscription(followedUserId: string, userId: string): Promise<void> {
     const subscription = await this.subscriptionAccessRepository.findByUserIdFollowedUserId(followedUserId, userId);
     if (!subscription) {
