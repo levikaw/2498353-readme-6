@@ -5,7 +5,7 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { setUpSwaggerModule } from '@project/utils';
+import { setUpSwaggerModule } from '@project/swagger';
 import { MainModule } from './main.module';
 
 async function bootstrap() {
