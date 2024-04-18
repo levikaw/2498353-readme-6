@@ -6,8 +6,8 @@
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { FILES_ALIAS } from '@project/constants';
-import { SetUpSwaggerModule } from '@project/utils';
+import { FILES_ALIAS } from '@project/configuration';
+import { setUpSwaggerModule } from '@project/swagger';
 import { FileModule } from './app/file.module';
 
 async function bootstrap() {
@@ -17,7 +17,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get(`${FILES_ALIAS}.port`);
 
-  SetUpSwaggerModule<FileModule>(app, 'file');
+  setUpSwaggerModule<FileModule>(app, 'file');
 
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);

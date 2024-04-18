@@ -1,4 +1,4 @@
 export const AUTH_MESSAGES_EXCEPTION = {
-  NotFound: 'User not found',
-  WrongPassword: 'User password is wrong',
+  NOT_FOUND: 'User not found',
+  WRONG_PASSWORD: 'User password is wrong',
 } as const;

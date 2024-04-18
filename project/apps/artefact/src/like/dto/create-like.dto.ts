@@ -3,12 +3,18 @@ import { ApiProperty } from '@nestjs/swagger';
 import { POSTID_API, USERID_API } from '@project/constants';
 
 export class CreateLikeDto {
-  @ApiProperty(USERID_API)
+  @ApiProperty({
+    description: USERID_API.DESCRIPTION,
+    example: USERID_API.EXAMPLE,
+  })
   @IsNotEmpty()
   @IsUUID()
   public userId!: string;
 
-  @ApiProperty(POSTID_API)
+  @ApiProperty({
+    description: POSTID_API.DESCRIPTION,
+    example: POSTID_API.EXAMPLE,
+  })
   @IsNotEmpty()
   @IsUUID()
   public postId!: string;

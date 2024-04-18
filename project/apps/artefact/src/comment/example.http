@@ -1,0 +1,17 @@
+POST http://localhost:3000/api/comment/create/6d308040-96a2-4162-bea6-2338e9976540 
+Content-Type: application/json
+
+{
+    "text": "dbfbdbgbfsfbsgrbrwb", 
+    "userId": "f1775cdb-b978-4525-86a3-a960f7291216"
+}
+
+###
+
+# by postId
+GET http://localhost:3000/api/comment/6d308040-96a2-4162-bea6-2338e9976540
+
+###
+
+# by commentId
+DELETE http://localhost:3000/api/comment/delete/d52101b2-cbc8-43a0-a778-2c9c66fdf61a 

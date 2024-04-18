@@ -1,3 +1,4 @@
 export const SUBSCRIPTION_EXCEPTION_MESSAGES = {
-  NotFound: 'Subscription not found!',
+  NOT_FOUND: 'Subscription not found!',
+  EXISTS: 'Cannot create duplicate subscription',
 } as const;

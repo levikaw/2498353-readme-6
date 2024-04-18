@@ -45,9 +45,7 @@ export class FileController {
     files: Express.Multer.File[],
     @Param('userId') userId: string,
   ): Promise<{ filesId: string[] }> {
-    return this.fileService.upload(files, userId).then((filesId) => {
-      return { filesId };
-    });
+    return this.fileService.upload(files, userId).then((filesId) => ({ filesId }));
   }
 
   @ApiResponse({
@@ -72,9 +70,7 @@ export class FileController {
     files: Express.Multer.File[],
     @Param('userId') userId: string,
   ): Promise<{ filesId: string[] }> {
-    return this.fileService.upload(files, userId).then((filesId) => {
-      return { filesId };
-    });
+    return this.fileService.upload(files, userId).then((filesId) => ({ filesId }));
   }
 
   @ApiResponse({

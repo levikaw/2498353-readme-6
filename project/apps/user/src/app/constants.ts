@@ -1,8 +1,11 @@
-export const MIN_LENGTH_LOGIN: number = 3;
-export const MAX_LENGTH_LOGIN: number = 50;
-export const AUTH_USER_EXISTS: string = 'User with this email exists';
+export const LENGTH_LOGIN = {
+  MIN: 3,
+  MAX: 50,
+} as const;
+
+export const AUTH_USER_EXISTS = 'User with this email exists';
 
 export const LOGIN_API = {
-  description: 'User login',
-  example: 'user_login',
+  DESCRIPTION: 'User login',
+  EXAMPLE: 'user_login',
 } as const;

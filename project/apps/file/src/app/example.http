@@ -1,0 +1,16 @@
+# curl -F files=@/path/to/file.ext http://localhost:3000/api/file/upload/12345678
+# by userId
+POST http://localhost:3001/api/file/upload/f1775cdb-b978-4525-86a3-a960f7291216
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="files"; filename="file.ext"
+Content-Type: image/png
+
+< /path/to/file.ext
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# by fileId
+GET http://localhost:3001/api/file/download/661beaec4e72ff4843dd1e9c

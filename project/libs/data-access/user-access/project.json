@@ -1,0 +1,9 @@
+{
+  "name": "user-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-access/user-access/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project user-access --web",
+  "targets": {}
+}

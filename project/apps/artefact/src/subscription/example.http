@@ -1,0 +1,18 @@
+
+# by /followedUserId/userId
+DELETE http://localhost:3000/api/subscription/delete/f1775cdb-b978-4525-86a3-a960f7291216/7cc9fceb-f0f1-4228-9177-cb17855ff2e0
+
+###
+
+POST http://localhost:3000/api/subscription/create 
+Content-Type: application/json
+
+{
+    "followedUserId": "f1775cdb-b978-4525-86a3-a960f7291216", 
+    "userId": "7cc9fceb-f0f1-4228-9177-cb17855ff2e0"
+}
+
+###
+
+# by userId
+GET http://localhost:3000/api/subscription/7cc9fceb-f0f1-4228-9177-cb17855ff2e0

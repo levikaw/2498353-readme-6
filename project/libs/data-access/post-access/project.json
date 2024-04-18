@@ -1,0 +1,9 @@
+{
+  "name": "post-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-access/post-access/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project post-access --web",
+  "targets": {}
+}

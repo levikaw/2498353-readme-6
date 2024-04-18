@@ -1,8 +1,10 @@
-export const COMMENTS_PAGE_SIZE: number = 50;
-export const MIN_COMMENT_LENGTH: number = 10;
-export const MAX_COMMENT_LENGTH: number = 300;
+export const COMMENTS_PAGE_SIZE = 50;
+export const COMMENT_LENGTH = {
+  MIN: 10,
+  MAX: 300,
+} as const;
 
 export const TEXT_API = {
-  description: 'Comment text',
-  example: 'This is my comment fro your post',
+  DESCRIPTION: 'Comment text',
+  EXAMPLE: 'This is my comment fro your post',
 } as const;

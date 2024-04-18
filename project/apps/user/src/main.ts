@@ -5,16 +5,19 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { SetUpSwaggerModule } from '@project/utils';
+import { setUpSwaggerModule } from '@project/swagger';
 import { UserModule } from './app/user.module';
+import { ConfigService } from '@nestjs/config';
+import { USERS_ALIAS } from '@project/configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(UserModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  const configService = app.get(ConfigService);
+  const port = configService.get(`${USERS_ALIAS}.port`);
 
-  SetUpSwaggerModule<UserModule>(app, 'user');
+  setUpSwaggerModule<UserModule>(app, 'user');
 
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
