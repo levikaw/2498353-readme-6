@@ -7,12 +7,15 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { setUpSwaggerModule } from '@project/swagger';
 import { MainModule } from './main.module';
+import { ConfigService } from '@nestjs/config';
+import { ARTEFACTS_ALIAS } from '@project/configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(MainModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  const configService = app.get(ConfigService);
+  const port = configService.get(`${ARTEFACTS_ALIAS}.port`);
 
   setUpSwaggerModule<MainModule>(app, 'artefact');
 

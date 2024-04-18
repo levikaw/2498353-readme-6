@@ -7,12 +7,15 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { setUpSwaggerModule } from '@project/swagger';
 import { AuthModule } from './app/auth.module';
+import { ConfigService } from '@nestjs/config';
+import { AUTH_ALIAS } from '@project/configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  const configService = app.get(ConfigService);
+  const port = configService.get(`${AUTH_ALIAS}.port`);
 
   setUpSwaggerModule<AuthModule>(app, 'auth');
 
