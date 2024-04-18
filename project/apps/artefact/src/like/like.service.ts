@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { LikeAccessEntity, LikeAccessRepository, UserLike } from '@project/like-access';
 import { LIKE_EXCEPTION_MESSAGES } from './constants';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -12,7 +12,11 @@ export class LikeService {
   }
 
   public async createLike(like: CreateLikeDto): Promise<UserLike> {
-    // TODO: Проверка при создании лайка (может быть только один лайк пользователя для публикации)
+    const existLike = await this.likeAccessRepository.findByPostIdUserId(like.postId, like.userId);
+    if (existLike) {
+      throw new ConflictException(LIKE_EXCEPTION_MESSAGES.EXISTS);
+    }
+
     return this.likeAccessRepository.save(new LikeAccessEntity(like)).then((resp) => resp.toObject());
   }
 

@@ -36,7 +36,7 @@ export class PostService {
     return this.postAccessRepository.save(new PostAccessEntity(existsPost)).then((resp) => resp.toObject());
   }
 
-  // обновление репоста?
+  // TODO: обновление репоста?
   public async updatePostById(post: UpdateCommonnPost): Promise<void> {
     const existsPost = await this.postAccessRepository.findById(post.id);
 
@@ -48,7 +48,6 @@ export class PostService {
   }
 
   public async deletePostById(id: string): Promise<void> {
-    // TODO: удаление артефактов публикации
     await this.postAccessRepository.deleteById(id);
   }
 }
