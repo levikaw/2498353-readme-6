@@ -9,7 +9,7 @@ export class UserService {
   constructor(private readonly userRepository: UserAccessRepository) {}
 
   public async register(user: CreateUserDto): Promise<UserAccessEntity> {
-    const existUser = await this.userRepository.findByEmail(user.email);
+    const existUser = await this.userRepository.findOneByEmail(user.email);
     if (existUser) {
       throw new ConflictException(AUTH_USER_EXISTS);
     }

@@ -18,7 +18,7 @@ export class UserAccessRepository extends BasePostgresRepository<UserAccessEntit
       .then((resp) => this.entityFactory.createEntity(resp));
   }
 
-  public async findByEmail(email: string): Promise<UserAccessEntity> {
+  public async findOneByEmail(email: string): Promise<UserAccessEntity> {
     return this.dataSource.user
       .findFirst({
         where: {

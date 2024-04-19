@@ -3,6 +3,7 @@ import { BasePostgresRepository } from '@project/core';
 import { PrismaService } from '@project/prisma';
 import { CommentAccessEntity } from './comment-access.entity';
 import { CommentAccessFactory } from './comment-access.factory';
+import { calculateSkip, QueryParamsDto } from '@project/common';
 
 @Injectable()
 export class CommentAccessRepository extends BasePostgresRepository<CommentAccessEntity> {
@@ -26,15 +27,18 @@ export class CommentAccessRepository extends BasePostgresRepository<CommentAcces
     });
   }
 
-  public async findCommentsByPostId(postId: string, skip?: number, take?: number): Promise<CommentAccessEntity[]> {
+  public async findManyBy(query?: QueryParamsDto<CommentAccessEntity>): Promise<CommentAccessEntity[]> {
     return this.dataSource.comment
       .findMany({
-        where: {
-          postId,
-        },
-        skip,
-        take,
+        where: query.filter,
+        skip: calculateSkip(query.page, query.limit),
+        take: query.limit,
+        orderBy: query.sort,
       })
       .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
+  }
+
+  public async countBy(where?: QueryParamsDto<CommentAccessEntity>['filter']): Promise<number> {
+    return this.dataSource.comment.count({ where });
   }
 }

@@ -9,7 +9,8 @@ Content-Type: application/json
 ###
 
 # by postId
-GET http://localhost:3000/api/comment/6d308040-96a2-4162-bea6-2338e9976540
+GET http://localhost:3000/api/comment/6d308040-96a2-4162-bea6-2338e9976540?limit=6&page=1&sort={%22text%22:%22desc%22}
+#filter={%22text%22:%22comment1%22}
 
 ###
 

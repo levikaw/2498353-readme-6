@@ -1,6 +1,8 @@
 import { randomUUID } from 'node:crypto';
 
-import { BaseEntity, StorableEntity, EntityFactory } from '@project/core';
+import { BaseEntity } from '../entity/base.entity';
+import { StorableEntity } from '../entity/storable-entity.interface';
+import { EntityFactory } from '../entity/entity-factory.interface';
 import { RepositoryInterface } from './repository.interface';
 
 export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity<ReturnType<T['toObject']>>>
