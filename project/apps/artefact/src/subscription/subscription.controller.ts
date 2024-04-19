@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SubscriptionAccessEntity, Subscription } from '@project/subscription-access';
 import { SubscriptionService } from './subscription.service';
@@ -15,7 +27,7 @@ export class SubscriptionController {
     isArray: true,
   })
   @Get('/:userId')
-  public async getSubscriptionByUserId(@Param('userId') userId: string): Promise<Subscription[]> {
+  public async getSubscriptionByUserId(@Param('userId', ParseUUIDPipe) userId: string): Promise<Subscription[]> {
     return this.subscriptionService.findSubscriptionByUserId(userId);
   }
 
@@ -38,8 +50,8 @@ export class SubscriptionController {
   // TODO: сделать получение id текущего авторизованного пользователя
   @Delete('delete/:followedUserId/:userId')
   public async deleteSubscription(
-    @Param('followedUserId') followedUserId: string,
-    @Param('userId') userId: string,
+    @Param('followedUserId', ParseUUIDPipe) followedUserId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
   ): Promise<void> {
     try {
       await this.subscriptionService.deleteSubscription(followedUserId, userId);

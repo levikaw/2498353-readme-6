@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { setUpSwaggerModule } from '@project/swagger';
 import { MainModule } from './main.module';
@@ -16,7 +16,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const configService = app.get(ConfigService);
   const port = configService.get(`${ARTEFACTS_ALIAS}.port`);
-
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<MainModule>(app, 'artefact');
 
   await app.listen(port);
