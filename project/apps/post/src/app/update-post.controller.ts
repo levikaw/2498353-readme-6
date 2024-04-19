@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Logger, Param, Put, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Logger, Param, ParseUUIDPipe, Put, ValidationPipe } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PostAccessEntity } from '@project/post-access';
 import { PostService } from './post.service';
@@ -15,7 +15,10 @@ export class UpdatePostController {
 
   @Put('video/:postId')
   @ApiOkResponse({ type: PostAccessEntity })
-  public async updateVideoPost(@Body(new ValidationPipe()) dto: VideoPostDto, @Param('postId') postId: string): Promise<void> {
+  public async updateVideoPost(
+    @Body(new ValidationPipe()) dto: VideoPostDto,
+    @Param('postId', ParseUUIDPipe) postId: string,
+  ): Promise<void> {
     try {
       await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
@@ -26,7 +29,10 @@ export class UpdatePostController {
 
   @Put('text/:postId')
   @ApiOkResponse({ type: PostAccessEntity })
-  public async updateTextPost(@Body(new ValidationPipe()) dto: TextPostDto, @Param('postId') postId: string): Promise<void> {
+  public async updateTextPost(
+    @Body(new ValidationPipe()) dto: TextPostDto,
+    @Param('postId', ParseUUIDPipe) postId: string,
+  ): Promise<void> {
     try {
       await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
@@ -37,7 +43,10 @@ export class UpdatePostController {
 
   @Put('photo/:postId')
   @ApiOkResponse({ type: PostAccessEntity })
-  public async updatePhotoPost(@Body(new ValidationPipe()) dto: PhotoPostDto, @Param('postId') postId: string): Promise<void> {
+  public async updatePhotoPost(
+    @Body(new ValidationPipe()) dto: PhotoPostDto,
+    @Param('postId', ParseUUIDPipe) postId: string,
+  ): Promise<void> {
     try {
       await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
@@ -48,7 +57,10 @@ export class UpdatePostController {
 
   @Put('link/:postId')
   @ApiOkResponse({ type: PostAccessEntity })
-  public async updateLinkPost(@Body(new ValidationPipe()) dto: LinkPostDto, @Param('postId') postId: string): Promise<void> {
+  public async updateLinkPost(
+    @Body(new ValidationPipe()) dto: LinkPostDto,
+    @Param('postId', ParseUUIDPipe) postId: string,
+  ): Promise<void> {
     try {
       await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {
@@ -59,7 +71,10 @@ export class UpdatePostController {
 
   @Put('quote/:postId')
   @ApiOkResponse({ type: PostAccessEntity })
-  public async updateQuotePost(@Body(new ValidationPipe()) dto: QuotePostDto, @Param('postId') postId: string): Promise<void> {
+  public async updateQuotePost(
+    @Body(new ValidationPipe()) dto: QuotePostDto,
+    @Param('postId', ParseUUIDPipe) postId: string,
+  ): Promise<void> {
     try {
       await this.postService.updatePostById({ ...dto, id: postId });
     } catch (error) {

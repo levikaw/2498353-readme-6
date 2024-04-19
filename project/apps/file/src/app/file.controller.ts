@@ -8,6 +8,7 @@ import {
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  ParseUUIDPipe,
   Post,
   UploadedFiles,
   UseInterceptors,
@@ -17,6 +18,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FileService } from './file.service';
 import { MAX_FILE_SIZE, MAX_AVATAR_SIZE, ALLOWED_FILE_TYPES } from './constants';
 import 'multer';
+import { ParseMongoIdPipe } from '@project/configuration';
 
 @ApiTags('file')
 @Controller('file')
@@ -43,7 +45,7 @@ export class FileController {
       }),
     )
     files: Express.Multer.File[],
-    @Param('userId') userId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
   ): Promise<{ filesId: string[] }> {
     return this.fileService.upload(files, userId).then((filesId) => ({ filesId }));
   }
@@ -68,7 +70,7 @@ export class FileController {
       }),
     )
     files: Express.Multer.File[],
-    @Param('userId') userId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
   ): Promise<{ filesId: string[] }> {
     return this.fileService.upload(files, userId).then((filesId) => ({ filesId }));
   }
@@ -79,7 +81,7 @@ export class FileController {
     isArray: false,
   })
   @Get('download/:id')
-  public async download(@Param('id') id: string): Promise<Buffer> {
+  public async download(@Param('id', ParseMongoIdPipe) id: string): Promise<Buffer> {
     try {
       return await this.fileService.download(id);
     } catch (error) {

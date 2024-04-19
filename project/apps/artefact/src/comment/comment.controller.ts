@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentAccessEntity, Commentary } from '@project/comment-access';
 import { CommentService } from './comment.service';
@@ -15,7 +27,7 @@ export class CommentController {
     isArray: true,
   })
   @Get('/:postId')
-  public async getCommentsByPostId(@Param('postId') postId: string): Promise<Commentary[]> {
+  public async getCommentsByPostId(@Param('postId', ParseUUIDPipe) postId: string): Promise<Commentary[]> {
     return this.commentService.findCommentsByPostId(postId);
   }
 
@@ -30,7 +42,7 @@ export class CommentController {
   @Post('create/:postId')
   public async createCommentByPostId(
     @Body(new ValidationPipe()) dto: CreateCommentDto,
-    @Param('postId') postId: string,
+    @Param('postId', ParseUUIDPipe) postId: string,
   ): Promise<Commentary> {
     return this.commentService.createCommentByPostId(dto, postId);
   }
@@ -39,7 +51,7 @@ export class CommentController {
     status: HttpStatus.OK,
   })
   @Delete('delete/:id')
-  public async deleteCommentById(@Param('id') id: string): Promise<void> {
+  public async deleteCommentById(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     try {
       await this.commentService.deleteCommentById(id);
     } catch (error) {

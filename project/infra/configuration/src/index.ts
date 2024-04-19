@@ -1,5 +1,6 @@
 export * from './service/auth-service/utils';
 export * from './database/mongodb/utils';
+export * from './database/mongodb/mongo-id-validation.pipe';
 export * from './database/postgres/utils';
 export * from './service/file-service/constants';
 export * from './service/post-service/constants';
