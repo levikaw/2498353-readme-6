@@ -15,4 +15,4 @@ Content-Type: application/json
 ###
 
 # by userId
-GET http://localhost:3000/api/subscription/7cc9fceb-f0f1-4228-9177-cb17855ff2e0
+GET http://localhost:3000/api/subscription/7cc9fceb-f0f1-4228-9177-cb17855ff2e0?limit=6&page=1&sort={%22userId%22:%22desc%22}

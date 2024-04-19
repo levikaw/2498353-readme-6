@@ -9,7 +9,7 @@ export class AuthService {
   constructor(private readonly userRepository: UserAccessRepository, private readonly jwtService: JwtService) {}
 
   public async authUser(user: LoginUserDto): Promise<{ token: string }> {
-    const existUser = await this.userRepository.findByEmail(user.email);
+    const existUser = await this.userRepository.findOneByEmail(user.email);
 
     if (!existUser) {
       throw new NotFoundException(AUTH_MESSAGES_EXCEPTION.NOT_FOUND);

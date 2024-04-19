@@ -1,5 +1,7 @@
 import { PrismaService } from '@project/prisma';
-import { BaseEntity, StorableEntity, EntityFactory } from '@project/core';
+import { BaseEntity } from '../entity/base.entity';
+import { StorableEntity } from '../entity/storable-entity.interface';
+import { EntityFactory } from '../entity/entity-factory.interface';
 import { RepositoryInterface } from './repository.interface';
 
 // Зачем нужна эта прослойка, если призма не поддерживает динамические модели

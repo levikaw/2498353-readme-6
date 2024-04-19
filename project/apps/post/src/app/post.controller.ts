@@ -1,5 +1,6 @@
-import { Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
+import { Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, ParseUUIDPipe, Put, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { QueryParamsDto, SuccessResponse } from '@project/common';
 import { PostAccessEntity, CommonPost } from '@project/post-access';
 import { PostService } from './post.service';
 
@@ -16,14 +17,10 @@ export class PostController {
 
   @Get()
   @ApiOkResponse({ type: [PostAccessEntity] })
-  public async getPosts(): Promise<CommonPost[]> {
-    return this.postService.findPosts();
-  }
-
-  @Get('userId/:userId')
-  @ApiOkResponse({ type: [PostAccessEntity] })
-  public async getPostByUserId(@Param('userId', ParseUUIDPipe) userId: string): Promise<CommonPost[]> {
-    return this.postService.findPosts({ userId });
+  public async getAllPosts(@Query() params?: QueryParamsDto<CommonPost>): Promise<SuccessResponse<CommonPost[]>> {
+    return Promise.all([this.postService.findPosts(params), this.postService.countBy(params?.filter)]).then(
+      (resp) => new SuccessResponse(resp),
+    );
   }
 
   @Delete('/:id')

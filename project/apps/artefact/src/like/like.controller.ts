@@ -9,12 +9,14 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LikeAccessEntity, UserLike } from '@project/like-access';
 import { LikeService } from './like.service';
 import { CreateLikeDto } from './dto/create-like.dto';
+import { QueryParamsDto, SuccessResponse } from '@project/common';
 
 @ApiTags('like')
 @Controller('like')
@@ -27,8 +29,14 @@ export class LikeController {
     isArray: true,
   })
   @Get('/:postId')
-  public async getLikeByPostId(@Param('postId', ParseUUIDPipe) postId: string): Promise<UserLike[]> {
-    return this.likeService.findLikeByPostId(postId);
+  public async getLikeByPostId(
+    @Param('postId', ParseUUIDPipe) postId: string,
+    @Query() params?: QueryParamsDto<UserLike>,
+  ): Promise<SuccessResponse<UserLike[]>> {
+    params.filter['postId'] = postId;
+    return Promise.all([this.likeService.findLikeByPostId(params), this.likeService.countBy(params?.filter)]).then(
+      (resp) => new SuccessResponse(resp),
+    );
   }
 
   @ApiResponse({

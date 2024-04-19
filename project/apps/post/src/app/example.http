@@ -11,7 +11,16 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/post
+# by postId
+GET http://localhost:3000/api/post/6d308040-96a2-4162-bea6-2338e9976540
+
+###
+
+GET http://localhost:3000/api/post?filter={%22userId%22:%227cc9fceb-f0f1-4228-9177-cb17855ff2e0%22}
+# ?limit=6&page=1
+# &sort={%22text%22:%22desc%22}
+# &filter={%22text%22:%22comment1%22}
+# userId=7cc9fceb-f0f1-4228-9177-cb17855ff2e0
 
 ###
 

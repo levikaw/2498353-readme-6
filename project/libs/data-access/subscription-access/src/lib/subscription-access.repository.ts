@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/core';
 import { PrismaService } from '@project/prisma';
 import { SubscriptionAccessEntity } from './subscription-access.entity';
+import { calculateSkip, QueryParamsDto } from '@project/common';
 import { SubscriptionAccessFactory } from './subscription-access.factory';
 
 @Injectable()
@@ -26,19 +27,18 @@ export class SubscriptionAccessRepository extends BasePostgresRepository<Subscri
     });
   }
 
-  public async findByUserId(userId: string, skip?: number, take?: number): Promise<SubscriptionAccessEntity[]> {
+  public async findManyBy(query?: QueryParamsDto<SubscriptionAccessEntity>): Promise<SubscriptionAccessEntity[]> {
     return this.dataSource.subscription
       .findMany({
-        where: {
-          userId,
-        },
-        skip,
-        take,
+        where: query.filter,
+        skip: calculateSkip(query.page, query.limit),
+        take: query.limit,
+        orderBy: query.sort,
       })
       .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
   }
 
-  public async findByUserIdFollowedUserId(followedUserId: string, userId: string): Promise<SubscriptionAccessEntity> {
+  public async findOneByUserIdFollowedUserId(followedUserId: string, userId: string): Promise<SubscriptionAccessEntity> {
     return this.dataSource.subscription
       .findFirst({
         where: {
@@ -47,5 +47,9 @@ export class SubscriptionAccessRepository extends BasePostgresRepository<Subscri
         },
       })
       .then((resp) => this.entityFactory.createEntity(resp));
+  }
+
+  public async countBy(where?: QueryParamsDto<SubscriptionAccessEntity>['filter']): Promise<number> {
+    return this.dataSource.subscription.count({ where });
   }
 }
