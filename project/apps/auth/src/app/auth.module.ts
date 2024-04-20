@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { UserAccessModule } from '@project/user-access';
-import { authServiceRegister, getJwtOptions, postgresRegister } from '@project/configuration';
+import { authServiceRegister, getJwtOptions, JwtAccessStrategy, postgresRegister } from '@project/configuration';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
@@ -18,6 +18,6 @@ import { AuthService } from './auth.service';
     UserAccessModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtAccessStrategy],
 })
 export class AuthModule {}

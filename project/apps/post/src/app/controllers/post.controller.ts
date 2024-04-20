@@ -2,7 +2,7 @@ import { Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Pars
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { QueryParamsDto, SuccessResponse } from '@project/common';
 import { PostAccessEntity, CommonPost } from '@project/post-access';
-import { PostService } from './post.service';
+import { PostService } from '../post.service';
 
 @ApiTags('post')
 @Controller('post')

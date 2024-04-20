@@ -6,3 +6,8 @@ Content-Type: application/json
     "email": "somemail@mail.com", 
     "password": "!lDTE2701!"
 }
+
+###
+
+GET http://localhost:3000/api/auth/check-auth
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZjMDYwODBlLTU1YTEtNDBmMS04YTY2LWMxOTc2M2U3OTY4ZCIsImNyZWF0ZWRBdCI6IjIwMjQtMDQtMjBUMDM6MDY6NTUuMzU0WiIsInVwZGF0ZWRBdCI6IjIwMjQtMDQtMjBUMDM6MDY6NTUuMzU0WiIsImVtYWlsIjoic29tZW1haWxAbWFpbC5jb20iLCJhdmF0YXIiOm51bGwsImxvZ2luIjoic29tZW1haWwiLCJyb2xlIjoidXNlciIsInBhc3N3b3JkSGFzaCI6IiQyYiQxMCQ1NHJuWHAvc0hKWC5kM05HUVRjemNlVGdPNzBnaXJrT0U2UUFrU1cvWWk5MDcweHF0QVB5SyIsImlhdCI6MTcxMzU4Mjc2NywiZXhwIjoxNzEzNTgyODI3fQ.RIErpFz6q6eJESwnk4Ivyf6LSaA18KBNbPtIFdzZKtc
