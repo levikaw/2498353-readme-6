@@ -9,6 +9,7 @@ import { setUpSwaggerModule } from '@project/swagger';
 import { ConfigService } from '@nestjs/config';
 import { POSTS_ALIAS } from '@project/configuration';
 import { PostModule } from './app/post.module';
+import { JwtAuthGuard } from '@project/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(PostModule);
@@ -17,6 +18,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get(`${POSTS_ALIAS}.port`);
 
+  app.useGlobalGuards(new JwtAuthGuard());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<PostModule>(app, 'post');
 

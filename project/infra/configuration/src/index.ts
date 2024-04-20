@@ -6,6 +6,7 @@ export * from './service/file-service/constants';
 export * from './service/post-service/constants';
 export * from './service/user-service/constants';
 export * from './service/auth-service/constants';
+export * from './service/auth-service/strategies/jwt-access.strategy';
 export * from './service/artefact-service/constants';
 export { default as mongoRegister } from './database/mongodb/mongo.register';
 export { default as fileServiceRegister } from './service/file-service/file-sevice.register';

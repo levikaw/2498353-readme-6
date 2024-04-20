@@ -1,7 +1,9 @@
-import { Body, Controller, HttpException, HttpStatus, Logger, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
+import { JwtAuthGuard, SuccessResponse } from '@project/common';
+import { User } from '@project/user-access';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -21,12 +23,23 @@ export class AuthController {
     isArray: false,
   })
   @Post('login')
-  public async login(@Body(new ValidationPipe()) dto: LoginUserDto): Promise<{ token: string }> {
+  public async login(
+    @Body(new ValidationPipe()) dto: LoginUserDto,
+  ): Promise<SuccessResponse<{ user: User; accessToken: string }>> {
     try {
-      return await this.authService.authUser(dto);
+      const user = await this.authService.authUser(dto);
+      delete user.passwordHash;
+      const accessToken = await this.authService.getAuthToken(user);
+      return new SuccessResponse({ user, accessToken });
     } catch (error) {
       Logger.error(error);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('check-auth')
+  public async checkAuth() {
+    console.log('yeah');
   }
 }

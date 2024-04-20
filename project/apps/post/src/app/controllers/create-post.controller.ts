@@ -1,12 +1,12 @@
 import { Body, Controller, HttpStatus, Post, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LinkPost, PhotoPost, PostAccessEntity, QuotePost, TextPost, VideoPost } from '@project/post-access';
-import { PostService } from './post.service';
-import { LinkPostDto } from './dto/link-post.dto';
-import { PhotoPostDto } from './dto/photo-post.dto';
-import { QuotePostDto } from './dto/quote-post.dto';
-import { TextPostDto } from './dto/text-post.dto';
-import { VideoPostDto } from './dto/video-post.dto';
+import { PostService } from '../post.service';
+import { LinkPostDto } from '../dto/link-post.dto';
+import { PhotoPostDto } from '../dto/photo-post.dto';
+import { QuotePostDto } from '../dto/quote-post.dto';
+import { TextPostDto } from '../dto/text-post.dto';
+import { VideoPostDto } from '../dto/video-post.dto';
 import { PostType } from '@prisma/client';
 
 @ApiTags('create-post')
