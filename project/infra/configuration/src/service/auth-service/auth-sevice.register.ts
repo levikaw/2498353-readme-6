@@ -6,8 +6,14 @@ import { AuthServiceConfiguration } from './auth-sevice.config';
 async function getAuthConfig(): Promise<AuthServiceConfiguration> {
   const config = plainToClass(AuthServiceConfiguration, {
     environment: process.env.NODE_ENV,
-    jwtSecret: process.env.JWT_SECRET,
-    expiresTokenIn: process.env.EXPIRES_TOKEN_IN ? parseInt(process.env.EXPIRES_TOKEN_IN, 10) : DEFAULT_EXPIRES_TOKEN_IN,
+    jwtAccessSecret: process.env.JWT_ACCESS_SECRET,
+    jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
+    expiresAccessTokenIn: process.env.EXPIRES_ACCESS_TOKEN_IN
+      ? parseInt(process.env.EXPIRES_ACCESS_TOKEN_IN, 10)
+      : DEFAULT_EXPIRES_TOKEN_IN,
+    expiresRefreshTokenIn: process.env.EXPIRES_REFRESH_TOKEN_IN
+      ? parseInt(process.env.EXPIRES_REFRESH_TOKEN_IN, 10)
+      : DEFAULT_EXPIRES_TOKEN_IN,
     port: process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_AUTH_SERVICE_PORT,
   });
 
