@@ -25,12 +25,12 @@ export class AuthServiceConfiguration {
 
   @IsNumber()
   @IsOptional()
-  public expiresTokenIn: number = DEFAULT_EXPIRES_TOKEN_IN;
+  public expiresAccessTokenIn: number = DEFAULT_EXPIRES_TOKEN_IN;
 
   @IsString()
   @IsNotEmpty()
   // @IsStrongPassword()
-  public jwtSecret: string;
+  public jwtAccessSecret: string;
 
   public async validate(): Promise<void> {
     await validateOrReject(this);

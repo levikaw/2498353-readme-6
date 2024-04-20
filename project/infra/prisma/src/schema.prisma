@@ -23,6 +23,7 @@ model User {
   email        String
   login        String
   avatar       String?
+  refreshToken String?  @map("refresh_token")
   role         UserRole @default(user)
   passwordHash String
   createdAt    DateTime @default(now()) @map("created_at")

@@ -1,14 +1,17 @@
 import { ConfigService } from '@nestjs/config';
-import { JwtModuleAsyncOptions } from '@nestjs/jwt';
+import { JwtSignOptions } from '@nestjs/jwt';
 import { AUTH_ALIAS } from './constants';
 
-export function getJwtOptions(): JwtModuleAsyncOptions {
+export function getJwtAccessOptions(config: ConfigService): JwtSignOptions {
   return {
-    useFactory: (config: ConfigService) => ({
-      global: true,
-      secret: config.get<string>(`${AUTH_ALIAS}.jwtSecret`),
-      signOptions: { expiresIn: `${config.get<string>(`${AUTH_ALIAS}.expiresTokenIn`)}s` },
-    }),
-    inject: [ConfigService],
+    secret: config.get<string>(`${AUTH_ALIAS}.jwtAccessSecret`),
+    expiresIn: `${config.get<string>(`${AUTH_ALIAS}.expiresAccessTokenIn`)}s`,
+  };
+}
+
+export function getJwtRefreshOptions(config: ConfigService): JwtSignOptions {
+  return {
+    secret: config.get<string>(`${AUTH_ALIAS}.jwtRefreshSecret`),
+    expiresIn: `${config.get<string>(`${AUTH_ALIAS}.expiresRefreshTokenIn`)}d`,
   };
 }

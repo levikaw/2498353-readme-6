@@ -1,8 +1,20 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
-import { JwtAuthGuard, SuccessResponse } from '@project/common';
+import { JwtAuthGuard, RefreshTokenGuard, SuccessResponse } from '@project/common';
 import { User } from '@project/user-access';
 
 @ApiTags('auth')
@@ -25,12 +37,13 @@ export class AuthController {
   @Post('login')
   public async login(
     @Body(new ValidationPipe()) dto: LoginUserDto,
-  ): Promise<SuccessResponse<{ user: User; accessToken: string }>> {
+  ): Promise<SuccessResponse<{ user: User; accessToken: string; refreshToken: string }>> {
     try {
       const user = await this.authService.authUser(dto);
       delete user.passwordHash;
-      const accessToken = await this.authService.getAuthToken(user);
-      return new SuccessResponse({ user, accessToken });
+      const tokens = await this.authService.getTokens(user);
+      await this.authService.updateRefreshToken(user.id, tokens.refreshToken);
+      return new SuccessResponse({ user, ...tokens });
     } catch (error) {
       Logger.error(error);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
@@ -41,5 +54,11 @@ export class AuthController {
   @Get('check-auth')
   public async checkAuth() {
     console.log('yeah');
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Get('refresh/:userId')
+  refreshTokens(@Param('userId', ParseUUIDPipe) userId: string) {
+    return this.authService.refreshTokens(userId);
   }
 }
