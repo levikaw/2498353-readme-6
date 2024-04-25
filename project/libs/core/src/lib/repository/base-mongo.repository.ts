@@ -21,10 +21,6 @@ export abstract class BaseMongoRepository<
     return this.entityFactory.createEntity(plainObject);
   }
 
-  public async findAll(): Promise<ReturnType<T['toObject']>[]> {
-    return await this.model.find(); //.map((d) => d.toObject());
-  }
-
   public async findById(id: T['id']): Promise<T> {
     const document = await this.model.findById(id).exec();
     return this.createEntityFromDocument(document);

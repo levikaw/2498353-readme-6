@@ -7,25 +7,26 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
     super();
     this.id = file.id;
     this.createdAt = file.createdAt;
-    this.updatedAt = file.updatedAt;
 
+    this.size = file.size;
+    this.mimetype = file.mimetype;
     this.name = file.name;
-    this.content = file.content;
     this.userId = file.userId;
   }
 
   public name: string;
-  public content: string;
   public userId: string;
+  public mimetype: string;
+  public size: number;
 
   public toObject(): UserFile {
     return {
       id: this.id,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
       name: this.name,
-      content: this.content,
       userId: this.userId,
+      mimetype: this.mimetype,
+      size: this.size,
     };
   }
 }

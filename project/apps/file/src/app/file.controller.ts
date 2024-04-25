@@ -19,6 +19,7 @@ import { FileService } from './file.service';
 import { MAX_FILE_SIZE, MAX_AVATAR_SIZE, ALLOWED_FILE_TYPES } from './constants';
 import 'multer';
 import { ParseMongoIdPipe } from '@project/configuration';
+import { FileAccessEntity, UserFile } from '@project/file-access';
 
 @ApiTags('file')
 @Controller('file')
@@ -47,7 +48,12 @@ export class FileController {
     files: Express.Multer.File[],
     @Param('userId', ParseUUIDPipe) userId: string,
   ): Promise<{ filesId: string[] }> {
-    return this.fileService.upload(files, userId).then((filesId) => ({ filesId }));
+    try {
+      const filesId = await this.fileService.upload(files, userId);
+      return { filesId };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 
   @ApiResponse({
@@ -72,20 +78,25 @@ export class FileController {
     files: Express.Multer.File[],
     @Param('userId', ParseUUIDPipe) userId: string,
   ): Promise<{ filesId: string[] }> {
-    return this.fileService.upload(files, userId).then((filesId) => ({ filesId }));
+    try {
+      const filesId = await this.fileService.upload(files, userId);
+      return { filesId };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
 
   @ApiResponse({
     status: HttpStatus.OK,
-    type: Buffer,
+    type: FileAccessEntity,
     isArray: false,
   })
-  @Get('download/:id')
-  public async download(@Param('id', ParseMongoIdPipe) id: string): Promise<Buffer> {
+  @Get(':id')
+  public async getFile(@Param('id', ParseMongoIdPipe) id: string): Promise<UserFile> {
     try {
-      return await this.fileService.download(id);
+      return await this.fileService.getFile(id);
     } catch (error) {
-      Logger.error(error, `download - id: ${id}`);
+      Logger.error(error, `getFile - id: ${id}`);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
   }

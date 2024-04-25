@@ -17,13 +17,26 @@ export class FileAccessModel extends Document implements UserFile {
     required: true,
     type: String,
   })
-  public content: string;
+  public mimetype: string;
+
+  @Prop({
+    required: true,
+    type: Number,
+  })
+  public size: number;
 
   @Prop({
     required: true,
     type: String,
   })
   public userId: string;
+
+  @Prop({ type: Date, default: Date.now })
+  public createdAt: Date;
 }
 
 export const fileAccessSchema = SchemaFactory.createForClass(FileAccessModel);
+
+fileAccessSchema.virtual('id').get(function () {
+  return this._id.toString();
+});

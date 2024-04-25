@@ -4,11 +4,13 @@ import { FileService } from './file.service';
 import { FileAccessModule } from '@project/file-access';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { fileServiceRegister, getMongooseOptions, mongoRegister } from '@project/configuration';
+import { fileServiceRegister, getMongooseOptions, getStaticOptions, mongoRegister } from '@project/configuration';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
     FileAccessModule,
+    ServeStaticModule.forRootAsync(getStaticOptions()),
     MongooseModule.forRootAsync(getMongooseOptions()),
     ConfigModule.forRoot({
       isGlobal: true,
