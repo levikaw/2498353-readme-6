@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min, validateOrReject } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min, validateOrReject } from 'class-validator';
 import { PORT, Environment } from '../../constants';
 import { DEFAULT_FILE_SERVICE_PORT } from './constants';
 
@@ -12,6 +12,14 @@ export class FileServiceConfiguration {
   @IsEnum(Environment)
   @IsNotEmpty()
   public environment: Environment;
+
+  @IsNotEmpty()
+  @IsString()
+  public rootPath: string;
+
+  @IsNotEmpty()
+  @IsString()
+  public serveRoot: string;
 
   public async validate(): Promise<void> {
     await validateOrReject(this);

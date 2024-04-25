@@ -6,6 +6,8 @@ import { FileServiceConfiguration } from './file-sevice.config';
 async function getFilesAccessConfig(): Promise<FileServiceConfiguration> {
   const config = plainToClass(FileServiceConfiguration, {
     environment: process.env.NODE_ENV,
+    rootPath: process.env.ROOT_PATH,
+    serveRoot: process.env.SERVE_ROOT,
     port: process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_FILE_SERVICE_PORT,
   });
 
