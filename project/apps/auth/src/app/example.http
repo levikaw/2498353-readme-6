@@ -6,3 +6,14 @@ Content-Type: application/json
     "email": "somemail@mail.com", 
     "password": "!lDTE2701!"
 }
+
+###
+
+GET http://localhost:3000/api/auth/check-auth
+Authorization: Bearer token
+
+###
+# by userId
+GET http://localhost:3000/api/auth/refresh/56fe9911-b3a4-4ca7-89d8-d275213e23d4
+Authorization: Bearer token
+

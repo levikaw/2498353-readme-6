@@ -1,4 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
+import { QueryParamsDto } from '@project/common';
 import { SubscriptionAccessEntity, SubscriptionAccessRepository, Subscription } from '@project/subscription-access';
 import { SUBSCRIPTION_EXCEPTION_MESSAGES } from './constants';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
@@ -7,12 +8,16 @@ import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 export class SubscriptionService {
   constructor(private readonly subscriptionAccessRepository: SubscriptionAccessRepository) {}
 
-  public async findSubscriptionByUserId(userId: string): Promise<Subscription[]> {
-    return this.subscriptionAccessRepository.findByUserId(userId).then((resp) => resp.map((c) => c.toObject()));
+  public async findSubscriptionByUserId(params?: QueryParamsDto<Subscription>): Promise<Subscription[]> {
+    return this.subscriptionAccessRepository.findManyBy(params).then((resp) => resp.map((c) => c.toObject()));
+  }
+
+  public async countBy(where?: QueryParamsDto<Subscription>['filter']): Promise<number> {
+    return this.subscriptionAccessRepository.countBy(where);
   }
 
   public async createSubscription(subscription: CreateSubscriptionDto): Promise<Subscription> {
-    const existSubscription = await this.subscriptionAccessRepository.findByUserIdFollowedUserId(
+    const existSubscription = await this.subscriptionAccessRepository.findOneByUserIdFollowedUserId(
       subscription.followedUserId,
       subscription.userId,
     );
@@ -23,7 +28,7 @@ export class SubscriptionService {
   }
 
   public async deleteSubscription(followedUserId: string, userId: string): Promise<void> {
-    const subscription = await this.subscriptionAccessRepository.findByUserIdFollowedUserId(followedUserId, userId);
+    const subscription = await this.subscriptionAccessRepository.findOneByUserIdFollowedUserId(followedUserId, userId);
     if (!subscription) {
       throw new Error(SUBSCRIPTION_EXCEPTION_MESSAGES.NOT_FOUND);
     }

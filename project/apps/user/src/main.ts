@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { setUpSwaggerModule } from '@project/swagger';
 import { UserModule } from './app/user.module';
@@ -17,6 +17,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get(`${USERS_ALIAS}.port`);
 
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<UserModule>(app, 'user');
 
   await app.listen(port);

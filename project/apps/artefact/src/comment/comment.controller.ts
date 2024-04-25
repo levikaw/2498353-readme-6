@@ -1,8 +1,24 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Query,
+  UseInterceptors,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentAccessEntity, Commentary } from '@project/comment-access';
+import { QueryParamsDto, SuccessResponse } from '@project/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { ResponseInterceptor } from '@project/common';
 
 @ApiTags('comment')
 @Controller('comment')
@@ -15,8 +31,15 @@ export class CommentController {
     isArray: true,
   })
   @Get('/:postId')
-  public async getCommentsByPostId(@Param('postId') postId: string): Promise<Commentary[]> {
-    return this.commentService.findCommentsByPostId(postId);
+  @UseInterceptors(ResponseInterceptor<Commentary[]>)
+  public async getCommentsByPostId(
+    @Param('postId', ParseUUIDPipe) postId: string,
+    @Query() params?: QueryParamsDto<Commentary>,
+  ): Promise<SuccessResponse<Commentary[]>> {
+    params.filter['postId'] = postId;
+    return Promise.all([this.commentService.findCommentsByPostId(params), this.commentService.countBy(params?.filter)]).then(
+      (resp) => new SuccessResponse(resp),
+    );
   }
 
   @ApiResponse({
@@ -30,7 +53,7 @@ export class CommentController {
   @Post('create/:postId')
   public async createCommentByPostId(
     @Body(new ValidationPipe()) dto: CreateCommentDto,
-    @Param('postId') postId: string,
+    @Param('postId', ParseUUIDPipe) postId: string,
   ): Promise<Commentary> {
     return this.commentService.createCommentByPostId(dto, postId);
   }
@@ -39,7 +62,7 @@ export class CommentController {
     status: HttpStatus.OK,
   })
   @Delete('delete/:id')
-  public async deleteCommentById(@Param('id') id: string): Promise<void> {
+  public async deleteCommentById(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     try {
       await this.commentService.deleteCommentById(id);
     } catch (error) {

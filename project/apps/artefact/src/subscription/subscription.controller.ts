@@ -1,8 +1,22 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Query,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SubscriptionAccessEntity, Subscription } from '@project/subscription-access';
 import { SubscriptionService } from './subscription.service';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
+import { QueryParamsDto, SuccessResponse } from '@project/common';
 
 @ApiTags('subscription')
 @Controller('subscription')
@@ -15,8 +29,15 @@ export class SubscriptionController {
     isArray: true,
   })
   @Get('/:userId')
-  public async getSubscriptionByUserId(@Param('userId') userId: string): Promise<Subscription[]> {
-    return this.subscriptionService.findSubscriptionByUserId(userId);
+  public async getSubscriptionByUserId(
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Query() params?: QueryParamsDto<Subscription>,
+  ): Promise<SuccessResponse<Subscription[]>> {
+    params.filter['userId'] = userId;
+    return Promise.all([
+      this.subscriptionService.findSubscriptionByUserId(params),
+      this.subscriptionService.countBy(params?.filter),
+    ]).then((resp) => new SuccessResponse(resp));
   }
 
   @ApiResponse({
@@ -38,8 +59,8 @@ export class SubscriptionController {
   // TODO: сделать получение id текущего авторизованного пользователя
   @Delete('delete/:followedUserId/:userId')
   public async deleteSubscription(
-    @Param('followedUserId') followedUserId: string,
-    @Param('userId') userId: string,
+    @Param('followedUserId', ParseUUIDPipe) followedUserId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
   ): Promise<void> {
     try {
       await this.subscriptionService.deleteSubscription(followedUserId, userId);

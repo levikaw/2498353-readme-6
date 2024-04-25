@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { QueryParamsDto } from '@project/common';
 import { PostAccessEntity, PostAccessRepository, CommonPost } from '@project/post-access';
 import { UpdateCommonnPost } from '@project/post-access';
 import { POST_EXCEPTION_MESSAGES } from './constants';
@@ -11,12 +12,16 @@ export class PostService {
     return this.postAccessRepository.save(new PostAccessEntity(post));
   }
 
-  public async findPosts(where?: Partial<CommonPost>, skip?: number, take?: number): Promise<CommonPost[]> {
-    return this.postAccessRepository.findManyBy(where, skip, take).then((resp) => resp.map((post) => post.toObject()));
+  public async findPosts(params?: QueryParamsDto<CommonPost>): Promise<CommonPost[]> {
+    return this.postAccessRepository.findManyBy(params).then((resp) => resp.map((post) => post.toObject()));
+  }
+
+  public async countBy(where?: QueryParamsDto<CommonPost>['filter']): Promise<number> {
+    return this.postAccessRepository.countBy(where);
   }
 
   public async findPostById(id: string): Promise<CommonPost> {
-    return this.postAccessRepository.findById(id).then((resp) => resp.toObject());
+    return this.postAccessRepository.findById(id).then((resp) => resp?.toObject());
   }
 
   public async rePost(postId: string, userId: string): Promise<CommonPost> {
@@ -33,7 +38,7 @@ export class PostService {
     existsPost.repostedFromPostId = postId;
     existsPost.isReposted = true;
 
-    return this.postAccessRepository.save(new PostAccessEntity(existsPost)).then((resp) => resp.toObject());
+    return this.postAccessRepository.save(new PostAccessEntity(existsPost)).then((resp) => resp?.toObject());
   }
 
   // TODO: обновление репоста?

@@ -17,6 +17,7 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
     this.passwordHash = user.passwordHash;
     this.role = user.role;
     this.login = user.login;
+    this.refreshToken = user.refreshToken;
   }
 
   public email: string;
@@ -24,6 +25,7 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
   public avatar?: string;
   public role: UserRole;
   public passwordHash: string;
+  public refreshToken: string;
 
   public toObject(): AuthUser {
     return {
@@ -35,6 +37,7 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
       login: this.login,
       role: this.role,
       passwordHash: this.passwordHash,
+      refreshToken: this.refreshToken,
     };
   }
 

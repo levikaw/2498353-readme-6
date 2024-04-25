@@ -3,8 +3,8 @@ import { BasePostgresRepository } from '@project/core';
 import { PostAccessEntity } from './post-access.entity';
 import { PostAccessFactory } from './post-access.factory';
 import { PrismaService } from '@project/prisma';
+import { calculateSkip, QueryParamsDto } from '@project/common';
 import { convertToPrismaFilter } from './post-access.filter';
-import { CommonPost } from './types/common-post.interface';
 import { UpdateCommonnPost } from './types/update-common-post.interface';
 
 @Injectable()
@@ -46,13 +46,19 @@ export class PostAccessRepository extends BasePostgresRepository<PostAccessEntit
     });
   }
 
-  public async findManyBy(where?: Partial<CommonPost>, skip?: number, take?: number): Promise<PostAccessEntity[]> {
+  // TODO: проверить
+  public async findManyBy(query?: QueryParamsDto<PostAccessEntity>): Promise<PostAccessEntity[]> {
     return this.dataSource.post
       .findMany({
-        where: convertToPrismaFilter(where),
-        skip,
-        take,
+        where: convertToPrismaFilter(query.filter),
+        skip: calculateSkip(query.page, query.limit),
+        take: query.limit,
+        orderBy: query.sort,
       })
       .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
+  }
+
+  public async countBy(where?: QueryParamsDto<PostAccessEntity>['filter']): Promise<number> {
+    return this.dataSource.post.count({ where: convertToPrismaFilter(where) });
   }
 }
