@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { AuthUser, User, UserAccessEntity, UserAccessRepository } from '@project/user-access';
+import { AuthUser, User, UserAccessRepository } from '@project/user-access';
 import { AUTH_MESSAGES_EXCEPTION } from './constants';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -28,8 +28,8 @@ export class AuthService {
     return existUser.toObject();
   }
 
-  public async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {
-    await this.userRepository.updateRefreshToken(userId, refreshToken);
+  public async setRefreshToken(userId: string, refreshToken: string): Promise<void> {
+    await this.userRepository.setRefreshToken(userId, refreshToken);
   }
 
   public async getTokens(payload: User): Promise<{
@@ -62,7 +62,7 @@ export class AuthService {
 
     const tokens = await this.getTokens(user.toObject());
 
-    await this.updateRefreshToken(userId, tokens.refreshToken);
+    await this.setRefreshToken(userId, tokens.refreshToken);
 
     return tokens;
   }
