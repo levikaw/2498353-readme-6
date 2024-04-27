@@ -27,7 +27,7 @@ export class UserAccessRepository extends BasePostgresRepository<UserAccessEntit
       })
       .then((resp) => this.entityFactory.createEntity(resp));
   }
-  public async updateRefreshToken(id: string, refreshToken: string): Promise<void> {
+  public async setRefreshToken(id: string, refreshToken: string): Promise<void> {
     await this.dataSource.user.update({
       where: { id },
       data: { refreshToken },
