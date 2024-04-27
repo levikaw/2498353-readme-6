@@ -16,14 +16,12 @@ function getPosts() {
       id: POST_ID.FIRST,
       type: PostType.text,
       name: 'name',
-      isPublished: true,
       userId: USER_ID.FIRST,
     },
     {
       id: POST_ID.SECOND,
       type: PostType.text,
       name: 'name1',
-      isPublished: true,
       userId: USER_ID.SECOND,
     },
   ];

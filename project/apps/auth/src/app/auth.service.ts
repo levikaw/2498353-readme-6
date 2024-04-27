@@ -14,7 +14,6 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  // TODO: почему не переместить это в метод validate в стратегии?
   public async authUser(user: LoginUserDto): Promise<AuthUser> {
     const existUser = await this.userRepository.findOneByEmail(user.email);
 

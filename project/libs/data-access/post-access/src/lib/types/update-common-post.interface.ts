@@ -3,7 +3,6 @@ export interface UpdateCommonnPost {
   name?: string;
   link?: string;
   tags?: string[];
-  isPublished?: boolean;
   author?: string;
   text?: string;
   announcement?: string;

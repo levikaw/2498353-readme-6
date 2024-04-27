@@ -27,4 +27,7 @@ export class UserController {
   public async createUser(@Body(new ValidationPipe()) dto: CreateUserDto): Promise<AuthUser> {
     return this.userService.register(dto).then((resp) => resp.toObject());
   }
+
+  // TODO: смена пароля пользователя пункт 1.9
+  // TODO: запрос информации о пользователе пункт 1.10
 }
