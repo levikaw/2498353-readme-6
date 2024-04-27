@@ -13,6 +13,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
 
     this.id = post.id;
     this.createdAt = post.createdAt;
+    this.publishedAt = post.publishedAt;
     this.updatedAt = post.updatedAt;
 
     this.userId = post.userId;
@@ -21,9 +22,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
     this.link = post.link;
     this.fileId = post.fileId;
     this.tags = post.tags;
-    this.isPublished = post.isPublished;
     this.repostedFromPostId = post.repostedFromPostId;
-    this.isReposted = post.isReposted;
     this.author = post.author;
     this.text = post.text;
     this.announcement = post.announcement;
@@ -35,27 +34,25 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
   public link?: string;
   public fileId?: string;
   public tags?: string[];
-  public isPublished?: boolean;
   public repostedFromPostId?: string;
-  public isReposted?: boolean;
   public author?: string;
   public text?: string;
   public announcement?: string;
+  public publishedAt?: Date;
 
   public toObject(): CommonPost {
     return {
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      publishedAt: this.publishedAt,
       userId: this.userId,
       type: this.type,
       name: this.name,
       link: this.link,
       fileId: this.fileId,
       tags: this.tags,
-      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
-      isReposted: this.isReposted,
       author: this.author,
       text: this.text,
       announcement: this.announcement,
@@ -71,9 +68,7 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       type: this.type,
       link: this.link,
       tags: this.tags,
-      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
-      isReposted: this.isReposted,
     };
   }
 
@@ -85,7 +80,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       userId: this.userId,
       type: this.type,
       tags: this.tags,
-      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
       author: this.author,
       text: this.text,
@@ -101,7 +95,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       type: this.type,
       name: this.name,
       tags: this.tags,
-      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
       text: this.text,
       announcement: this.announcement,
@@ -118,7 +111,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       name: this.name,
       link: this.link,
       tags: this.tags,
-      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
     };
   }
@@ -129,7 +121,6 @@ export class PostAccessEntity extends BaseEntity implements StorableEntity<Commo
       type: this.type,
       fileId: this.fileId,
       tags: this.tags,
-      isPublished: this.isPublished,
       repostedFromPostId: this.repostedFromPostId,
     };
   }

@@ -20,7 +20,7 @@ enum UserRole {
 
 model User {
   id           String   @id @default(uuid()) @map("id")
-  email        String
+  email        String   @unique
   login        String
   avatar       String?
   refreshToken String?  @map("refresh_token")
@@ -89,10 +89,9 @@ model Post {
   type               PostType
   userId             String   @map("user_id")
   repostedFromPostId String?  @map("reposted_from_post_id")
-  isReposted         Boolean? @default(false) @map("is_reposted")
-  isPublished        Boolean? @default(true) @map("is_published")
   tags               String[]
   createdAt          DateTime @default(now()) @map("created_at")
+  publishedAt        DateTime @default(now()) @map("published_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
   text         String?

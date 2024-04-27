@@ -24,7 +24,7 @@ export class CreatePostController {
     status: HttpStatus.CONFLICT,
   })
   public async createVideoPost(@Body(new ValidationPipe()) dto: VideoPostDto): Promise<VideoPost> {
-    return this.postService.createPost({ type: PostType.video, isPublished: true, ...dto }).then((resp) => resp.toVideoObject());
+    return this.postService.createPost({ type: PostType.video, ...dto }).then((resp) => resp.toVideoObject());
   }
 
   @Post('text')
@@ -37,7 +37,7 @@ export class CreatePostController {
     status: HttpStatus.CONFLICT,
   })
   public async createTextPost(@Body(new ValidationPipe()) dto: TextPostDto): Promise<TextPost> {
-    return this.postService.createPost({ type: PostType.text, isPublished: true, ...dto }).then((resp) => resp.toTextObject());
+    return this.postService.createPost({ type: PostType.text, ...dto }).then((resp) => resp.toTextObject());
   }
 
   @Post('photo')
@@ -50,7 +50,7 @@ export class CreatePostController {
     status: HttpStatus.CONFLICT,
   })
   public async createPhotoPost(@Body(new ValidationPipe()) dto: PhotoPostDto): Promise<PhotoPost> {
-    return this.postService.createPost({ type: PostType.photo, isPublished: true, ...dto }).then((resp) => resp.toPhotoObject());
+    return this.postService.createPost({ type: PostType.photo, ...dto }).then((resp) => resp.toPhotoObject());
   }
 
   @Post('link')
@@ -63,7 +63,7 @@ export class CreatePostController {
     status: HttpStatus.CONFLICT,
   })
   public async createLinkPost(@Body(new ValidationPipe()) dto: LinkPostDto): Promise<LinkPost> {
-    return this.postService.createPost({ type: PostType.link, isPublished: true, ...dto }).then((resp) => resp.toLinkObject());
+    return this.postService.createPost({ type: PostType.link, ...dto }).then((resp) => resp.toLinkObject());
   }
 
   @Post('quote')
@@ -76,6 +76,6 @@ export class CreatePostController {
     status: HttpStatus.CONFLICT,
   })
   public async createQuotePost(@Body(new ValidationPipe()) dto: QuotePostDto): Promise<QuotePost> {
-    return this.postService.createPost({ type: PostType.quote, isPublished: true, ...dto }).then((resp) => resp.toQuoteObject());
+    return this.postService.createPost({ type: PostType.quote, ...dto }).then((resp) => resp.toQuoteObject());
   }
 }

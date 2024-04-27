@@ -26,6 +26,7 @@ export class PostController {
   @Delete('/:id')
   @ApiOkResponse()
   public async deletePost(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    // проверка на пользователя
     return this.postService.deletePostById(id);
   }
 

@@ -53,7 +53,7 @@ export class PostAccessRepository extends BasePostgresRepository<PostAccessEntit
         where: convertToPrismaFilter(query.filter),
         skip: calculateSkip(query.page, query.limit),
         take: query.limit,
-        orderBy: query.sort,
+        orderBy: query?.sort ?? { publishedAt: 'desc' },
       })
       .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
   }
