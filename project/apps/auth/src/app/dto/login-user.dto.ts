@@ -16,6 +16,6 @@ export class LoginUserDto {
   @IsString()
   @MinLength(LENGTH_PASSWORD.MIN)
   @MaxLength(LENGTH_PASSWORD.MAX)
-  @IsStrongPassword({ minLength: LENGTH_PASSWORD.MIN }, { message: FAIL_PASSWORD_VALIDATION })
+  // @IsStrongPassword({ minLength: LENGTH_PASSWORD.MIN }, { message: FAIL_PASSWORD_VALIDATION })
   public password!: string;
 }

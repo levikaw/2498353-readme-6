@@ -3,9 +3,17 @@ export const LENGTH_LOGIN = {
   MAX: 50,
 } as const;
 
-export const AUTH_USER_EXISTS = 'User with this email exists';
+export const AUTH_USER = {
+  EXISTS: 'User with this email exists',
+  DOES_NOT_EXISTS: 'User with this email does not exists',
+} as const;
 
 export const LOGIN_API = {
   DESCRIPTION: 'User login',
   EXAMPLE: 'user_login',
+} as const;
+
+export const NOTIFY_PARAMS = {
+  TEMPLATE: 'new-posts',
+  SUBJECT: 'Ваша подборка новых публикаций готова!',
 } as const;

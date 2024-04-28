@@ -11,6 +11,7 @@ where **service_name** is name one of the names of folders in the _./project/app
 > NOTE: Make sure that all **required** database started before start any service. Database services need Docker installed.
 >
 > - service _file_ depends on database (service) _mongo_
+> - service _notification_ and _user_ depends on service _postgres_, _fakesmtp_ and _rabbitmq_
 > - other services depends on database (service) _postgres_
 
 # Before start

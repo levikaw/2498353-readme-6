@@ -20,7 +20,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ResponseFormat
 
     return next.handle().pipe(
       catchError((error) => {
-        let status = 500;
+        const status = 500;
         const response: any = {
           message: 'Internal server error',
         };

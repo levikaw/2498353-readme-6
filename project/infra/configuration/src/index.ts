@@ -3,6 +3,9 @@ export * from './database/mongodb/utils';
 export * from './database/mongodb/mongo-id-validation.pipe';
 export * from './database/postgres/utils';
 export * from './service/file-service/constants';
+export * from './service/notification-service/constants';
+export * from './service/notification-service/utils';
+export * from './rabbitmq/utils';
 export * from './service/file-service/utils';
 export * from './service/post-service/constants';
 export * from './service/user-service/constants';
@@ -16,4 +19,6 @@ export { default as authServiceRegister } from './service/auth-service/auth-sevi
 export { default as userServiceRegister } from './service/user-service/user-sevice.register';
 export { default as artefactServiceRegister } from './service/artefact-service/artefact-sevice.register';
 export { default as postServiceRegister } from './service/post-service/post-sevice.register';
+export { default as notificationServiceRegister } from './service/notification-service/notification-sevice.register';
+export { default as rabbitRegister } from './rabbitmq/rabbitmq.register';
 export { default as postgresRegister } from './database/postgres/postgres.register';
