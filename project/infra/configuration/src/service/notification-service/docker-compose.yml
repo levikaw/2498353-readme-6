@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  fakesmtp:
+    image: gessnerfl/fake-smtp-server:2.2.0
+    container_name: fakesmtp
+    hostname: fakesmtp
+    ports:
+      - ${SMTP_PORT}:8025
+      - ${WEBUI_PORT}:8080
+

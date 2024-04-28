@@ -16,5 +16,5 @@
   ],
   "include": [
     "src/**/*.ts"
-  ]
+, "../../libs/common/src/dto/send-notification.dto.ts"  ]
 }
