@@ -11,7 +11,8 @@ import { NotificationController } from './notification.controller';
 import { NotificationService } from './notification.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
-import { NotificationAccessModule } from '@project/notification-access';
+import { NotificationAccessFactory, NotificationAccessRepository } from '@project/notification-access';
+import { PrismaDataAccessModule } from '@project/core';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { NotificationAccessModule } from '@project/notification-access';
     }),
     MailerModule.forRootAsync(getMailerOptions()),
     RabbitMQModule.forRootAsync(RabbitMQModule, getRabbitOptions()),
-    NotificationAccessModule,
+    PrismaDataAccessModule.register(NotificationAccessFactory, NotificationAccessRepository),
   ],
   controllers: [NotificationController],
   providers: [NotificationService],
