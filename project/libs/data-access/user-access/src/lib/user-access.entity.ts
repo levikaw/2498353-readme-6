@@ -11,7 +11,6 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
     this.id = user.id;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
-    this.notifiedAt = user.notifiedAt;
 
     this.email = user.email;
     this.avatar = user.avatar;
@@ -27,14 +26,12 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
   public role: UserRole;
   public passwordHash: string;
   public refreshToken: string;
-  public notifiedAt?: Date;
 
   public toObject(): AuthUser {
     return {
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      notifiedAt: this.notifiedAt,
       email: this.email,
       avatar: this.avatar,
       login: this.login,
