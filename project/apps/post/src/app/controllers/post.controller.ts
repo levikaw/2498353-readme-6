@@ -2,6 +2,7 @@ import { Controller, Delete, Get, HttpException, HttpStatus, Logger, Param, Pars
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { QueryParamsDto, SuccessResponse } from '@project/common';
 import { PostAccessEntity, CommonPost } from '@project/post-access';
+import { POST_EXCEPTIONS } from '../constants';
 import { PostService } from '../post.service';
 
 @ApiTags('post')
@@ -23,11 +24,18 @@ export class PostController {
     );
   }
 
-  @Delete('/:id')
+  @Delete('/:postId/:userId')
   @ApiOkResponse()
-  public async deletePost(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    // проверка на пользователя
-    return this.postService.deletePostById(id);
+  public async deletePost(
+    @Param('postId', ParseUUIDPipe) postId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
+  ): Promise<void> {
+    const post = await this.postService.findPostById(postId);
+    if (post.userId === userId) {
+      return this.postService.deletePostById(postId);
+    } else {
+      throw new HttpException(POST_EXCEPTIONS.FORBIDDEN, HttpStatus.FORBIDDEN);
+    }
   }
 
   @Put('repost/:postId/:userId')
@@ -37,7 +45,12 @@ export class PostController {
     @Param('userId', ParseUUIDPipe) userId: string,
   ): Promise<CommonPost> {
     try {
-      return await this.postService.rePost(postId, userId);
+      const post = await this.postService.findPostById(postId);
+      if (post.userId !== userId) {
+        return await this.postService.rePost(postId, userId);
+      } else {
+        throw new HttpException(POST_EXCEPTIONS.REPOST_FORBIDDEN, HttpStatus.FORBIDDEN);
+      }
     } catch (error) {
       Logger.error(error, `rePost - postId: ${postId}, userId: ${userId}`);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
