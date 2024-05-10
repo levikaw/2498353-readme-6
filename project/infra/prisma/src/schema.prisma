@@ -20,7 +20,7 @@ enum UserRole {
 
 model User {
   id           String   @id @default(uuid()) @map("id")
-  email        String
+  email        String   @unique
   login        String
   avatar       String?
   refreshToken String?  @map("refresh_token")
@@ -29,11 +29,25 @@ model User {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  posts         Post[]
-  subscriptions Subscription[]
+  posts           Post[]
+  subscriptions   Subscription[]
+  Notification    Notification?  @relation(fields: [notificationsId], references: [id], onDelete: Cascade)
+  notificationsId String?
 
   @@index([id, email])
   @@map("users")
+}
+
+model Notification {
+  id         String   @id @default(uuid()) @map("id")
+  userId     String   @unique
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  notifiedAt DateTime @default(now()) @map("notified_at")
+
+  users User[]
+
+  @@map("notifications")
 }
 
 model Subscription {
@@ -89,10 +103,9 @@ model Post {
   type               PostType
   userId             String   @map("user_id")
   repostedFromPostId String?  @map("reposted_from_post_id")
-  isReposted         Boolean? @default(false) @map("is_reposted")
-  isPublished        Boolean? @default(true) @map("is_published")
   tags               String[]
   createdAt          DateTime @default(now()) @map("created_at")
+  publishedAt        DateTime @default(now()) @map("published_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
   text         String?

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { LikeController } from './like.controller';
 import { LikeService } from './like.service';
-import { LikeAccessModule } from '@project/like-access';
+import { LikeAccessFactory, LikeAccessRepository } from '@project/like-access';
+import { PrismaDataAccessModule } from '@project/core';
 
 @Module({
-  imports: [LikeAccessModule],
+  imports: [PrismaDataAccessModule.register(LikeAccessFactory, LikeAccessRepository)],
   controllers: [LikeController],
   providers: [LikeService],
 })

@@ -31,14 +31,12 @@ export class PostService {
       throw new Error(POST_EXCEPTION_MESSAGES.NOT_FOUND);
     }
 
-    delete existsPost.createdAt;
-    delete existsPost.updatedAt;
-    delete existsPost.id;
-    existsPost.userId = userId;
-    existsPost.repostedFromPostId = postId;
-    existsPost.isReposted = true;
+    const newPost = (({ createdAt, publishedAt, updatedAt, id, ...post }) => post)(existsPost);
 
-    return this.postAccessRepository.save(new PostAccessEntity(existsPost)).then((resp) => resp?.toObject());
+    newPost.userId = userId;
+    newPost.repostedFromPostId = postId;
+
+    return this.postAccessRepository.save(new PostAccessEntity(newPost)).then((resp) => resp.toObject());
   }
 
   // TODO: обновление репоста?

@@ -23,7 +23,7 @@ export class CreateUserDto {
   public login!: string;
 
   @ApiProperty({
-    description: 'Avatar',
+    description: 'file identificator for avatar uploaded on /api/file/avatar',
   })
   @IsOptional()
   public avatar?: string;

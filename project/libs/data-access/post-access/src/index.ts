@@ -5,7 +5,6 @@ export * from './lib/types/video-post.interface';
 export * from './lib/types/text-post.interface';
 export * from './lib/types/common-post.interface';
 export * from './lib/types/quote-post.interface';
-export * from './lib/post-access.module';
 export * from './lib/post-access.repository';
 export * from './lib/post-access.factory';
 export * from './lib/post-access.entity';

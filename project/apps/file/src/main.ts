@@ -18,7 +18,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get(`${FILES_ALIAS}.port`);
 
-  app.useGlobalGuards(new JwtAuthGuard());
+  // app.useGlobalGuards(new JwtAuthGuard());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<FileModule>(app, 'file');
 

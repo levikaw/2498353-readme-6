@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { SubscriptionController } from './subscription.controller';
 import { SubscriptionService } from './subscription.service';
-import { SubscriptionAccessModule } from '@project/subscription-access';
+import { SubscriptionAccessFactory, SubscriptionAccessRepository } from '@project/subscription-access';
+import { PrismaDataAccessModule } from '@project/core';
 
 @Module({
-  imports: [SubscriptionAccessModule],
+  imports: [PrismaDataAccessModule.register(SubscriptionAccessFactory, SubscriptionAccessRepository)],
   controllers: [SubscriptionController],
   providers: [SubscriptionService],
 })

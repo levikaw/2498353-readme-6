@@ -39,10 +39,12 @@ export class AuthController {
     @Body(new ValidationPipe()) dto: LoginUserDto,
   ): Promise<SuccessResponse<{ user: User; accessToken: string; refreshToken: string }>> {
     try {
-      const user = await this.authService.authUser(dto);
-      delete user.passwordHash;
+      const authUser = await this.authService.authUser(dto);
+      const user = (({ passwordHash, refreshToken, ...user }) => user)(authUser);
+
       const tokens = await this.authService.getTokens(user);
-      await this.authService.updateRefreshToken(user.id, tokens.refreshToken);
+      await this.authService.setRefreshToken(user.id, tokens.refreshToken);
+
       return new SuccessResponse({ user, ...tokens });
     } catch (error) {
       Logger.error(error);

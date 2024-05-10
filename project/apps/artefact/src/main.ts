@@ -18,7 +18,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get(`${ARTEFACTS_ALIAS}.port`);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  app.useGlobalGuards(new JwtAuthGuard());
+  // app.useGlobalGuards(new JwtAuthGuard());
   setUpSwaggerModule<MainModule>(app, 'artefact');
 
   await app.listen(port);

@@ -1,8 +1,20 @@
 POST http://localhost:3000/api/user/register 
 Content-Type: application/json
-
+# avatar получаем из file
 {
     "email": "somemail@mail.com", 
     "login": "somemail",
     "password": "!lDTE2701!"
 }
+
+###
+
+POST http://localhost:3001/api/user/request-notify/7cc9fceb-f0f1-4228-9177-cb17855ff2e0
+Content-Type: application/json
+
+[{
+    "author": "some login", 
+    "title": "some title of publish",
+    "likeCount": 2,
+    "publishedAt": "2022-01-01"
+}]

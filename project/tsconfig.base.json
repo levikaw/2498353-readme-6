@@ -22,6 +22,7 @@
       "@project/core": ["libs/core/src/index.ts"],
       "@project/file-access": ["libs/data-access/file-access/src/index.ts"],
       "@project/like-access": ["libs/data-access/like-access/src/index.ts"],
+      "@project/notification-access": ["libs/data-access/notification-access/src/index.ts"],
       "@project/post-access": ["libs/data-access/post-access/src/index.ts"],
       "@project/prisma": ["infra/prisma/src/index.ts"],
       "@project/subscription-access": ["libs/data-access/subscription-access/src/index.ts"],
