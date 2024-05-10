@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { CommentController } from './comment.controller';
 import { CommentService } from './comment.service';
 import { CommentAccessFactory, CommentAccessRepository } from '@project/comment-access';
-import { PrismaDataAccessModule } from '@project/core';
+import { PrismaDataAccessModule } from '@project/prisma';
 
 @Module({
-  imports: [PrismaDataAccessModule.register(CommentAccessFactory, CommentAccessRepository)],
+  imports: [PrismaDataAccessModule.register([CommentAccessFactory], [CommentAccessRepository])],
   controllers: [CommentController],
   providers: [CommentService],
 })

@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { SendNotificationDto } from '@project/common';
+import { GetLastNotifyDateDto, SendNotificationDto } from '@project/dtos/notification-dto';
 import { NotificationAccessRepository } from '@project/notification-access';
 import dayjs from 'dayjs';
+import { isNotEmptyObject } from 'class-validator';
 
 @Injectable()
 export class NotificationService {
@@ -20,10 +21,13 @@ export class NotificationService {
     });
   }
 
-  public async getAndUpdateLastDateEmail(userId: string): Promise<string> {
-    const { notifiedAt } = await this.notificationAccessRepository.getNotificationByUserId(userId);
+  public async getAndUpdateLastDatel(userId: string): Promise<GetLastNotifyDateDto> {
+    const notification = await this.notificationAccessRepository.getNotificationByUserId(userId);
 
-    await this.notificationAccessRepository.updateNotifiedDate(userId);
-    return dayjs(notifiedAt).format('DD.MM.YYYY');
+    await this.notificationAccessRepository.setNotifiedDate(userId);
+
+    const rawDate = isNotEmptyObject(notification) ? notification.notifiedAt : new Date('1900-01-01');
+
+    return { date: rawDate, dateString: dayjs(rawDate).format('DD.MM.YYYY') };
   }
 }

@@ -10,13 +10,18 @@ export class NotificationAccessRepository extends BasePostgresRepository<Notific
     super(entityFactory, dataSource);
   }
 
-  public async updateNotifiedDate(userId: string): Promise<void> {
-    await this.dataSource.notification.update({
+  public async setNotifiedDate(userId: string): Promise<void> {
+    const notifiedAt = new Date();
+    await this.dataSource.notification.upsert({
       where: {
         userId,
       },
-      data: {
-        notifiedAt: new Date(),
+      create: {
+        userId,
+        notifiedAt,
+      },
+      update: {
+        notifiedAt,
       },
     });
   }

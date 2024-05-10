@@ -9,7 +9,7 @@ import { setUpSwaggerModule } from '@project/swagger';
 import { MainModule } from './main.module';
 import { ConfigService } from '@nestjs/config';
 import { ARTEFACTS_ALIAS } from '@project/configuration';
-import { JwtAuthGuard } from '@project/common';
+import { CheckGatewayRequestGuard } from '@project/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(MainModule);
@@ -18,11 +18,12 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get(`${ARTEFACTS_ALIAS}.port`);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  // app.useGlobalGuards(new JwtAuthGuard());
+  app.useGlobalGuards(new CheckGatewayRequestGuard());
+
   setUpSwaggerModule<MainModule>(app, 'artefact');
 
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Artefact is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
 bootstrap();

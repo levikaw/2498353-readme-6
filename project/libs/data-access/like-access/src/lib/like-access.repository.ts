@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/core';
 import { PrismaService } from '@project/prisma';
-import { calculateSkip, QueryParamsDto } from '@project/common';
 import { LikeAccessEntity } from './like-access.entity';
 import { LikeAccessFactory } from './like-access.factory';
 
@@ -26,16 +25,14 @@ export class LikeAccessRepository extends BasePostgresRepository<LikeAccessEntit
       },
     });
   }
-
-  public async findManyBy(query?: QueryParamsDto<LikeAccessEntity>): Promise<LikeAccessEntity[]> {
+  public async findById(id: string): Promise<LikeAccessEntity> {
     return this.dataSource.like
-      .findMany({
-        where: query.filter,
-        skip: calculateSkip(query.page, query.limit),
-        take: query.limit,
-        orderBy: query.sort,
+      .findUnique({
+        where: {
+          id,
+        },
       })
-      .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
+      .then((resp) => this.entityFactory.createEntity(resp));
   }
 
   public async findOneByPostIdUserId(postId: string, userId: string): Promise<LikeAccessEntity> {
@@ -49,7 +46,7 @@ export class LikeAccessRepository extends BasePostgresRepository<LikeAccessEntit
       .then((resp) => this.entityFactory.createEntity(resp));
   }
 
-  public async countBy(where?: QueryParamsDto<LikeAccessEntity>['filter']): Promise<number> {
-    return this.dataSource.like.count({ where });
+  public async countByPostId(postId: string): Promise<number> {
+    return this.dataSource.like.count({ where: { postId } });
   }
 }

@@ -1,6 +1,6 @@
-import { UserPost } from './base/base-post.interface';
+import { BasePostInterface } from './base/base-post.interface';
 
-export interface TextPost extends UserPost {
+export interface TextPostInterface extends BasePostInterface {
   name?: string;
   announcement?: string;
   text?: string;

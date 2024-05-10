@@ -3,7 +3,7 @@ import { BasePostgresRepository } from '@project/core';
 import { PrismaService } from '@project/prisma';
 import { CommentAccessEntity } from './comment-access.entity';
 import { CommentAccessFactory } from './comment-access.factory';
-import { calculateSkip, QueryParamsDto } from '@project/common';
+import { calculateSkip } from '@project/common';
 
 @Injectable()
 export class CommentAccessRepository extends BasePostgresRepository<CommentAccessEntity> {
@@ -27,18 +27,30 @@ export class CommentAccessRepository extends BasePostgresRepository<CommentAcces
     });
   }
 
-  public async findManyBy(query?: QueryParamsDto<CommentAccessEntity>): Promise<CommentAccessEntity[]> {
+  public async findById(id: string): Promise<CommentAccessEntity> {
     return this.dataSource.comment
-      .findMany({
-        where: query.filter,
-        skip: calculateSkip(query.page, query.limit),
-        take: query.limit,
-        orderBy: query.sort,
+      .findUnique({
+        where: {
+          id,
+        },
       })
-      .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
+      .then((resp) => this.entityFactory.createEntity(resp));
   }
 
-  public async countBy(where?: QueryParamsDto<CommentAccessEntity>['filter']): Promise<number> {
-    return this.dataSource.comment.count({ where });
+  public async findManyByPostId(postId: string, page: number): Promise<CommentAccessEntity[]> {
+    return this.dataSource.comment
+      .findMany({
+        where: { postId },
+        skip: calculateSkip(page, 50),
+        take: 50,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      })
+      .then((comments) => comments.map((comment) => this.entityFactory.createEntity(comment)));
+  }
+
+  public async countByPostId(postId: string): Promise<number> {
+    return this.dataSource.comment.count({ where: { postId } });
   }
 }

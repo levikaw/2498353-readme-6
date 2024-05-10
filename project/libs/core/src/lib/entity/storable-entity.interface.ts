@@ -1,3 +1,3 @@
-export interface StorableEntity<T> {
+export interface StorableEntityInterface<T> {
   toObject(): T;
 }

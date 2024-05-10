@@ -1,5 +1,5 @@
-import { UserPost } from './base/base-post.interface';
+import { BasePostInterface } from './base/base-post.interface';
 
-export interface PhotoPost extends UserPost {
+export interface PhotoPostInterface extends BasePostInterface {
   fileId?: string;
 }

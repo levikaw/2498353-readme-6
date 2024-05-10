@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/core';
 import { PrismaService } from '@project/prisma';
 import { SubscriptionAccessEntity } from './subscription-access.entity';
-import { calculateSkip, QueryParamsDto } from '@project/common';
 import { SubscriptionAccessFactory } from './subscription-access.factory';
 
 @Injectable()
@@ -21,35 +20,31 @@ export class SubscriptionAccessRepository extends BasePostgresRepository<Subscri
 
   public async deleteById(id: string): Promise<void> {
     await this.dataSource.subscription.delete({
-      where: {
-        id,
-      },
+      where: { id },
     });
   }
 
-  public async findManyBy(query?: QueryParamsDto<SubscriptionAccessEntity>): Promise<SubscriptionAccessEntity[]> {
+  public async findById(id: string): Promise<SubscriptionAccessEntity> {
     return this.dataSource.subscription
-      .findMany({
-        where: query.filter,
-        skip: calculateSkip(query.page, query.limit),
-        take: query.limit,
-        orderBy: query.sort,
-      })
-      .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
-  }
-
-  public async findOneByUserIdFollowedUserId(followedUserId: string, userId: string): Promise<SubscriptionAccessEntity> {
-    return this.dataSource.subscription
-      .findFirst({
-        where: {
-          userId,
-          followedUserId,
-        },
+      .findUnique({
+        where: { id },
       })
       .then((resp) => this.entityFactory.createEntity(resp));
   }
 
-  public async countBy(where?: QueryParamsDto<SubscriptionAccessEntity>['filter']): Promise<number> {
-    return this.dataSource.subscription.count({ where });
+  public async findManyByUserId(userId: string): Promise<SubscriptionAccessEntity[]> {
+    return this.dataSource.subscription
+      .findMany({
+        where: { userId },
+      })
+      .then((subscriptions) => subscriptions.map((subscription) => this.entityFactory.createEntity(subscription)));
+  }
+
+  public async findOneByUserIdFollowedUserId(followingUserId: string, userId: string): Promise<SubscriptionAccessEntity> {
+    return this.dataSource.subscription
+      .findFirst({
+        where: { userId, followingUserId },
+      })
+      .then((resp) => this.entityFactory.createEntity(resp));
   }
 }

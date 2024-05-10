@@ -1,5 +1,5 @@
 import { ConfigType, registerAs } from '@nestjs/config';
-import { DEFAULT_AUTH_SERVICE_PORT, AUTH_ALIAS, DEFAULT_EXPIRES_TOKEN_IN } from './constants';
+import { DEFAULT_AUTH_SERVICE_PORT, AUTH_ALIAS } from './constants';
 import { plainToClass } from 'class-transformer';
 import { AuthServiceConfiguration } from './auth-sevice.config';
 
@@ -8,12 +8,8 @@ async function getAuthConfig(): Promise<AuthServiceConfiguration> {
     environment: process.env.NODE_ENV,
     jwtAccessSecret: process.env.JWT_ACCESS_SECRET,
     jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
-    expiresAccessTokenIn: process.env.EXPIRES_ACCESS_TOKEN_IN
-      ? parseInt(process.env.EXPIRES_ACCESS_TOKEN_IN, 10)
-      : DEFAULT_EXPIRES_TOKEN_IN,
-    expiresRefreshTokenIn: process.env.EXPIRES_REFRESH_TOKEN_IN
-      ? parseInt(process.env.EXPIRES_REFRESH_TOKEN_IN, 10)
-      : DEFAULT_EXPIRES_TOKEN_IN,
+    expiresAccessTokenIn: process.env.EXPIRES_ACCESS_TOKEN_IN,
+    expiresRefreshTokenIn: process.env.EXPIRES_REFRESH_TOKEN_IN,
     port: process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_AUTH_SERVICE_PORT,
   });
 

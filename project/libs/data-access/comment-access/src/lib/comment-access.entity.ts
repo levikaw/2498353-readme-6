@@ -1,8 +1,8 @@
-import { BaseEntity, StorableEntity } from '@project/core';
-import { Commentary } from './types/comment.interface';
+import { BaseEntity, StorableEntityInterface } from '@project/core';
+import { CommentInterface } from './types/comment.interface';
 
-export class CommentAccessEntity extends BaseEntity implements StorableEntity<Commentary> {
-  constructor(comment: Commentary) {
+export class CommentAccessEntity extends BaseEntity implements StorableEntityInterface<CommentInterface> {
+  constructor(comment: CommentInterface) {
     super();
 
     this.id = comment.id;
@@ -18,7 +18,7 @@ export class CommentAccessEntity extends BaseEntity implements StorableEntity<Co
   public postId: string;
   public userId: string;
 
-  public toObject(): Commentary {
+  public toObject(): CommentInterface {
     return {
       id: this.id,
       createdAt: this.createdAt,

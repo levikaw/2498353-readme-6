@@ -38,19 +38,19 @@ export class NotificationServiceConfiguration {
 
   @IsNotEmpty()
   @IsString()
-  host: string;
+  public host: string;
 
   @IsNotEmpty()
   @IsString()
-  user: string;
+  public user: string;
 
   @IsNotEmpty()
-  // @IsStrongPassword()
-  password: string;
+  @IsStrongPassword()
+  public password: string;
 
   @IsNotEmpty()
   @IsEmail()
-  from: string;
+  public from: string;
 
   public async validate(): Promise<void> {
     await validateOrReject(this);

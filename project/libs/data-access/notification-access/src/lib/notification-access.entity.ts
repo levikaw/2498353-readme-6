@@ -1,8 +1,8 @@
-import { BaseEntity, StorableEntity } from '@project/core';
-import { Notification } from './types/notification.interface';
+import { BaseEntity, StorableEntityInterface } from '@project/core';
+import { NotificationInterface } from './types/notification.interface';
 
-export class NotificationAccessEntity extends BaseEntity implements StorableEntity<Notification> {
-  constructor(notification: Notification) {
+export class NotificationAccessEntity extends BaseEntity implements StorableEntityInterface<NotificationInterface> {
+  constructor(notification: NotificationInterface) {
     super();
 
     this.id = notification.id;
@@ -16,7 +16,7 @@ export class NotificationAccessEntity extends BaseEntity implements StorableEnti
   public notifiedAt: Date;
   public userId: string;
 
-  public toObject(): Notification {
+  public toObject(): NotificationInterface {
     return {
       id: this.id,
       createdAt: this.createdAt,

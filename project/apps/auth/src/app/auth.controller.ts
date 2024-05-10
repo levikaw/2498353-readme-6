@@ -1,66 +1,89 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpException,
-  HttpStatus,
-  Logger,
-  Param,
-  ParseUUIDPipe,
-  Post,
-  UseGuards,
-  ValidationPipe,
-} from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { LoginUserDto } from './dto/login-user.dto';
-import { JwtAuthGuard, RefreshTokenGuard, SuccessResponse } from '@project/common';
-import { User } from '@project/user-access';
+import { CurrentUserFromToken, JwtAuthGuard, RefreshTokenGuard } from '@project/common';
+import { TokensDto, TokenUserDto } from '@project/dtos/tokens-dto';
+import { TokenService } from '@project/token-access';
+import { LoginUserDto } from '@project/dtos/user-dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService, private readonly tokenService: TokenService) {}
 
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: '{ token: string }',
+  @ApiOkResponse({
+    description: 'Login user',
+    type: TokensDto,
     isArray: false,
-  })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
   })
   @ApiBody({
     required: true,
     isArray: false,
+    type: LoginUserDto,
   })
   @Post('login')
-  public async login(
-    @Body(new ValidationPipe()) dto: LoginUserDto,
-  ): Promise<SuccessResponse<{ user: User; accessToken: string; refreshToken: string }>> {
+  public async login(@Body() account: LoginUserDto): Promise<TokensDto> {
     try {
-      const authUser = await this.authService.authUser(dto);
-      const user = (({ passwordHash, refreshToken, ...user }) => user)(authUser);
+      const { passwordHash, ...user } = await this.authService.authUser(account);
+      const refreshTokenId = crypto.randomUUID();
 
-      const tokens = await this.authService.getTokens(user);
-      await this.authService.setRefreshToken(user.id, tokens.refreshToken);
+      await this.tokenService.setToken(user.id, refreshTokenId);
 
-      return new SuccessResponse({ user, ...tokens });
+      return await this.tokenService.getTokens({
+        userId: user.id,
+        refreshTokenId: refreshTokenId,
+        email: user.email,
+        userName: user.userName,
+        role: user.role,
+        avatar: user.avatar,
+      });
     } catch (error) {
       Logger.error(error);
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+      throw new HttpException('Cannot auth user', HttpStatus.UNAUTHORIZED);
     }
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('check-auth')
-  public async checkAuth() {
-    console.log('yeah');
+  @ApiBearerAuth()
+  @Get('check-access')
+  @ApiOkResponse({
+    description: 'Check access token',
+    type: TokenUserDto,
+    isArray: false,
+  })
+  public async checkAccess(@CurrentUserFromToken() user: TokenUserDto): Promise<TokenUserDto> {
+    return user;
   }
 
   @UseGuards(RefreshTokenGuard)
-  @Get('refresh/:userId')
-  refreshTokens(@Param('userId', ParseUUIDPipe) userId: string) {
-    return this.authService.refreshTokens(userId);
+  @ApiBearerAuth()
+  @Get('check-refresh')
+  @ApiOkResponse({
+    description: 'Check refresh token',
+    type: TokenUserDto,
+    isArray: false,
+  })
+  public async checkRefresh(@CurrentUserFromToken() user: TokenUserDto): Promise<TokenUserDto> {
+    return user;
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Post('refresh')
+  @ApiOkResponse({
+    description: 'Get new tokens',
+    type: TokensDto,
+    isArray: false,
+  })
+  @ApiBearerAuth()
+  public async refreshTokens(@CurrentUserFromToken() user: TokenUserDto): Promise<TokensDto> {
+    try {
+      const refreshTokenId = crypto.randomUUID();
+      await this.tokenService.setToken(user.userId, refreshTokenId);
+
+      return await this.tokenService.getTokens({ ...user, refreshTokenId: refreshTokenId });
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException('Cannot auth user', HttpStatus.UNAUTHORIZED);
+    }
   }
 }

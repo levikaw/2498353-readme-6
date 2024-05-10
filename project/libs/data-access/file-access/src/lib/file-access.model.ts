@@ -1,12 +1,12 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { UserFile } from './types/file.interface';
+import { FileInterface } from './types/file.interface';
 
 @Schema({
   collection: 'files',
   timestamps: true,
 })
-export class FileAccessModel extends Document implements UserFile {
+export class FileAccessModel extends Document implements FileInterface {
   @Prop({
     required: true,
     type: String,
@@ -39,4 +39,12 @@ export const fileAccessSchema = SchemaFactory.createForClass(FileAccessModel);
 
 fileAccessSchema.virtual('id').get(function () {
   return this._id.toString();
+});
+
+fileAccessSchema.set('toObject', {
+  virtuals: true,
+  versionKey: false,
+  transform: function (_, ret) {
+    delete ret._id;
+  },
 });

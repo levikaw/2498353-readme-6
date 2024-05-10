@@ -1,23 +1,23 @@
 import { Document, Model } from 'mongoose';
 import { NotFoundException } from '@nestjs/common';
 import { BaseEntity } from '../entity/base.entity';
-import { StorableEntity } from '../entity/storable-entity.interface';
-import { EntityFactory } from '../entity/entity-factory.interface';
+import { StorableEntityInterface } from '../entity/storable-entity.interface';
+import { EntityFactoryInterface } from '../entity/entity-factory.interface';
 import { RepositoryInterface } from './repository.interface';
 
 export abstract class BaseMongoRepository<
-  T extends BaseEntity & StorableEntity<ReturnType<T['toObject']>>,
+  T extends BaseEntity & StorableEntityInterface<ReturnType<T['toObject']>>,
   DocumentType extends Document,
 > implements RepositoryInterface<T>
 {
-  constructor(protected entityFactory: EntityFactory<T>, protected readonly model: Model<DocumentType>) {}
+  constructor(protected entityFactory: EntityFactoryInterface<T>, protected readonly model: Model<DocumentType>) {}
 
   protected createEntityFromDocument(document: DocumentType): T | null {
     if (!document) {
       return null;
     }
 
-    const plainObject = document.toObject({ versionKey: false }) as ReturnType<T['toObject']>;
+    const plainObject = document.toObject();
     return this.entityFactory.createEntity(plainObject);
   }
 

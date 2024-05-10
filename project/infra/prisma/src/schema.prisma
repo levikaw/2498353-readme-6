@@ -21,18 +21,19 @@ enum UserRole {
 model User {
   id           String   @id @default(uuid()) @map("id")
   email        String   @unique
-  login        String
+  userName     String   @map("user_name")
   avatar       String?
-  refreshToken String?  @map("refresh_token")
   role         UserRole @default(user)
   passwordHash String
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  posts           Post[]
-  subscriptions   Subscription[]
-  Notification    Notification?  @relation(fields: [notificationsId], references: [id], onDelete: Cascade)
-  notificationsId String?
+  posts         Post[]
+  subscriptions Subscription[]
+  Notification  Notification?
+  RefreshToken  RefreshToken?
+  Comment       Comment[]
+  Like          Like[]
 
   @@index([id, email])
   @@map("users")
@@ -45,21 +46,34 @@ model Notification {
   updatedAt  DateTime @updatedAt @map("updated_at")
   notifiedAt DateTime @default(now()) @map("notified_at")
 
-  users User[]
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
 }
 
-model Subscription {
-  id             String   @id @default(uuid()) @map("id")
-  userId         String   @map("user_id")
-  followedUserId String
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+model RefreshToken {
+  id        String    @id @default(uuid()) @map("id")
+  userId    String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  expiredAt DateTime? @default(now()) @map("expired_at")
 
   User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId, followedUserId])
+  @@map("refresh_tokens")
+}
+
+model Subscription {
+  id              String   @id @default(uuid()) @map("id")
+  userId          String   @map("user_id")
+  followingUserId String   @map("followed_user_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, followingUserId])
+  @@index([userId, followingUserId])
   @@map("subscriptions")
 }
 
@@ -71,6 +85,7 @@ model Like {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   Post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([postId])
   @@map("likes")
@@ -85,6 +100,7 @@ model Comment {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   Post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([postId])
   @@map("comments")
@@ -99,14 +115,13 @@ enum PostType {
 }
 
 model Post {
-  id                 String   @id @default(uuid()) @map("id")
+  id                 String    @id @default(uuid()) @map("id")
   type               PostType
-  userId             String   @map("user_id")
-  repostedFromPostId String?  @map("reposted_from_post_id")
-  tags               String[]
-  createdAt          DateTime @default(now()) @map("created_at")
-  publishedAt        DateTime @default(now()) @map("published_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+  userId             String    @map("user_id")
+  repostedFromPostId String?   @map("reposted_from_post_id")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  publishedAt        DateTime? @default(now()) @map("published_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
 
   text         String?
   link         String?
@@ -115,10 +130,36 @@ model Post {
   announcement String?
   fileId       String? @map("file_id")
 
-  comments Comment[]
-  likes    Like[]
-  User     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  likes       Like[]
+  User        User          @relation(fields: [userId], references: [id])
+  LinkPostTag LinkPostTag[]
 
-  @@index([userId, tags, type])
+  @@index([userId, type])
   @@map("posts")
+}
+
+model Tag {
+  id        String   @id @default(uuid()) @map("id")
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  LinkPostTag LinkPostTag[]
+
+  @@map("tags")
+}
+
+model LinkPostTag {
+  id        String   @id @default(uuid()) @map("id")
+  postId    String   @map("post_id")
+  tagId     String   @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  Tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, tagId])
+  @@map("links_post_tag")
 }

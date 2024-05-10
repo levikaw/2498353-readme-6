@@ -1,10 +1,9 @@
 import { BaseEntityInterface } from '@project/core';
-import { PostType } from '@prisma/client';
+import { PostTypeEnum } from './post-type.enum';
 
-export interface UserPost extends BaseEntityInterface {
-  type: PostType;
+export interface BasePostInterface extends BaseEntityInterface {
+  type: PostTypeEnum;
   userId: string;
-  tags?: string[];
   repostedFromPostId?: string;
   publishedAt?: Date;
 }

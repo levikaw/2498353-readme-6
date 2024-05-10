@@ -1,5 +1,4 @@
 import {
-  IsEmail,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -10,30 +9,30 @@ import {
   validateOrReject,
 } from 'class-validator';
 import { PORT } from '../../constants';
-import { POSTGRES_VALIDATION_MESSAGE, DEFAULT_POSTGRES_PORT } from './constants';
+import { DEFAULT_POSTGRES_PORT } from './constants';
 
 export class PostgresConfiguration {
-  @IsString({ message: POSTGRES_VALIDATION_MESSAGE.DB })
+  @IsString()
   @IsNotEmpty()
   public db: string;
 
-  @IsString({ message: POSTGRES_VALIDATION_MESSAGE.HOST })
+  @IsString()
   @IsNotEmpty()
   public host: string;
 
-  @IsNumber({}, { message: POSTGRES_VALIDATION_MESSAGE.PORT })
+  @IsNumber()
   @Min(PORT.MIN)
   @Max(PORT.MAX)
   @IsOptional()
   public port: number = DEFAULT_POSTGRES_PORT;
 
-  @IsString({ message: POSTGRES_VALIDATION_MESSAGE.USER })
+  @IsString()
   @IsNotEmpty()
   public user: string;
 
-  @IsString({ message: POSTGRES_VALIDATION_MESSAGE.PASSWORD })
+  @IsString()
   @IsNotEmpty()
-  // @IsStrongPassword()
+  @IsStrongPassword()
   public password: string;
 
   public async validate(): Promise<void> {
