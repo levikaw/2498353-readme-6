@@ -10,7 +10,7 @@ export function getStaticOptions(): ServeStaticModuleAsyncOptions {
       return [
         {
           rootPath,
-          serveRoot,
+          serveRoot: '/api' + serveRoot,
           serveStaticOptions: {
             fallthrough: true,
             etag: true,

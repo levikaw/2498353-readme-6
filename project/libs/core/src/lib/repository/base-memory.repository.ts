@@ -1,16 +1,16 @@
 import { randomUUID } from 'node:crypto';
 
 import { BaseEntity } from '../entity/base.entity';
-import { StorableEntity } from '../entity/storable-entity.interface';
-import { EntityFactory } from '../entity/entity-factory.interface';
+import { StorableEntityInterface } from '../entity/storable-entity.interface';
+import { EntityFactoryInterface } from '../entity/entity-factory.interface';
 import { RepositoryInterface } from './repository.interface';
 
-export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntity<ReturnType<T['toObject']>>>
+export abstract class BaseMemoryRepository<T extends BaseEntity & StorableEntityInterface<ReturnType<T['toObject']>>>
   implements RepositoryInterface<T>
 {
   protected entities: Map<T['id'], ReturnType<T['toObject']>> = new Map();
 
-  constructor(protected entityFactory: EntityFactory<T>) {}
+  constructor(protected entityFactory: EntityFactoryInterface<T>) {}
 
   public async findAll(): Promise<ReturnType<T['toObject']>[]> {
     return Array.from(this.entities.values());

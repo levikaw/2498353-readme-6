@@ -1,46 +1,123 @@
-import { Body, Controller, HttpStatus, Param, ParseUUIDPipe, Post } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserAccessEntity } from '@project/user-access';
-import { AuthUser } from '@project/user-access';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Patch,
+  Post,
+  Query,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { PostsListDto } from '@project/common';
+import { CheckNoAuthGuard, CurrentUserFromToken, fillDto, JwtAuthGuard } from '@project/common';
+import { TokenUserDto } from '@project/dtos/tokens-dto';
+import { CreateUserDto, ChangePasswordDto, AuthUserDto } from '@project/dtos/user-dto';
+import { NotificationPostsListDto } from '@project/dtos/post-dto';
+import { AUTH_EXCEPTION } from '@project/constants/exception-messages';
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  //TODO: @useGuards()
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: UserAccessEntity,
+  @ApiOkResponse({
+    type: AuthUserDto,
     isArray: false,
-  })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+    description: 'UserInterface registration',
   })
   @ApiBody({
     required: true,
     isArray: false,
+    type: CreateUserDto,
   })
+  @UseGuards(CheckNoAuthGuard)
   @Post('register')
-  public async createUser(@Body() dto: CreateUserDto): Promise<AuthUser> {
-    // TODO: при создании пользователя нужна запись в Notification
-    return this.userService.register(dto).then((resp) => resp.toObject());
+  public async createUser(@Body() user: CreateUserDto): Promise<AuthUserDto> {
+    try {
+      return this.userService.register(user).then((createdUser) => fillDto(AuthUserDto, createdUser.toObject()));
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException('Cannot create user', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  // TODO: смена пароля пользователя пункт 1.9
-  // TODO: запрос информации о пользователе пункт 1.10
-
-  @ApiOkResponse()
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  @ApiBearerAuth()
   @ApiBody({
     required: true,
-    type: PostsListDto,
+    isArray: false,
+    type: ChangePasswordDto,
+  })
+  @ApiOkResponse({
+    type: AuthUserDto,
+    description: 'Change user password',
+    isArray: false,
+  })
+  public async changePassword(
+    @CurrentUserFromToken() user: TokenUserDto,
+    @Body() passwordCredential: ChangePasswordDto,
+  ): Promise<AuthUserDto> {
+    try {
+      const userEntity = await this.userService.changePassword(user.userId, passwordCredential);
+      return fillDto(AuthUserDto, userEntity.toObject());
+    } catch (error) {
+      Logger.error(error);
+      throw new UnauthorizedException(AUTH_EXCEPTION.WRONG_PASSWORD);
+    }
+  }
+
+  @ApiOkResponse({
+    description: 'Request notification to current user',
+  })
+  @ApiBody({
+    required: true,
+    isArray: true,
+    type: [NotificationPostsListDto],
+  })
+  @UseGuards(JwtAuthGuard)
+  @Post('request-notify')
+  @ApiBearerAuth()
+  public async requestNotification(
+    @CurrentUserFromToken() user: TokenUserDto,
+    @Body() posts: NotificationPostsListDto[],
+  ): Promise<void> {
+    try {
+      const publications = await Promise.all(
+        posts.map(
+          async (post) => await this.userService.findById(post.author).then(({ userName }) => ({ ...post, author: userName })),
+        ),
+      );
+      return await this.userService.requestNewPublicationsForEmail(user.userId, publications);
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException('Cannot request for notification', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get()
+  @ApiOkResponse({
+    type: [AuthUserDto],
+    description: 'Get users by their identificators',
     isArray: true,
   })
-  @Post('request-notify/:userId')
-  public async requestNotify(@Param('userId', ParseUUIDPipe) userId: string, @Body() posts: PostsListDto[]): Promise<void> {
-    return await this.userService.requestNewPublicationsForEmail(userId, posts);
+  @ApiQuery({
+    type: [String],
+    isArray: true,
+    description: 'Array of user`s identicators',
+  })
+  public async getUsersByIds(@Query('usersIds') usersIds: string[]): Promise<AuthUserDto[]> {
+    try {
+      return await Promise.all(
+        usersIds.map((id) => this.userService.findById(id).then((user) => fillDto(AuthUserDto, user.toObject()))),
+      );
+    } catch (error) {
+      Logger.error(error);
+      return [];
+    }
   }
 }

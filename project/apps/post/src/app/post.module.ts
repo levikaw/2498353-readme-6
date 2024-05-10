@@ -1,24 +1,24 @@
 import { Module } from '@nestjs/common';
-import { CreatePostController } from './controllers/create-post.controller';
 import { PostService } from './post.service';
 import { PostAccessFactory, PostAccessRepository } from '@project/post-access';
-import { UpdatePostController } from './controllers/update-post.controller';
-import { PostController } from './controllers/post.controller';
-import { postgresRegister, postServiceRegister } from '@project/configuration';
+import { PostController } from './post.controller';
+import { authServiceRegister, postgresRegister, postServiceRegister } from '@project/configuration';
 import { ConfigModule } from '@nestjs/config';
-import { PrismaDataAccessModule } from '@project/core';
+import { PrismaDataAccessModule } from '@project/prisma';
+import { TokenAccessModule } from '@project/token-access';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [postServiceRegister, postgresRegister],
+      load: [postServiceRegister, postgresRegister, authServiceRegister],
       envFilePath: 'apps/post/.env',
     }),
-    PrismaDataAccessModule.register(PostAccessFactory, PostAccessRepository),
+    TokenAccessModule,
+    PrismaDataAccessModule.register([PostAccessFactory], [PostAccessRepository]),
   ],
-  controllers: [CreatePostController, UpdatePostController, PostController],
+  controllers: [PostController],
   providers: [PostService],
 })
 export class PostModule {}

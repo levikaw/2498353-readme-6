@@ -1,6 +1,6 @@
 import { BaseEntityInterface } from '@project/core';
 
-export interface UserFile extends BaseEntityInterface {
+export interface FileInterface extends BaseEntityInterface {
   name: string;
   userId: string;
   mimetype: string;

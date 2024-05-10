@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { EntityFactory } from '@project/core';
+import { EntityFactoryInterface } from '@project/core';
 import { isNotEmpty } from 'class-validator';
 import { LikeAccessEntity } from './like-access.entity';
-import { UserLike } from './types/like.interface';
+import { LikeInterface } from './types/like.interface';
 
 @Injectable()
-export class LikeAccessFactory implements EntityFactory<LikeAccessEntity> {
-  public createEntity(entityPlainData: UserLike): LikeAccessEntity {
+export class LikeAccessFactory implements EntityFactoryInterface<LikeAccessEntity> {
+  public createEntity(entityPlainData: LikeInterface): LikeAccessEntity {
     return isNotEmpty(entityPlainData) ? new LikeAccessEntity(entityPlainData) : null;
   }
 }

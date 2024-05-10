@@ -21,7 +21,7 @@ async function bootstrap() {
   setUpSwaggerModule<NotificationModule>(app, 'notification');
 
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Notification is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
 bootstrap();

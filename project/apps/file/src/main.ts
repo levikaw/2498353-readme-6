@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { FILES_ALIAS } from '@project/configuration';
 import { setUpSwaggerModule } from '@project/swagger';
-import { JwtAuthGuard } from '@project/common';
+import { CheckGatewayRequestGuard } from '@project/common';
 import { FileModule } from './app/file.module';
 
 async function bootstrap() {
@@ -18,12 +18,12 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get(`${FILES_ALIAS}.port`);
 
-  // app.useGlobalGuards(new JwtAuthGuard());
+  app.useGlobalGuards(new CheckGatewayRequestGuard());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<FileModule>(app, 'file');
 
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 File is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
 bootstrap();

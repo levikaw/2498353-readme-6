@@ -1,5 +1,5 @@
-import { StorableEntity } from './storable-entity.interface';
+import { StorableEntityInterface } from './storable-entity.interface';
 
-export interface EntityFactory<T extends StorableEntity<ReturnType<T['toObject']>>> {
+export interface EntityFactoryInterface<T extends StorableEntityInterface<ReturnType<T['toObject']>>> {
   createEntity(entityPlainData: ReturnType<T['toObject']>): T;
 }

@@ -10,7 +10,7 @@ import {
   validateOrReject,
 } from 'class-validator';
 import { PORT, Environment } from '../../constants';
-import { DEFAULT_AUTH_SERVICE_PORT, DEFAULT_EXPIRES_TOKEN_IN } from './constants';
+import { DEFAULT_AUTH_SERVICE_PORT } from './constants';
 
 export class AuthServiceConfiguration {
   @IsNumber()
@@ -23,13 +23,17 @@ export class AuthServiceConfiguration {
   @IsNotEmpty()
   public environment: Environment;
 
-  @IsNumber()
-  @IsOptional()
-  public expiresAccessTokenIn: number = DEFAULT_EXPIRES_TOKEN_IN;
+  @IsString()
+  @IsNotEmpty()
+  public expiresAccessTokenIn: string;
 
   @IsString()
   @IsNotEmpty()
-  // @IsStrongPassword()
+  public expiresRefreshTokenIn: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsStrongPassword()
   public jwtAccessSecret: string;
 
   public async validate(): Promise<void> {

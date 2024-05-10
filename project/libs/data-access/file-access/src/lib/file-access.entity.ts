@@ -1,9 +1,9 @@
 import { BaseEntity } from '@project/core';
-import { StorableEntity } from '@project/core';
-import { UserFile } from './types/file.interface';
+import { StorableEntityInterface } from '@project/core';
+import { FileInterface } from './types/file.interface';
 
-export class FileAccessEntity extends BaseEntity implements StorableEntity<UserFile> {
-  constructor(file: UserFile) {
+export class FileAccessEntity extends BaseEntity implements StorableEntityInterface<FileInterface> {
+  constructor(file: FileInterface) {
     super();
     this.id = file.id;
     this.createdAt = file.createdAt;
@@ -19,7 +19,7 @@ export class FileAccessEntity extends BaseEntity implements StorableEntity<UserF
   public mimetype: string;
   public size: number;
 
-  public toObject(): UserFile {
+  public toObject(): FileInterface {
     return {
       id: this.id,
       createdAt: this.createdAt,

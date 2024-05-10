@@ -1,11 +1,11 @@
 import { compare, genSalt, hash } from 'bcrypt';
-import { BaseEntity, StorableEntity } from '@project/core';
-import { SALT_ROUNDS } from './constants';
-import { AuthUser } from './types/auth-user.interface';
-import { UserRole } from '@prisma/client';
+import { BaseEntity, StorableEntityInterface } from '@project/core';
+import { SALT_ROUNDS } from '@project/constants/user-constant';
+import { AuthUserInterface } from './types/auth-user.interface';
+import { UserRoleEnum } from './types/user-role.enum';
 
-export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthUser> {
-  constructor(user: AuthUser) {
+export class UserAccessEntity extends BaseEntity implements StorableEntityInterface<AuthUserInterface> {
+  constructor(user: AuthUserInterface) {
     super();
 
     this.id = user.id;
@@ -16,28 +16,25 @@ export class UserAccessEntity extends BaseEntity implements StorableEntity<AuthU
     this.avatar = user.avatar;
     this.passwordHash = user.passwordHash;
     this.role = user.role;
-    this.login = user.login;
-    this.refreshToken = user.refreshToken;
+    this.userName = user.userName;
   }
 
   public email: string;
-  public login: string;
+  public userName: string;
   public avatar?: string;
-  public role: UserRole;
+  public role: UserRoleEnum;
   public passwordHash: string;
-  public refreshToken: string;
 
-  public toObject(): AuthUser {
+  public toObject(): AuthUserInterface {
     return {
       id: this.id,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       email: this.email,
       avatar: this.avatar,
-      login: this.login,
+      userName: this.userName,
       role: this.role,
       passwordHash: this.passwordHash,
-      refreshToken: this.refreshToken,
     };
   }
 

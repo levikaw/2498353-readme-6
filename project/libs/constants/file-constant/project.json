@@ -1,0 +1,9 @@
+{
+  "name": "constants-file-constant",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/constants/file-constant/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project constants-file-constant --web",
+  "targets": {}
+}

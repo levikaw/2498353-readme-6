@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { FileAccessEntity, FileAccessRepository, UserFile } from '@project/file-access';
-import { FILES_MESSAGES_EXCEPTION } from './constants';
-import { FILES_ALIAS } from '@project/configuration';
+import { FileAccessEntity, FileAccessRepository } from '@project/file-access';
+import { FILES_EXCEPTION } from '@project/constants/exception-messages';
+import { FILES_ALIAS, BAD_MONGO_ID_ERROR } from '@project/configuration';
 import { join } from 'node:path';
+import { extension } from 'mime-types';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class FileService {
@@ -14,33 +16,33 @@ export class FileService {
     return join(rootPath, userId);
   }
 
-  public async upload(files: Express.Multer.File[], userId: string): Promise<string[]> {
-    return Promise.all(
-      files.map((file) =>
-        this.fileAccessRepository
-          .save(
-            new FileAccessEntity({
-              name: file.originalname,
-              mimetype: file.mimetype,
-              size: file.size,
-              userId,
-            }),
-          )
-          .then((resp) => {
-            this.fileAccessRepository.saveContent(resp.id, this.buildPathForFile(userId), file);
-            return resp.id;
-          }),
-      ),
-    );
+  public async upload(file: Express.Multer.File, userId: string): Promise<string> {
+    return this.fileAccessRepository
+      .save(
+        new FileAccessEntity({
+          name: file.originalname,
+          mimetype: file.mimetype,
+          size: file.size,
+          userId,
+        }),
+      )
+      .then(({ id }) => this.fileAccessRepository.saveContent(id, this.buildPathForFile(userId), file));
   }
 
-  public async getFile(id: string): Promise<UserFile> {
-    const file = await this.fileAccessRepository.findById(id);
-
-    if (!file) {
-      throw new Error(FILES_MESSAGES_EXCEPTION.NOT_FOUND);
+  public async getFilePath(id: string): Promise<string> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException(BAD_MONGO_ID_ERROR);
     }
 
-    return file.toObject();
+    const fileEntity = await this.fileAccessRepository.findById(id);
+
+    if (!fileEntity) {
+      throw new Error(FILES_EXCEPTION.NOT_FOUND);
+    }
+    return join(
+      this.configService.get<string>(`${FILES_ALIAS}.serveRoot`),
+      fileEntity.userId,
+      `${id}.${extension(fileEntity.mimetype)}`,
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { BaseEntityInterface } from '@project/core';
 
-export interface Notification extends BaseEntityInterface {
+export interface NotificationInterface extends BaseEntityInterface {
   userId: string;
   notifiedAt: Date;
 }

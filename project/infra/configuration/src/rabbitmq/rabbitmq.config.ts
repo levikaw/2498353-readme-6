@@ -33,7 +33,7 @@ export class RabbitMQConfiguration {
   public host: string;
 
   @IsNotEmpty()
-  // @IsStrongPassword()
+  @IsStrongPassword()
   public password: string;
 
   @IsNotEmpty()

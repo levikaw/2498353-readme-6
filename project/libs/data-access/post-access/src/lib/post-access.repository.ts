@@ -3,9 +3,11 @@ import { BasePostgresRepository } from '@project/core';
 import { PostAccessEntity } from './post-access.entity';
 import { PostAccessFactory } from './post-access.factory';
 import { PrismaService } from '@project/prisma';
-import { calculateSkip, QueryParamsDto } from '@project/common';
-import { convertToPrismaFilter } from './post-access.filter';
-import { UpdateCommonnPost } from './types/update-common-post.interface';
+import { calculateSkip } from '@project/common';
+import { convertToPrismaFilter } from './utils/convert-to-prisma-filter';
+import { UpdateCommonPostInterface } from './types/update-common-post.interface';
+import { CommonPostInterface } from './types/common-post.interface';
+import { PostFilterInterface } from './types/post-filter.interface';
 
 @Injectable()
 export class PostAccessRepository extends BasePostgresRepository<PostAccessEntity> {
@@ -15,10 +17,8 @@ export class PostAccessRepository extends BasePostgresRepository<PostAccessEntit
 
   public async save(entity: PostAccessEntity): Promise<PostAccessEntity> {
     return this.dataSource.post
-      .create({
-        data: entity.toObject(),
-      })
-      .then((resp) => this.entityFactory.createEntity(resp));
+      .create({ data: entity.toObject() })
+      .then((resp) => this.entityFactory.createEntity(resp as CommonPostInterface));
   }
 
   public async findById(id: string): Promise<PostAccessEntity> {
@@ -28,7 +28,7 @@ export class PostAccessRepository extends BasePostgresRepository<PostAccessEntit
           id,
         },
       })
-      .then((resp) => this.entityFactory.createEntity(resp));
+      .then((post) => this.entityFactory.createEntity(post as CommonPostInterface));
   }
 
   public async deleteById(id: string): Promise<void> {
@@ -39,26 +39,34 @@ export class PostAccessRepository extends BasePostgresRepository<PostAccessEntit
     });
   }
 
-  public async update(entity: UpdateCommonnPost): Promise<void> {
+  public async update(entity: UpdateCommonPostInterface): Promise<void> {
     await this.dataSource.post.update({
       where: { id: entity.id },
       data: entity,
     });
   }
 
-  // TODO: проверить
-  public async findManyBy(query?: QueryParamsDto<PostAccessEntity>): Promise<PostAccessEntity[]> {
-    return this.dataSource.post
-      .findMany({
-        where: convertToPrismaFilter(query.filter),
-        skip: calculateSkip(query.page, query.limit),
-        take: query.limit,
-        orderBy: query?.sort ?? { publishedAt: 'desc' },
+  public async updateAndReturn(entity: UpdateCommonPostInterface): Promise<PostAccessEntity> {
+    return await this.dataSource.post
+      .update({
+        where: { id: entity.id },
+        data: entity,
       })
-      .then((resp) => resp.map((c) => this.entityFactory.createEntity(c)));
+      .then((post) => this.entityFactory.createEntity(post as CommonPostInterface));
   }
 
-  public async countBy(where?: QueryParamsDto<PostAccessEntity>['filter']): Promise<number> {
+  public async findManyBy(filter: PostFilterInterface, page: number, limit: number): Promise<PostAccessEntity[]> {
+    return this.dataSource.post
+      .findMany({
+        where: convertToPrismaFilter(filter),
+        skip: calculateSkip(page, limit),
+        take: limit,
+        orderBy: { publishedAt: 'desc' },
+      })
+      .then((posts) => posts.map((post) => this.entityFactory.createEntity(post as CommonPostInterface)));
+  }
+
+  public async countBy(where: PostFilterInterface): Promise<number> {
     return this.dataSource.post.count({ where: convertToPrismaFilter(where) });
   }
 }

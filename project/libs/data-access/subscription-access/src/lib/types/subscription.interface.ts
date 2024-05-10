@@ -1,6 +1,6 @@
 import { BaseEntityInterface } from '@project/core';
 
-export interface Subscription extends BaseEntityInterface {
+export interface SubscriptionInterface extends BaseEntityInterface {
   userId: string;
-  followedUserId: string;
+  followingUserId: string;
 }

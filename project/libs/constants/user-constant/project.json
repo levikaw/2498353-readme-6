@@ -1,0 +1,9 @@
+{
+  "name": "constants-user-constant",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/constants/user-constant/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project constants-user-constant --web",
+  "targets": {}
+}

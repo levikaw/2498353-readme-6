@@ -1,69 +1,23 @@
-import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { AuthUser, User, UserAccessRepository } from '@project/user-access';
-import { AUTH_MESSAGES_EXCEPTION } from './constants';
-import { LoginUserDto } from './dto/login-user.dto';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { getJwtAccessOptions, getJwtRefreshOptions } from '@project/configuration';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { AuthUserInterface, UserAccessRepository } from '@project/user-access';
+import { AUTH_EXCEPTION } from '@project/constants/exception-messages';
+import { LoginUserDto } from '@project/dtos/user-dto';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly userRepository: UserAccessRepository,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly userRepository: UserAccessRepository) {}
 
-  public async authUser(user: LoginUserDto): Promise<AuthUser> {
+  public async authUser(user: LoginUserDto): Promise<AuthUserInterface> {
     const existUser = await this.userRepository.findOneByEmail(user.email);
 
     if (!existUser) {
-      throw new NotFoundException(AUTH_MESSAGES_EXCEPTION.NOT_FOUND);
+      throw new NotFoundException(AUTH_EXCEPTION.NOT_FOUND);
     }
 
     if (!(await existUser.comparePassword(user.password))) {
-      throw new UnauthorizedException(AUTH_MESSAGES_EXCEPTION.WRONG_PASSWORD);
+      throw new UnauthorizedException(AUTH_EXCEPTION.WRONG_PASSWORD);
     }
 
     return existUser.toObject();
-  }
-
-  public async setRefreshToken(userId: string, refreshToken: string): Promise<void> {
-    await this.userRepository.setRefreshToken(userId, refreshToken);
-  }
-
-  public async getTokens(payload: User): Promise<{
-    accessToken: string;
-    refreshToken: string;
-  }> {
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(payload, getJwtAccessOptions(this.configService)),
-      this.jwtService.signAsync(payload, getJwtRefreshOptions(this.configService)),
-    ]);
-
-    return {
-      accessToken,
-      refreshToken,
-    };
-  }
-
-  async refreshTokens(userId: string) {
-    const user = await this.userRepository.findById(userId);
-
-    if (!user || !user.refreshToken) {
-      throw new ForbiddenException('Access Denied');
-    }
-
-    const refreshTokenMatches = await this.jwtService.verify(user.refreshToken, getJwtRefreshOptions(this.configService));
-
-    if (!refreshTokenMatches) {
-      throw new ForbiddenException('Access Denied');
-    }
-
-    const tokens = await this.getTokens(user.toObject());
-
-    await this.setRefreshToken(userId, tokens.refreshToken);
-
-    return tokens;
   }
 }

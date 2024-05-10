@@ -1,0 +1,9 @@
+{
+  "name": "constants-comment-constant",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/constants/comment-constant/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project constants-comment-constant --web",
+  "targets": {}
+}

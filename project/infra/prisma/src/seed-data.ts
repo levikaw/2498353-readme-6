@@ -1,4 +1,5 @@
-import { PostType, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { PostType } from '@prisma/client';
 import { genSalt, hash } from 'bcrypt';
 
 const USER_ID = {
@@ -57,25 +58,25 @@ async function getUsers() {
     {
       id: USER_ID.A,
       email: 'example@mail.com',
-      login: 'login',
+      userName: 'login',
       passwordHash: await createPassword('login123456'),
     },
     {
       id: USER_ID.B,
       email: 'example1@mail.com',
-      login: 'login1',
+      userName: 'login1',
       passwordHash: await createPassword('login1123456'),
     },
     {
       id: USER_ID.C,
       email: 'example2@mail.com',
-      login: 'login2',
+      userName: 'login2',
       passwordHash: await createPassword('login2123456'),
     },
     {
       id: USER_ID.D,
       email: 'example3@mail.com',
-      login: 'login3',
+      userName: 'login3',
       passwordHash: await createPassword('login3123456'),
     },
   ];
@@ -142,51 +143,51 @@ function getSubscriptions() {
   return [
     {
       userId: USER_ID.A,
-      followedUserId: USER_ID.B,
+      followingUserId: USER_ID.B,
     },
     {
       userId: USER_ID.A,
-      followedUserId: USER_ID.C,
+      followingUserId: USER_ID.C,
     },
     {
       userId: USER_ID.A,
-      followedUserId: USER_ID.D,
+      followingUserId: USER_ID.D,
     },
     {
       userId: USER_ID.B,
-      followedUserId: USER_ID.A,
+      followingUserId: USER_ID.A,
     },
     {
       userId: USER_ID.B,
-      followedUserId: USER_ID.C,
+      followingUserId: USER_ID.C,
     },
     {
       userId: USER_ID.B,
-      followedUserId: USER_ID.D,
+      followingUserId: USER_ID.D,
     },
     {
       userId: USER_ID.C,
-      followedUserId: USER_ID.A,
+      followingUserId: USER_ID.A,
     },
     {
       userId: USER_ID.C,
-      followedUserId: USER_ID.B,
+      followingUserId: USER_ID.B,
     },
     {
       userId: USER_ID.C,
-      followedUserId: USER_ID.D,
+      followingUserId: USER_ID.D,
     },
     {
       userId: USER_ID.D,
-      followedUserId: USER_ID.A,
+      followingUserId: USER_ID.A,
     },
     {
       userId: USER_ID.D,
-      followedUserId: USER_ID.B,
+      followingUserId: USER_ID.B,
     },
     {
       userId: USER_ID.D,
-      followedUserId: USER_ID.C,
+      followingUserId: USER_ID.C,
     },
   ];
 }

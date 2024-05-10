@@ -25,7 +25,7 @@ export class FileAccessRepository extends BaseMongoRepository<FileAccessEntity, 
       await ensureDir(dir);
       await writeFile(path, file.buffer);
 
-      return fileName;
+      return id;
     } catch (error) {
       Logger.error(error);
       throw new Error(error);

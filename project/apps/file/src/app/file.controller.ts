@@ -10,34 +10,55 @@ import {
   ParseFilePipe,
   ParseUUIDPipe,
   Post,
-  UploadedFiles,
+  Query,
+  UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { FileService } from './file.service';
-import { MAX_FILE_SIZE, MAX_AVATAR_SIZE, ALLOWED_FILE_TYPES } from './constants';
+import { MAX_FILE_SIZE, MAX_AVATAR_SIZE, ALLOWED_FILE_TYPES } from '@project/constants/file-constant';
 import 'multer';
-import { ParseMongoIdPipe } from '@project/configuration';
-import { FileAccessEntity, UserFile } from '@project/file-access';
+import { CurrentUserFromToken, JwtAuthGuard } from '@project/common';
+import { TokenUserDto } from '@project/dtos/tokens-dto';
+import { FilePathWithEntityIdDto, QueryFileDto } from '@project/dtos/file-dto';
 
 @ApiTags('file')
 @Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: '{ filesId: string[] }',
+  @ApiOkResponse({
+    type: String,
     isArray: false,
+    description: 'Get uploaded file identificator',
   })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        files: 1,
+        fieldSize: MAX_FILE_SIZE,
+      },
+    }),
+  )
+  @Post('upload')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
   })
-  @UseInterceptors(FilesInterceptor('files'))
-  @Post('upload/:userId')
-  public async upload(
-    @UploadedFiles(
+  @ApiBearerAuth()
+  public async uploadFile(
+    @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: MAX_FILE_SIZE }),
@@ -45,29 +66,50 @@ export class FileController {
         ],
       }),
     )
-    files: Express.Multer.File[],
-    @Param('userId', ParseUUIDPipe) userId: string,
-  ): Promise<{ filesId: string[] }> {
+    file: Express.Multer.File,
+    @CurrentUserFromToken() user: TokenUserDto,
+  ): Promise<string> {
     try {
-      const filesId = await this.fileService.upload(files, userId);
-      return { filesId };
+      return await this.fileService.upload(file, user.userId);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+      Logger.error(error);
+      throw new HttpException('Cannot upload avatar', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: '{ filesId: string[] }',
+  @ApiOkResponse({
+    type: String,
     isArray: false,
+    description: 'Get uploaded file identificator',
   })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        files: 1,
+        fieldSize: MAX_AVATAR_SIZE,
+      },
+    }),
+  )
+  @ApiParam({
+    name: 'userId',
+    type: String,
+    required: true,
   })
-  @UseInterceptors(FilesInterceptor('files'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @Post('avatar/:userId')
   public async uploadAvatar(
-    @UploadedFiles(
+    @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: MAX_AVATAR_SIZE }),
@@ -75,29 +117,35 @@ export class FileController {
         ],
       }),
     )
-    files: Express.Multer.File[],
+    file: Express.Multer.File,
     @Param('userId', ParseUUIDPipe) userId: string,
-  ): Promise<{ filesId: string[] }> {
+  ): Promise<string> {
     try {
-      const filesId = await this.fileService.upload(files, userId);
-      return { filesId };
+      return await this.fileService.upload(file, userId);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+      Logger.error(error);
+      throw new HttpException('Cannot upload avatar', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: FileAccessEntity,
-    isArray: false,
+  @ApiOkResponse({
+    type: [FilePathWithEntityIdDto],
+    isArray: true,
+    description: 'get files paths with entiti id (for example, user or post)',
   })
-  @Get(':id')
-  public async getFile(@Param('id', ParseMongoIdPipe) id: string): Promise<UserFile> {
+  @Get()
+  @ApiQuery({
+    required: true,
+    type: QueryFileDto,
+  })
+  public async getFilesPaths(@Query() params: QueryFileDto): Promise<FilePathWithEntityIdDto[]> {
     try {
-      return await this.fileService.getFile(id);
+      return await Promise.all(
+        params.filter.map((param) => this.fileService.getFilePath(param.fileId).then((filePath) => ({ id: param.id, filePath }))),
+      );
     } catch (error) {
-      Logger.error(error, `getFile - id: ${id}`);
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+      Logger.error(error);
+      return [];
     }
   }
 }

@@ -1,0 +1,9 @@
+{
+  "name": "tag-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-access/tag-access/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project tag-access --web",
+  "targets": {}
+}

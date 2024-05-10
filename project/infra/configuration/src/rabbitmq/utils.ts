@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { RABBITMQ_ALIAS } from './constants';
-import { RABBIT_EXCHANGES } from '@project/constants';
+import { RABBIT_EXCHANGES } from './constants';
 import { AsyncModuleConfig } from '@golevelup/nestjs-modules';
 import { RabbitMQConfig } from '@golevelup/nestjs-rabbitmq';
 

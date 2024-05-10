@@ -1,25 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { CommentAccessEntity, CommentAccessRepository, Commentary } from '@project/comment-access';
-import { QueryParamsDto } from '@project/common';
-import { CreateCommentDto } from './dto/create-comment.dto';
+import { CommentAccessEntity, CommentAccessRepository, CommentInterface } from '@project/comment-access';
 
 @Injectable()
 export class CommentService {
   constructor(private readonly commentAccessRepository: CommentAccessRepository) {}
 
-  public async findCommentsByPostId(params?: QueryParamsDto<Commentary>): Promise<Commentary[]> {
-    return this.commentAccessRepository.findManyBy(params).then((resp) => resp.map((c) => c.toObject()));
+  public async findCommentsByPostId(postId: string, page: number): Promise<CommentInterface[]> {
+    return this.commentAccessRepository.findManyByPostId(postId, page);
   }
 
-  public async countBy(where?: QueryParamsDto<Commentary>['filter']): Promise<number> {
-    return this.commentAccessRepository.countBy(where);
+  public async countByPostId(postId: string): Promise<number> {
+    return this.commentAccessRepository.countByPostId(postId);
   }
 
-  public async createCommentByPostId(comment: CreateCommentDto, postId: string): Promise<Commentary> {
-    return this.commentAccessRepository.save(new CommentAccessEntity({ ...comment, postId })).then((resp) => resp.toObject());
+  public async createCommentByPostId(text: string, postId: string, userId: string): Promise<CommentInterface> {
+    return this.commentAccessRepository.save(new CommentAccessEntity({ text, postId, userId }));
   }
 
   public async deleteCommentById(id: string): Promise<void> {
     await this.commentAccessRepository.deleteById(id);
+  }
+
+  public async findCommentById(id: string): Promise<CommentAccessEntity> {
+    return this.commentAccessRepository.findById(id);
   }
 }

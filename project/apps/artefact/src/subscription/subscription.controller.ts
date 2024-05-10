@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
@@ -9,64 +8,91 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  Query,
-  ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SubscriptionAccessEntity, Subscription } from '@project/subscription-access';
+import { ApiParam, ApiOkResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { SubscriptionService } from './subscription.service';
-import { CreateSubscriptionDto } from './dto/create-subscription.dto';
-import { QueryParamsDto, SuccessResponse } from '@project/common';
+import { CurrentUserFromToken, fillDto, JwtAuthGuard } from '@project/common';
+import { TokenUserDto } from '@project/dtos/tokens-dto';
+import { SubscriptionDto } from '@project/dtos/artefact-dto';
+import { USER_EXCEPTION } from '@project/constants/exception-messages';
 
 @ApiTags('subscription')
 @Controller('subscription')
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: [SubscriptionAccessEntity],
+  @ApiOkResponse({
+    description: 'Get subscriptions by user id',
+    type: [SubscriptionDto],
     isArray: true,
   })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+    required: true,
+  })
   @Get('/:userId')
-  public async getSubscriptionByUserId(
-    @Param('userId', ParseUUIDPipe) userId: string,
-    @Query() params?: QueryParamsDto<Subscription>,
-  ): Promise<SuccessResponse<Subscription[]>> {
-    params.filter['userId'] = userId;
-    return Promise.all([
-      this.subscriptionService.findSubscriptionByUserId(params),
-      this.subscriptionService.countBy(params?.filter),
-    ]).then((resp) => new SuccessResponse(resp));
+  public async getSubscriptionsByUserId(@Param('userId', ParseUUIDPipe) userId: string): Promise<SubscriptionDto[]> {
+    try {
+      const subscriptions = await this.subscriptionService.findSubscriptionsByUserId(userId);
+      return subscriptions.map((subscription) => fillDto(SubscriptionDto, subscription.toObject()));
+    } catch (error) {
+      Logger.error(error);
+      return [];
+    }
   }
 
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: SubscriptionAccessEntity,
+  @ApiOkResponse({
+    type: SubscriptionDto,
     isArray: false,
+    description: 'create and return subscription',
   })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Post(':followingUserId')
+  @ApiParam({
+    name: 'followingUserId',
+    type: String,
+    required: true,
   })
-  @Post('create')
-  public async createSubscription(@Body(new ValidationPipe()) dto: CreateSubscriptionDto): Promise<Subscription> {
-    return this.subscriptionService.createSubscription(dto);
+  public async createSubscription(
+    @Param('followingUserId', ParseUUIDPipe) followingUserId: string,
+    @CurrentUserFromToken() user: TokenUserDto,
+  ): Promise<SubscriptionDto> {
+    try {
+      const subscription = await this.subscriptionService.createSubscription(followingUserId, user.userId);
+      return fillDto(SubscriptionDto, subscription.toObject());
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException('Cannot create subscription', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
+    description: 'Delete subscription by id',
   })
-  // TODO: сделать получение id текущего авторизованного пользователя
-  @Delete('delete/:followedUserId/:userId')
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+  })
+  @ApiBearerAuth()
   public async deleteSubscription(
-    @Param('followedUserId', ParseUUIDPipe) followedUserId: string,
-    @Param('userId', ParseUUIDPipe) userId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUserFromToken() user: TokenUserDto,
   ): Promise<void> {
     try {
-      await this.subscriptionService.deleteSubscription(followedUserId, userId);
+      const sub = await this.subscriptionService.findSubscriptionById(id);
+      if (sub.userId !== user.userId) {
+        throw new HttpException(`${USER_EXCEPTION.NOT_OWN} subscription`, HttpStatus.FORBIDDEN);
+      }
+      await this.subscriptionService.deleteSubscription(id);
     } catch (error) {
-      Logger.error(error, `deleteSubscription - followedUserId: ${followedUserId}, userId: ${userId}`);
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+      Logger.error(error);
+      throw new HttpException('Cannot delete subscription', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

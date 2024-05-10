@@ -1,8 +1,8 @@
-import { BaseEntity, StorableEntity } from '@project/core';
-import { UserLike } from './types/like.interface';
+import { BaseEntity, StorableEntityInterface } from '@project/core';
+import { LikeInterface } from './types/like.interface';
 
-export class LikeAccessEntity extends BaseEntity implements StorableEntity<UserLike> {
-  constructor(like: UserLike) {
+export class LikeAccessEntity extends BaseEntity implements StorableEntityInterface<LikeInterface> {
+  constructor(like: LikeInterface) {
     super();
 
     this.id = like.id;
@@ -16,7 +16,7 @@ export class LikeAccessEntity extends BaseEntity implements StorableEntity<UserL
   public postId: string;
   public userId: string;
 
-  public toObject(): UserLike {
+  public toObject(): LikeInterface {
     return {
       id: this.id,
       createdAt: this.createdAt,
