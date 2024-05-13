@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsUrl, Max, Min, validateOrReject } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Max, Min, validateOrReject } from 'class-validator';
 import { PORT, Environment } from '../../constants';
 import { DEFAULT_GATEWAY_SERVICE_PORT, DEFAULT_MAX_REDIRECTS, DEFAULT_TIMEOUT } from './constants';
 
@@ -44,6 +44,10 @@ export class GatewayServiceConfiguration {
   @IsNotEmpty()
   @IsUrl()
   public artefactBaseUrl: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public appHost: string;
 
   public async validate(): Promise<void> {
     await validateOrReject(this);

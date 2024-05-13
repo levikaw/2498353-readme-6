@@ -47,7 +47,7 @@ export class PostAccessRepository extends BasePostgresRepository<PostAccessEntit
   }
 
   public async updateAndReturn(entity: UpdateCommonPostInterface): Promise<PostAccessEntity> {
-    return await this.dataSource.post
+    return this.dataSource.post
       .update({
         where: { id: entity.id },
         data: entity,

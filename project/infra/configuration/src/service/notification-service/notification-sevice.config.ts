@@ -40,6 +40,10 @@ export class NotificationServiceConfiguration {
   @IsString()
   public host: string;
 
+  @IsString()
+  @IsNotEmpty()
+  public appHost: string;
+
   @IsNotEmpty()
   @IsString()
   public user: string;

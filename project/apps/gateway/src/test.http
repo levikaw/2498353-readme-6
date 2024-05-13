@@ -24,12 +24,12 @@ somemail
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: {{formDataName}}"password"
 
-!lDTE2701!
+!123456
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: {{fileContentDisposition}}
 Content-Type: {{pngContentType}}
 
-< /Users/dmitrijandreevic/Desktop/test.png
+< /path/to/test.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
@@ -41,7 +41,7 @@ Content-Type: {{defaultContentType}}
 
 {
     "email": "some@mail.com", 
-    "password": "lDTE2701!"
+    "password": "123456"
 }
 
 ###
@@ -52,7 +52,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: {{defaultContentType}}
 
 {
-    "oldPassword": "!lDTE2701!",
+    "oldPassword": "!123456",
     "newPassword": "!lDTE2702!"
 }
 
@@ -85,7 +85,7 @@ tag1,2tag2
 Content-Disposition: {{fileContentDisposition}}
 Content-Type: {{pngContentType}}
 
-< /Users/dmitrijandreevic/Desktop/test.png
+< /path/to/test.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
@@ -104,7 +104,7 @@ tag1,2tag2
 Content-Disposition: {{fileContentDisposition}}
 Content-Type: {{pngContentType}}
 
-< /Users/dmitrijandreevic/Desktop/test.png
+< /path/to/test.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###

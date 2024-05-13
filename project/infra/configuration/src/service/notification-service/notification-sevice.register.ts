@@ -10,6 +10,7 @@ async function getNotificationConfig(): Promise<NotificationServiceConfiguration
     smtpPort: process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : NOTIFY_DEFAULT_PORTS.SMTP,
     webUIPort: process.env.WEBUI_PORT ? parseInt(process.env.WEBUI_PORT, 10) : NOTIFY_DEFAULT_PORTS.WEB_UI,
     user: process.env.SMTP_USER,
+    appHost: process.env.APP_HOST,
     password: process.env.SMTP_PASSWORD,
     host: process.env.SMTP_HOST,
     from: process.env.FROM_EMAIL,

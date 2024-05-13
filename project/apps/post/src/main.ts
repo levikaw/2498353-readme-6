@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { setUpSwaggerModule } from '@project/swagger';
@@ -17,13 +12,14 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const configService = app.get(ConfigService);
   const port = configService.get(`${POSTS_ALIAS}.port`);
+  const appHost = configService.get(`${POSTS_ALIAS}.appHost`);
 
   app.useGlobalGuards(new CheckGatewayRequestGuard());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<PostModule>(app, 'post');
 
   await app.listen(port);
-  Logger.log(`🚀 Post is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Post is running on: http://${appHost}:${port}/${globalPrefix}`);
 }
 
 bootstrap();

@@ -6,6 +6,7 @@ import { PostServiceConfiguration } from './post-sevice.config';
 async function getPostsAccessConfig(): Promise<PostServiceConfiguration> {
   const config = plainToClass(PostServiceConfiguration, {
     environment: process.env.NODE_ENV,
+    appHost: process.env.APP_HOST,
     port: process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_POST_SERVICE_PORT,
   });
 

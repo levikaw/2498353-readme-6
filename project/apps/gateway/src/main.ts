@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { setUpSwaggerModule } from '@project/swagger';
@@ -18,6 +13,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const configService = app.get(ConfigService);
   const port = configService.get(`${GATEWAY_ALIAS}.port`);
+  const appHost = configService.get(`${GATEWAY_ALIAS}.appHost`);
 
   app.useGlobalInterceptors(new AddRequestIdInterceptor());
   app.useGlobalFilters(new AxiosExceptionFilter());
@@ -26,7 +22,7 @@ async function bootstrap() {
   setUpSwaggerModule<GatewayModule>(app, 'gateway');
 
   await app.listen(port);
-  Logger.log(`🚀 Gateway is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Gateway is running on: http://${appHost}:${port}/${globalPrefix}`);
 }
 
 bootstrap();

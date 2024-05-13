@@ -45,7 +45,7 @@ export class PostService {
       throw new Error(POST_EXCEPTION.NOT_FOUND);
     }
 
-    return await this.postAccessRepository.updateAndReturn(post);
+    return this.postAccessRepository.updateAndReturn(post);
   }
 
   public async deletePostById(id: string): Promise<void> {

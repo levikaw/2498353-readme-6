@@ -21,6 +21,10 @@ export class FileServiceConfiguration {
   @IsString()
   public serveRoot: string;
 
+  @IsString()
+  @IsNotEmpty()
+  public appHost: string;
+
   public async validate(): Promise<void> {
     await validateOrReject(this);
   }

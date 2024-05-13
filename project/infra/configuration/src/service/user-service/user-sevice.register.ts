@@ -6,6 +6,7 @@ import { UserServiceConfiguration } from './user-sevice.config';
 async function getUsersAccessConfig(): Promise<UserServiceConfiguration> {
   const config = plainToClass(UserServiceConfiguration, {
     environment: process.env.NODE_ENV,
+    appHost: process.env.APP_HOST,
     port: process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_USER_SERVICE_PORT,
   });
 
