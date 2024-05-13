@@ -42,9 +42,7 @@ export class ArtefactService {
       .then(resolveData);
   }
   public async deleteLikeById(id: string, authHeader: string): Promise<void> {
-    return await this.httpService.axiosRef
-      .delete(`${this.artefactBaseUrl}/like/${id}`, genAuthHeader(authHeader))
-      .then(resolveData);
+    return this.httpService.axiosRef.delete(`${this.artefactBaseUrl}/like/${id}`, genAuthHeader(authHeader)).then(resolveData);
   }
 
   public async createSubscription(followingUserId: string, authHeader: string): Promise<SubscriptionDto> {
