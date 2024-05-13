@@ -6,6 +6,7 @@ import { AuthServiceConfiguration } from './auth-sevice.config';
 async function getAuthConfig(): Promise<AuthServiceConfiguration> {
   const config = plainToClass(AuthServiceConfiguration, {
     environment: process.env.NODE_ENV,
+    appHost: process.env.APP_HOST,
     jwtAccessSecret: process.env.JWT_ACCESS_SECRET,
     jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
     expiresAccessTokenIn: process.env.EXPIRES_ACCESS_TOKEN_IN,

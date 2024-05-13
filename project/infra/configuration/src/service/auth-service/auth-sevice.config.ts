@@ -25,6 +25,10 @@ export class AuthServiceConfiguration {
 
   @IsString()
   @IsNotEmpty()
+  public appHost: string;
+
+  @IsString()
+  @IsNotEmpty()
   public expiresAccessTokenIn: string;
 
   @IsString()

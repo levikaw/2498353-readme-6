@@ -11,12 +11,13 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const configService = app.get(ConfigService);
   const port = configService.get(`${NOTIFY_ALIAS}.port`);
+  const appHost = configService.get(`${NOTIFY_ALIAS}.appHost`);
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<NotificationModule>(app, 'notification');
 
   await app.listen(port);
-  Logger.log(`🚀 Notification is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Notification is running on: http://${appHost}:${port}/${globalPrefix}`);
 }
 
 bootstrap();

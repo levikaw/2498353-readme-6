@@ -10,6 +10,7 @@ async function getGatewaysAccessConfig(): Promise<GatewayServiceConfiguration> {
     fileBaseUrl: process.env.FILE_SERVICE_BASE_URL,
     authBaseUrl: process.env.AUTH_SERVICE_BASE_URL,
     postBaseUrl: process.env.POST_SERVICE_BASE_URL,
+    appHost: process.env.APP_HOST,
     notifyBaseUrl: process.env.NOTIFY_SERVICE_BASE_URL,
     artefactBaseUrl: process.env.ARTEFACT_SERVICE_BASE_URL,
     port: process.env.PORT ? parseInt(process.env.PORT, 10) : DEFAULT_GATEWAY_SERVICE_PORT,

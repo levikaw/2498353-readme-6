@@ -12,13 +12,14 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const configService = app.get(ConfigService);
   const port = configService.get(`${AUTH_ALIAS}.port`);
-  app.useGlobalGuards(new CheckGatewayRequestGuard());
+  const appHost = configService.get(`${AUTH_ALIAS}.appHost`);
 
+  app.useGlobalGuards(new CheckGatewayRequestGuard());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<AuthModule>(app, 'auth');
 
   await app.listen(port);
-  Logger.log(`🚀 Auth is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Auth is running on: http://${appHost}:${port}/${globalPrefix}`);
 }
 
 bootstrap();

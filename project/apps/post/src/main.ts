@@ -12,13 +12,14 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const configService = app.get(ConfigService);
   const port = configService.get(`${POSTS_ALIAS}.port`);
+  const appHost = configService.get(`${POSTS_ALIAS}.appHost`);
 
   app.useGlobalGuards(new CheckGatewayRequestGuard());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   setUpSwaggerModule<PostModule>(app, 'post');
 
   await app.listen(port);
-  Logger.log(`🚀 Post is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Post is running on: http://${appHost}:${port}/${globalPrefix}`);
 }
 
 bootstrap();

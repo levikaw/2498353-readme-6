@@ -12,13 +12,14 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const configService = app.get(ConfigService);
   const port = configService.get(`${ARTEFACTS_ALIAS}.port`);
+  const appHost = configService.get(`${ARTEFACTS_ALIAS}.appHost`);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalGuards(new CheckGatewayRequestGuard());
 
   setUpSwaggerModule<MainModule>(app, 'artefact');
 
   await app.listen(port);
-  Logger.log(`🚀 Artefact is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`🚀 Artefact is running on: http://${appHost}:${port}/${globalPrefix}`);
 }
 
 bootstrap();
